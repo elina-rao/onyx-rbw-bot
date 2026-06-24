@@ -1,8 +1,6 @@
-import type { ObjectId } from "mongodb";
-
 export interface Bot {
-    _id?: ObjectId;
-    username: string;
-    assignedGame?: ObjectId;
-    uuid: string;
+  id?: number;
+  username: string;
+  uuid?: string;
+  assigned_game_id?: number | null;
 }

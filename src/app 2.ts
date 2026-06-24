@@ -259,7 +259,7 @@ export default async function getImage(uuid: string, name: string, url: string, 
   }
 
   //  Custom Text
-  if (url == null) url = "discord.gg/onyxrbw";  //  Default it
+  if (url == null) url = "discord.gg/rbw";  //  Default it
 
   ctx.textAlign = "center";
   ctx.fillStyle = "#ffffff";

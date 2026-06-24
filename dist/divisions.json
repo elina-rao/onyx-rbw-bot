@@ -1,119 +1,76 @@
 {
     "divisions": [
         {
-            "name": "Coal 1",
-            "color": "#191D20",
-            "image": "coal_1.svg",
+            "name": "Ash",
+            "color": "#6B6B6B",
+            "image": "ash.svg",
             "min": 0,
-            "max": 100
-        }, {
-            "name": "Coal 2",
-            "color": "#191D20",
-            "image": "coal_2.svg",
-            "min": 100,
-            "max": 200
-        }, {
-            "name": "Coal 3",
-            "color": "#191D20",
-            "image": "coal_3.svg",
-            "min": 200,
-            "max": 300
-        }, {
-            "name": "Coal 4",
-            "color": "#191D20",
-            "image": "coal_4.svg",
+            "max": 300,
+            "eloWin": 30,
+            "eloLoss": 10
+        },
+        {
+            "name": "Stone",
+            "color": "#8A8A8A",
+            "image": "stone.svg",
             "min": 300,
-            "max": 400
-        }, {
-            "name": "Iron 1",
-            "color": "#857872",
-            "image": "iron_1.svg",
-            "min": 400,
-            "max": 500
-        }, {
-            "name": "Iron 2",
-            "color": "#857872",
-            "image": "iron_2.svg",
-            "min": 500,
-            "max": 600
-        }, {
-            "name": "Iron 3",
-            "color": "#857872",
-            "image": "iron_3.svg",
+            "max": 600,
+            "eloWin": 28,
+            "eloLoss": 12
+        },
+        {
+            "name": "Copper",
+            "color": "#B87333",
+            "image": "copper.svg",
             "min": 600,
-            "max": 700
-        }, {
-            "name": "Iron 4",
-            "color": "#857872",
-            "image": "iron_4.svg",
-            "min": 700,
-            "max": 800
-        }, {
-            "name": "Gold 1",
-            "color": "#FFE049",
-            "image": "gold_1.svg",
-            "min": 800,
-            "max": 900
-        }, {
-            "name": "Gold 2",
-            "color": "#FFE049",
-            "image": "gold_2.svg",
+            "max": 900,
+            "eloWin": 26,
+            "eloLoss": 14
+        },
+        {
+            "name": "Silver",
+            "color": "#C0C0C0",
+            "image": "silver.svg",
             "min": 900,
-            "max": 1000
-        }, {
-            "name": "Gold 3",
-            "color": "#FFE049",
-            "image": "gold_3.svg",
-            "min": 1000,
-            "max": 1100
-        }, {
-            "name": "Gold 4",
-            "color": "#FFE049",
-            "image": "gold_4.svg",
-            "min": 1100,
-            "max": 1200
-        }, {
-            "name": "Platinum 1",
-            "color": "#33C69C",
-            "image": "plat_1.svg",
+            "max": 1200,
+            "eloWin": 24,
+            "eloLoss": 16
+        },
+        {
+            "name": "Gold",
+            "color": "#FFD700",
+            "image": "gold.svg",
             "min": 1200,
-            "max": 1300
-        }, {
-            "name": "Platinum 2",
-            "color": "#33C69C",
-            "image": "plat_2.svg",
-            "min": 1300,
-            "max": 1400
-        }, {
-            "name": "Platinum 3",
-            "color": "#33C69C",
-            "image": "plat_3.svg",
-            "min": 1400,
-            "max": 1500
-        }, {
-            "name": "Platinum 4",
-            "color": "#33C69C",
-            "image": "plat_4.svg",
+            "max": 1500,
+            "eloWin": 22,
+            "eloLoss": 18
+        },
+        {
+            "name": "Ruby",
+            "color": "#E0115F",
+            "image": "ruby.svg",
             "min": 1500,
-            "max": 1600
-        }, {
-            "name": "Emerald",
-            "color": "#77DD77",
-            "image": "emerald.svg",
-            "min": 1600,
-            "max": 1800
-        }, {
-            "name": "Diamond",
-            "color": "#49E0FF",
-            "image": "diamond.svg",
+            "max": 1800,
+            "eloWin": 20,
+            "eloLoss": 20
+        },
+        {
+            "name": "Sapphire",
+            "color": "#0F52BA",
+            "image": "sapphire.svg",
             "min": 1800,
-            "max": 2000
-        }, {
-            "name": "Obsidian",
-            "color": "#3D294A",
-            "image": "obsidian.svg",
-            "min": 2000,
-            "max": -1
+            "max": 2200,
+            "eloWin": 18,
+            "eloLoss": 22
+        },
+        {
+            "name": "Onyx",
+            "color": "#1A1A1A",
+            "image": "onyx.svg",
+            "min": 2200,
+            "max": -1,
+            "eloWin": 15,
+            "eloLoss": 25
         }
     ]
 }

@@ -9,4 +9,4 @@ var GameState;
     GameState[GameState["SCORING"] = 3] = "SCORING";
     GameState[GameState["FINISHED"] = 4] = "FINISHED";
     GameState[GameState["VOID"] = 5] = "VOID";
-})(GameState = exports.GameState || (exports.GameState = {}));
+})(GameState || (exports.GameState = GameState = {}));

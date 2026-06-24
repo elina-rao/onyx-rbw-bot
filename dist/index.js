@@ -1,7 +1,11 @@
 "use strict";
 var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
-    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
 }) : (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
     o[k2] = m[k];
@@ -11,13 +15,23 @@ var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (
 }) : function(o, v) {
     o["default"] = v;
 });
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
-    __setModuleDefault(result, mod);
-    return result;
-};
+var __importStar = (this && this.__importStar) || (function () {
+    var ownKeys = function(o) {
+        ownKeys = Object.getOwnPropertyNames || function (o) {
+            var ar = [];
+            for (var k in o) if (Object.prototype.hasOwnProperty.call(o, k)) ar[ar.length] = k;
+            return ar;
+        };
+        return ownKeys(o);
+    };
+    return function (mod) {
+        if (mod && mod.__esModule) return mod;
+        var result = {};
+        if (mod != null) for (var k = ownKeys(mod), i = 0; i < k.length; i++) if (k[i] !== "default") __createBinding(result, mod, k[i]);
+        __setModuleDefault(result, mod);
+        return result;
+    };
+})();
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
@@ -27,12 +41,10 @@ dotenv_1.default.config();
 const logger_1 = __importDefault(require("./logger"));
 const app_1 = __importDefault(require("./app"));
 const logger = new logger_1.default("Main");
-require("mongodb");
 const discord_js_1 = require("discord.js");
 const https_1 = __importDefault(require("https"));
 const node_fetch_1 = __importDefault(require("node-fetch"));
 const bot_1 = __importStar(require("./managers/bot"));
-const database_1 = __importDefault(require("./managers/database"));
 const hypixel_1 = require("./managers/hypixel");
 const constants_1 = require("./constants");
 const utils_1 = require("./utils");
@@ -40,27 +52,28 @@ const games_1 = require("./typings/games");
 const socket_1 = require("./managers/socket");
 const dayjs_1 = __importDefault(require("dayjs"));
 const relativeTime_1 = __importDefault(require("dayjs/plugin/relativeTime"));
+const database_1 = require("./managers/database");
 dayjs_1.default.extend(relativeTime_1.default);
 let help_cmd_cache = [];
 const voiceQueueMap = new discord_js_1.Collection();
-!async function () {
-    const [db, client, guild] = await Promise.all([database_1.default, bot_1.default, bot_1.defaultGuild]).catch(err => {
+function createEmbed(description, color = "#d4a017", footerSuffix = `Watching players!`) {
+    const embed = new discord_js_1.MessageEmbed()
+        .setColor(color)
+        .setFooter(`© Onyx RBW | ${footerSuffix}`, constants_1.Constants.BRANDING_URL);
+    if (description)
+        embed.setDescription(description);
+    return embed;
+}
+function getRole(p) {
+    let index = Math.floor(Math.abs(p) / 300);
+    index = Math.min(index, constants_1.Constants.ELO_ROLES.length - 1);
+    return constants_1.Constants.ELO_ROLES[index] ? { id: constants_1.Constants.ELO_ROLES[index] } : null;
+}
+(async () => {
+    const [client, guild] = await Promise.all([bot_1.default, bot_1.defaultGuild]).catch(err => {
         logger.error(`Startup failed:\n${err.stack}`);
         return process.exit(1);
     });
-    function createEmbed(description, color = "#228B22", footerSuffix = `Watching ${guild.memberCount} Players!`) {
-        const embed = new discord_js_1.MessageEmbed()
-            .setColor(color)
-            .setFooter(`© Ranked Bedwars | ${footerSuffix}`, constants_1.Constants.BRANDING_URL);
-        if (description)
-            embed.setDescription(description);
-        return embed;
-    }
-    function getRole(p) {
-        let index = Math.floor(Math.abs(p) / 100);
-        index = index === 17 ? 16 : (index >= 18 && index < 20) ? 17 : index >= 20 ? 18 : index;
-        return guild?.roles.cache.get(constants_1.Constants.ELO_ROLES[index]);
-    }
     client.on("raw", async (payload) => {
         if (payload.t !== "INTERACTION_CREATE")
             return;
@@ -70,21 +83,13 @@ const voiceQueueMap = new discord_js_1.Collection();
         const { name: cmd } = data;
         const req = https_1.default.request(`${constants_1.Constants.DISCORD_API_BASE_URL}/interactions/${id}/${token}/callback`, {
             method: "POST",
-            headers: {
-                authorization: `Bot ${process.env.TOKEN}`,
-                "Content-Type": "application/json",
-            }
+            headers: { authorization: `Bot ${process.env.TOKEN}`, "Content-Type": "application/json" }
         });
         function respond(message) {
             return new Promise(res => {
                 req.write(JSON.stringify({
                     type: 4,
-                    data: typeof message === "string" ? {
-                        content: message
-                    } : {
-                        content: "",
-                        embeds: [message.toJSON()]
-                    }
+                    data: typeof message === "string" ? { content: message } : { content: "", embeds: [message.toJSON()] }
                 }));
                 req.end();
                 req.on("error", () => null);
@@ -99,7 +104,7 @@ const voiceQueueMap = new discord_js_1.Collection();
                 }
                 const player = payload.d.data.options[0].value;
                 try {
-                    const mojang = await (await node_fetch_1.default(`https://api.mojang.com/users/profiles/minecraft/${player}`)).text();
+                    const mojang = await (await (0, node_fetch_1.default)(`https://api.mojang.com/users/profiles/minecraft/${player}`)).text();
                     if (!mojang) {
                         respond(createEmbed("Minecraft account not found.", "RED"));
                         break;
@@ -109,7 +114,7 @@ const voiceQueueMap = new discord_js_1.Collection();
                         respond(createEmbed("Minecraft account not found.", "RED"));
                         break;
                     }
-                    const hypixelData = await hypixel_1.getHypixelPlayer(d.id);
+                    const hypixelData = await (0, hypixel_1.getHypixelPlayer)(d.id);
                     const discord = hypixelData?.player?.socialMedia?.links?.DISCORD;
                     if (!discord) {
                         respond(createEmbed(`**${d.name}** does not have a Discord account linked. For more information, read ${guild.channels.cache.get('800070737091624970')}`, "RED"));
@@ -119,53 +124,45 @@ const voiceQueueMap = new discord_js_1.Collection();
                         respond(createEmbed(`**${d.name}** has another Discord account or server linked. If this is you, change your linked Discord to **${user.username}#${user.discriminator}**.\n\n**Changed your Discord username?** You'll need to change your linked account in game.`, "RED"));
                         break;
                     }
-                    const { value } = await db.players.findOneAndUpdate({ discord: user.id }, {
-                        $set: {
-                            minecraft: {
-                                uuid: d.id,
-                                name: d.name,
-                            },
-                            registeredAt: Date.now(),
-                        },
-                        $setOnInsert: {
-                            discord: user.id,
-                            elo: 400,
-                        },
-                    }, {
-                        upsert: true,
-                    });
-                    if (!value) {
+                    const existing = await utils_1.Players.getByDiscord(user.id);
+                    if (existing) {
+                        await (0, database_1.query)('UPDATE players SET minecraft_uuid = ?, minecraft_name = ?, registered_at = ? WHERE discord_id = ?', [d.id, d.name, Date.now(), user.id]);
+                        const member = guild.members.cache.get(user.id);
+                        if (member) {
+                            if (!member.roles.cache.has(constants_1.Constants.SUPPORT_ROLE_ID))
+                                await member.setNickname(`[${existing.elo}] ${d.name}`).catch(e => logger.error(`Failed to update nickname:\n${e.stack}`));
+                            member.roles.cache.forEach(async (role) => {
+                                if (constants_1.Constants.ELO_ROLES.includes(role.id))
+                                    await member.roles.remove(role).catch(() => null);
+                            });
+                            if (!member.roles.cache.has(constants_1.Constants.RANKBANNED)) {
+                                const roleId = getRole(existing.elo ?? 400);
+                                if (roleId)
+                                    await member.roles.add(roleId.id).catch(() => null);
+                            }
+                            await member.roles.remove(constants_1.Constants.REGISTERED_ROLE).catch(() => null);
+                            await member.roles.add(constants_1.Constants.REGISTERED_ROLE).catch(() => null);
+                        }
+                        respond(createEmbed(`You have successfully changed your linked Minecraft account to **${(0, utils_1.toEscapedFormat)(d.name)}**.`, "#d4a017"));
+                    }
+                    else {
+                        await (0, database_1.query)('INSERT INTO players (discord_id, minecraft_uuid, minecraft_name, registered_at, elo) VALUES (?, ?, ?, ?, 400) ON DUPLICATE KEY UPDATE minecraft_uuid = VALUES(minecraft_uuid), minecraft_name = VALUES(minecraft_name), registered_at = VALUES(registered_at)', [user.id, d.id, d.name, Date.now()]);
                         const mem = guild.members.cache.get(user.id);
                         if (mem && !mem.roles.cache.has(constants_1.Constants.SUPPORT_ROLE_ID))
                             await mem.setNickname(`[400] ${d.name}`).catch(e => logger.error(`Failed to update a new member's nickname:\n${e.stack}`));
-                        respond(createEmbed(`You have successfully registered with the username **${utils_1.toEscapedFormat(d.name)}**. Welcome to Ranked Bedwars!`, "#228B22"));
+                        respond(createEmbed(`You have successfully registered with the username **${(0, utils_1.toEscapedFormat)(d.name)}**. Welcome to Onyx RBW!`, "#d4a017"));
                         const member = guild.members.cache.get(user.id);
-                        member?.roles.cache.forEach(async (role) => {
-                            if (constants_1.Constants.ELO_ROLES.includes(role.id)) {
-                                await member.roles.remove(role).catch(() => null);
-                            }
-                        });
-                        await member.roles.add(constants_1.Constants.ELO_ROLES[4]).catch(() => null);
-                        await member.roles.add(constants_1.Constants.REGISTERED_ROLE).catch(() => null);
-                        break;
-                    }
-                    const member = guild.members.cache.get(user.id);
-                    if (!member)
-                        return;
-                    if (!member.roles.cache.has(constants_1.Constants.SUPPORT_ROLE_ID))
-                        await member?.setNickname(`[${value.elo ?? 400}] ${d.name}`).catch(e => logger.error(`Failed to update an existing member's nickname on re-registration:\n${e.stack}`));
-                    respond(createEmbed(`You have successfully changed your linked Minecraft account to **${utils_1.toEscapedFormat(d.name)}**.`, "#228B22"));
-                    const member_roles = member.roles.cache.array();
-                    for (let i = 0; i < member_roles.length; i++) {
-                        const role = member_roles[i];
-                        if (constants_1.Constants.ELO_ROLES.includes(role.id)) {
-                            await member.roles.remove(role).catch(() => null);
+                        if (member) {
+                            member.roles.cache.forEach(async (role) => {
+                                if (constants_1.Constants.ELO_ROLES.includes(role.id))
+                                    await member.roles.remove(role).catch(() => null);
+                            });
+                            const roleId = getRole(400);
+                            if (roleId)
+                                await member.roles.add(roleId.id).catch(() => null);
+                            await member.roles.add(constants_1.Constants.REGISTERED_ROLE).catch(() => null);
                         }
                     }
-                    if (!member.roles.cache.has(constants_1.Constants.RANKBANNED))
-                        await member.roles.add(getRole(value.elo ?? 400)).catch(() => null);
-                    await member.roles.remove(constants_1.Constants.UNREGISTERED_ROLE).catch(() => null);
-                    await member.roles.add(constants_1.Constants.REGISTERED_ROLE).catch(() => null);
                 }
                 catch (e) {
                     logger.error(`An error occurred while using the /register command:\nDeclared username: ${player}\n${e.stack}`);
@@ -178,10 +175,10 @@ const voiceQueueMap = new discord_js_1.Collection();
                 try {
                     const player = await utils_1.Players.getByDiscord(lookup);
                     if (!player) {
-                        respond(createEmbed(`<@${lookup}> is not a registered Ranked Bedwars player.`, "RED"));
+                        respond(createEmbed(`<@${lookup}> is not a registered Onyx RBW player.`, "RED"));
                         break;
                     }
-                    const card = await app_1.default(player.minecraft.uuid, player.minecraft.name, 'discord.gg/rbw', '#363942', player);
+                    const card = await (0, app_1.default)(player.minecraft.uuid, player.minecraft.name, 'discord.gg/onyxrbw', '#363942', player);
                     respond(new discord_js_1.MessageEmbed().attachFiles([{ attachment: card, name: 'profile.png' }]));
                 }
                 catch (e) {
@@ -201,90 +198,42 @@ const voiceQueueMap = new discord_js_1.Collection();
                         name = "bedsBroken";
                     let page = options ? options[0].value : 1;
                     const nPerPage = 10;
-                    const division = ['wl', 'kd', 'bblr'].includes(name);
-                    const values = name === 'wl' ? ['$wins', '$losses']
-                        : name === 'kd' ? ['$kills', '$deaths']
-                            : ['$bedsbroken', '$losses'];
-                    const search = division ? {
-                        [name === 'wl' ? 'wins' : name === 'kd' ? 'kills' : 'bedsbroken']: {
-                            $exists: true
-                        }
-                    } : {
-                        [name]: {
-                            $exists: true
-                        }
-                    };
-                    const total = await db.players.find(search).count();
+                    const validStats = ['kills', 'wins', 'losses', 'bedsBroken', 'bedsLost', 'games', 'winstreak', 'losestreak', 'elo', 'deaths'];
+                    const useAgg = ['wl', 'kd', 'bblr'];
+                    let orderCol = name;
+                    if (useAgg.includes(name))
+                        orderCol = name === 'wl' ? 'wins' : name === 'kd' ? 'kills' : 'beds_broken';
+                    const totalRows = await (0, database_1.query)('SELECT COUNT(*) as cnt FROM players');
+                    const total = totalRows[0].cnt;
                     if (total < 1) {
                         respond(createEmbed("There's no players on this leaderboard yet. Play now, and claim a top spot!", "RED"));
                         break;
                     }
                     let prettyName = name;
-                    switch (name) {
-                        case "kills":
-                            prettyName = "Top Kills";
-                            break;
-                        case "elo":
-                            prettyName = "Top ELO";
-                            break;
-                        case "wins":
-                            prettyName = "Top Wins";
-                            break;
-                        case "losses":
-                            prettyName = "Top Losses";
-                            break;
-                        case "bedsBroken":
-                            prettyName = "Most Beds Broken";
-                            break;
-                        case "games":
-                            prettyName = "Most Games Played";
-                            break;
-                        case "wl":
-                            prettyName = "Highest W/L";
-                            break;
-                        case "kd":
-                            prettyName = "Highest K/D";
-                            break;
-                        case "bblr":
-                            prettyName = "Highest BBLR";
-                            break;
-                        case "losestreak":
-                            prettyName = "Highest Losestreak";
-                            break;
-                        case "deaths":
-                            prettyName = "Most Deaths";
-                            break;
-                        case "bedslost":
-                            prettyName = "Most Beds Lost";
-                            break;
-                    }
+                    const names = {
+                        kills: "Top Kills", elo: "Top ELO", wins: "Top Wins", losses: "Top Losses",
+                        bedsBroken: "Most Beds Broken", games: "Most Games Played", wl: "Highest W/L",
+                        kd: "Highest K/D", bblr: "Highest BBLR", losestreak: "Highest Losestreak",
+                        deaths: "Most Deaths", bedsLost: "Most Beds Lost"
+                    };
+                    prettyName = names[name] || name;
                     const pages = Math.ceil(total / nPerPage);
                     if (page > pages)
                         page = pages;
-                    const players = division ?
-                        await db.players
-                            .aggregate([{
-                                $project: {
-                                    computed: {
-                                        $cond: [{ $eq: [values[1], 0] }, values[0], { $divide: values }]
-                                    },
-                                    elo: true,
-                                    minecraft: true
-                                }
-                            }, {
-                                $sort: { computed: -1 }
-                            }])
-                            .skip(page > 0 ? ((page - 1) * nPerPage) : 0)
-                            .limit(nPerPage)
-                            .toArray() :
-                        await db.players
-                            .find(search)
-                            .sort({ [name]: -1 })
-                            .skip(page > 0 ? ((page - 1) * nPerPage) : 0)
-                            .limit(nPerPage)
-                            .toArray();
-                    respond(createEmbed(players.map((player, i) => `\n\`#${i + 1 + (nPerPage * (page - 1))}\` ${constants_1.Constants.ELO_EMOJIS[constants_1.Constants.ELO_ROLES.indexOf(getRole(player.elo ?? 400)?.id)]} **${utils_1.toEscapedFormat(player.minecraft.name)}** : ${division ? player.computed : (player[name] ?? 0)}`).join(""), "#228B22")
-                        .setTitle(`${prettyName} | Page ${page}/${pages}`));
+                    const offset = (page - 1) * nPerPage;
+                    let rows;
+                    if (useAgg.includes(name)) {
+                        rows = await (0, database_1.query)(`SELECT *, (${name === 'wl' ? 'wins' : name === 'kd' ? 'kills' : 'beds_broken'} / NULLIF(${name === 'wl' ? 'losses' : name === 'kd' ? 'deaths' : 'losses'}, 0)) as computed FROM players ORDER BY computed DESC LIMIT ? OFFSET ?`, [nPerPage, offset]);
+                    }
+                    else {
+                        const dbCol = name.replace(/[A-Z]/g, m => '_' + m.toLowerCase());
+                        rows = await (0, database_1.query)(`SELECT * FROM players ORDER BY ${dbCol} DESC LIMIT ? OFFSET ?`, [nPerPage, offset]);
+                    }
+                    respond(createEmbed(rows.map((row, i) => {
+                        const roleId = getRole(row.elo ?? 400);
+                        const roleIndex = roleId ? constants_1.Constants.ELO_ROLES.indexOf(roleId.id) : 0;
+                        return `\n\`#${i + 1 + offset}\` ${constants_1.Constants.ELO_EMOJIS[roleIndex] || ''} **${(0, utils_1.toEscapedFormat)(row.minecraft_name)}** : ${useAgg.includes(name) ? (row.computed?.toFixed?.(1) ?? 0) : (row[name === 'bedsBroken' ? 'beds_broken' : name === 'bedsLost' ? 'beds_lost' : name] ?? 0)}`;
+                    }).join(""), "#d4a017").setTitle(`${prettyName} | Page ${page}/${pages}`));
                 }
                 catch (e) {
                     logger.error(`An error occurred while using the /leaderboard command:\n${e.stack}`);
@@ -293,8 +242,7 @@ const voiceQueueMap = new discord_js_1.Collection();
             }
         }
     });
-    client.on('ready', async () => {
-    });
+    client.on('ready', async () => { });
     client.on("voiceStateUpdate", async (oldState, newState) => {
         if (oldState.channelID === newState.channelID)
             return;
@@ -308,7 +256,7 @@ const voiceQueueMap = new discord_js_1.Collection();
         const ids = gameMembers.map(mem => mem.id);
         try {
             const queueChannel = newState.channel;
-            const { game } = await utils_1.createNewGame();
+            const { game } = await (0, utils_1.createNewGame)();
             const { textChannel } = await game.createChannels(gameMembers, queueChannel);
             const strike = {
                 members: ids,
@@ -318,48 +266,34 @@ const voiceQueueMap = new discord_js_1.Collection();
                 pickingOver: false,
             };
             voiceQueueMap.set(newState.channelID, strike);
-            const { gameNumber, logger, id: insertedId } = game;
+            const { gameNumber, logger: gameLogger, id: insertedId } = game;
             const index = constants_1.Constants.QUEUES_ARRAY.findIndex(q => q.includes(queueChannel.id));
-            const textCategory = await utils_1.findOpenCategory(constants_1.Constants.CATEGORY_ARRAY[index].map(cat => guild.channels.cache.get(cat)));
-            const teamCallCategory = await utils_1.findOpenCategory(constants_1.Constants.TEAM_CALLS.map(cat => guild.channels.cache.get(cat)));
+            const textCategory = await (0, utils_1.findOpenCategory)(constants_1.Constants.CATEGORY_ARRAY[index].map(cat => guild.channels.cache.get(cat)));
+            const teamCallCategory = await (0, utils_1.findOpenCategory)(constants_1.Constants.TEAM_CALLS.map(cat => guild.channels.cache.get(cat)));
             if (!(textCategory && teamCallCategory)) {
-                return logger.warn('No category assigned.');
+                return gameLogger.warn('No category assigned.');
             }
             await Promise.all([
                 textChannel.overwritePermissions(gameMembers.map(member => ({
                     id: member.id,
                     allow: ["VIEW_CHANNEL", "SEND_MESSAGES", "READ_MESSAGE_HISTORY"],
                 })).concat({
-                    id: (await bot_1.defaultGuild).id,
+                    id: guild.id,
                     deny: ["VIEW_CHANNEL"]
-                }).concat({
-                    id: '801187544267489330',
-                    allow: ["VIEW_CHANNEL", "SEND_MESSAGES", "READ_MESSAGE_HISTORY"]
-                }).concat({
-                    id: '688981950295572643',
-                    allow: ["VIEW_CHANNEL", "SEND_MESSAGES", "READ_MESSAGE_HISTORY"]
                 })),
             ]).catch(() => null);
             const [message, players] = await Promise.all([
                 textChannel.send(gameMembers.join("")),
                 utils_1.Players.getManyByDiscord(gameMembers.map(({ id }) => id)),
-                db.games.updateOne({
-                    number: gameNumber
-                }, {
-                    $set: {
-                        textChannel: textChannel.id,
-                        voiceChannel: queueChannel.id,
-                    }
-                }),
+                (0, database_1.query)('UPDATE games SET voice_channel_id = ?, text_channel_id = ? WHERE id = ?', [queueChannel.id, textChannel.id, insertedId]),
             ]);
             const unregistered = gameMembers.filter(mem => !players.map(p => p.discord).includes(mem.id));
             let unreg = unregistered.length > 0 ? unregistered.join(' ') : '';
             if (8 !== players.size) {
                 voiceQueueMap.delete(newState.channelID);
                 let msg = `${unreg} **unregistered player(s)** are in your queue. Please make sure to register in ${guild.channels.cache.get(constants_1.Constants.REGISTER_CHANNEL)} before queuing.\n\n**NOTE:** Please ensure that no unregistered/ingame player exists in the queue and that queues are currently open.`;
-                if (gameMembers.length < 8) {
+                if (gameMembers.length < 8)
                     msg = `The **queues are not open** right now. Please be patient. Thank you! `;
-                }
                 message.channel.send(msg);
                 return setTimeout(() => game.cancel(true), 10000);
             }
@@ -388,9 +322,8 @@ const voiceQueueMap = new discord_js_1.Collection();
                         asArray.splice(0, asArray.length);
                         return false;
                     }
-                    if (!(content.toLowerCase().startsWith('=pick ') || content.toLowerCase().startsWith('=p ') || content.toLowerCase().startsWith('=P '))) {
+                    if (!(content.toLowerCase().startsWith('=pick ') || content.toLowerCase().startsWith('=p ') || content.toLowerCase().startsWith('=P ')))
                         return false;
-                    }
                     if (![cap1.discord, cap2.discord].includes(author.id)) {
                         textChannel.send(createEmbed(`${author} you are not a team captain.`, "RED", `Team Picking for Game #${gameNumber}`));
                         return false;
@@ -430,89 +363,69 @@ const voiceQueueMap = new discord_js_1.Collection();
             const [tc1, tc2] = await Promise.all([
                 guild.channels.create(`Team #1 - Game #${gameNumber}`, {
                     type: "voice",
-                    permissionOverwrites: team1.map(player => ({
-                        id: player.discord,
-                        allow: ["CONNECT", "SPEAK"],
-                    })),
+                    permissionOverwrites: team1.map(player => ({ id: player.discord, allow: ["CONNECT", "SPEAK"] })),
                     userLimit: team1.length,
                 }),
                 guild.channels.create(`Team #2 - Game #${gameNumber}`, {
                     type: "voice",
-                    permissionOverwrites: team2.map(player => ({
-                        id: player.discord,
-                        allow: ["CONNECT", "SPEAK"],
-                    })),
+                    permissionOverwrites: team2.map(player => ({ id: player.discord, allow: ["CONNECT", "SPEAK"] })),
                     userLimit: team2.length,
                 })
             ]);
             game.setTeamChannels(tc1, tc2);
-            await db.games.updateOne({
-                number: gameNumber
-            }, {
-                $set: {
-                    team1Channel: tc1.id,
-                    team2Channel: tc2.id,
-                }
-            });
+            await (0, database_1.query)('UPDATE games SET team1_channel_id = ?, team2_channel_id = ? WHERE id = ?', [tc1.id, tc2.id, insertedId]);
             await game.enterStartingState();
-            await Promise.all([
-                tc1.setParent(teamCallCategory),
-                tc2.setParent(teamCallCategory),
-            ]);
-            await db.activeGame.updateOne({ _id: game.id }, { $set: { team1Channel: tc1.id, team2Channel: tc2.id, number: gameNumber } }, { upsert: true });
+            await Promise.all([tc1.setParent(teamCallCategory), tc2.setParent(teamCallCategory)]);
             for await (const member of team1.map(p1 => guild.members.cache.get(p1.discord))) {
                 await member?.voice.setChannel(tc1.id).catch(() => logger.info('failed to send players to teams'));
-                await utils_1.delay(200);
+                await (0, utils_1.delay)(200);
             }
             for await (const member of team2.map(p2 => guild.members.cache.get(p2.discord))) {
                 await member?.voice.setChannel(tc2.id).catch(() => logger.info('failed to send players to teams'));
-                await utils_1.delay(200);
+                await (0, utils_1.delay)(200);
             }
             voiceQueueMap.delete(newState.channelID);
             const map = await game.pickMap();
             if (!map)
                 throw new Error("pickMap returned nothing");
             if (game.state === games_1.GameState.VOID) {
-                tc1.delete().catch(() => logger.info('Failed to delete tc1'));
-                return tc2.delete().catch(() => logger.info('Failed to delete tc1'));
+                tc1.delete().catch(() => null);
+                return tc2.delete().catch(() => null);
             }
             const start = Date.now();
             const loading = await textChannel.send(createEmbed('Looking for an available bot...'));
             const { reason, username: bot } = await game.getAssignedBot();
-            console.log(reason, bot);
             if (reason === 'GAME_VOID') {
                 await loading.edit(createEmbed('This game is not active. Please re-queue to start a new game.', "RED"));
-                tc1.delete().catch(() => logger.info("Failed to delete tc1"));
-                tc2.delete().catch(() => logger.info("Failed to delete tc2"));
-                await utils_1.delay(5000);
+                tc1.delete().catch(() => null);
+                tc2.delete().catch(() => null);
+                await (0, utils_1.delay)(5000);
                 return game.cancel(true);
             }
             if (reason === 'NONE_AVAILABLE' || !bot) {
                 await loading.edit(createEmbed('The maximum waiting time has been exceeded. No bots are available right now. Please try again later.', "RED"));
-                await utils_1.delay(5000);
+                await (0, utils_1.delay)(5000);
                 return game.cancel(true);
             }
             const _bot = socket_1.bots.get(bot);
             if (!_bot) {
-                await loading.edit(createEmbed(`Failed to bind to **${bot}** after **${dayjs_1.default(start).from(dayjs_1.default(), true)}**.`, 'RED'));
-                await utils_1.delay(5000);
+                await loading.edit(createEmbed(`Failed to bind to **${bot}** after **${(0, dayjs_1.default)(start).from((0, dayjs_1.default)(), true)}**.`, 'RED'));
+                await (0, utils_1.delay)(5000);
                 return game.cancel(true);
             }
-            const query = (bot ? socket_1.bots.get(bot) : {})?.handshake?.query;
-            if (bot !== query.bot) {
-                await loading.edit(createEmbed(`The socket for this bot (**${bot}**) is actually pointing to **${query.bot}**.`, 'RED'));
-                await utils_1.delay(5000);
+            const query_socket = (bot ? socket_1.bots.get(bot) : {})?.handshake?.query;
+            if (bot !== query_socket.bot) {
+                await loading.edit(createEmbed(`The socket for this bot (**${bot}**) is actually pointing to **${query_socket.bot}**.`, 'RED'));
+                await (0, utils_1.delay)(5000);
                 return game.cancel(true);
             }
-            await loading.edit(createEmbed(`The bot **${bot}** has been assigned to your game after **${dayjs_1.default(start).from(dayjs_1.default(), true)}**.`));
-            logger.info(JSON.stringify(socket_1.bots) + `, size → ${socket_1.bots.size}`);
-            logger.info(`Sending data: ${JSON.stringify([...team1.map(player => player.toJSON()), ...team2.map(player => player.toJSON())])}`);
+            await loading.edit(createEmbed(`The bot **${bot}** has been assigned to your game after **${(0, dayjs_1.default)(start).from((0, dayjs_1.default)(), true)}**.`));
             _bot.once('gameCancel', () => {
                 try {
                     setTimeout(() => game.cancel(true), 10000);
                 }
                 catch (e) {
-                    logger.error(`Bot failed to cancel game:\n${e.stack}`);
+                    logger.error(`Bot failed to cancel game:\n${e}`);
                 }
             });
             _bot.emit('gameStart', {
@@ -526,47 +439,31 @@ const voiceQueueMap = new discord_js_1.Collection();
         }
     });
     client.on("message", async function (message) {
-        if (!message.guild) {
+        if (!message.guild)
             return;
-        }
         if (message.content === '=help') {
-            if (constants_1.Constants.CHAT === message.channel.id) {
+            if (constants_1.Constants.CHAT === message.channel.id)
                 return message.reply(createEmbed(`${message.author} commands are disabled in this channel.`, "RED"));
-            }
             const reactions = ['🛠️', '⚔️', '📋', '⚙️', '🪧', '❌'];
-            const embed = new discord_js_1.MessageEmbed().setTitle('Ranked Bedwars Elo Bot Commands').setDescription(`\n**Main Menu:**\n\n${reactions[0]} \`Management\`\n\n${reactions[1]} \`Gameplay\`\n\n${reactions[2]} \`Scoring\`\n\n${reactions[3]} \`Moderation\`\n\n${reactions[4]} \`Leaderboards\``).setFooter('© Ranked Bedwars | Main Menu', 'https://i.imgur.com/Nk0fcf8.jpg');
+            const embed = new discord_js_1.MessageEmbed().setTitle('Onyx RBW Bot Commands').setDescription(`\n**Main Menu:**\n\n${reactions[0]} \`Management\`\n\n${reactions[1]} \`Gameplay\`\n\n${reactions[2]} \`Scoring\`\n\n${reactions[3]} \`Moderation\`\n\n${reactions[4]} \`Leaderboards\``).setFooter('© Onyx RBW | Main Menu', constants_1.Constants.BRANDING_URL);
             const replied_embed = await message.channel.send(embed);
             for (let i = 0; i < reactions.length; i++) {
                 await replied_embed.react(reactions[i]);
             }
-            const helpCommandObj = {
-                message: replied_embed,
-                user: message.author,
-                timeOfCreation: Date.now(),
-            };
+            const helpCommandObj = { message: replied_embed, user: message.author, timeOfCreation: Date.now() };
             help_cmd_cache.push(helpCommandObj);
             const filtered = [...reactions, '◀️', '▶️'];
-            const collector = replied_embed.createReactionCollector((r, u) => u.id === message.author.id && filtered.includes(r.emoji.name), {
-                idle: 60000
-            });
+            const collector = replied_embed.createReactionCollector((r, u) => u.id === message.author.id && filtered.includes(r.emoji.name), { idle: 60000 });
             let page = 0, paged = false;
             const embeds = [
-                new discord_js_1.MessageEmbed().setTitle('Management').setDescription(`\n- \`Bot Restart\`\n\`•\` **Usage**: =restart \`@IGN\`\n\`•\` **Description**: *Gets a bot back online.*\n- \`Force Close\`\n\`•\` **Usage**: =forceclose\n\`•\` **Aliases**: =fclose\n\`•\` **Description**: *Force closes a queue.*\n- \`Info Card Background Modifier\`\n\`•\` **Usage**: =setbackground \`@User/User_ID <PNG>\`\n\`•\` **Description**: *Modifies a user's info card background.*\n- \`Info Card Text Modifier\`\n\`•\` **Usage**: =settext \`@User/User_ID <text>\`\n\`•\` **Description**: *Modifies a user's info card text.*`).setFooter('© Ranked Bedwars | Management Commands | Page 1', 'https://i.imgur.com/Nk0fcf8.jpg'),
-                new discord_js_1.MessageEmbed().setTitle('Gameplay').setDescription(`\n- \`Stats\`\n\`•\` **Usage**: /info \`@User\`\n\`•\` **Aliases**: =info, =i\n\`•\` **Description**: *Shows a user stats.*\n- \`Pick\`\n\`•\` **Usage**: =pick \`@User\`\n\`•\` **Aliases**: =p\n\`•\` **Description**: *Allows captains to pick a remaining player in the queue.*\n- \`Strikes\`\n\`•\` **Usage**: =strikes \`@User/User_ID\`\n\`•\` **Aliases**: =getuser\n\`•\` **Description**: *Displays total strikes and ban duration.*\n- \`Queue Stats\`\n\`•\` **Usage**: =qs\n\`•\` **Aliases**: =queuestats\n\`•\` **Description**: *Displays stats of everyone in the current queue.*`).setFooter('© Ranked Bedwars | Gameplay Commands | Page 1', 'https://i.imgur.com/Nk0fcf8.jpg'),
-                new discord_js_1.MessageEmbed().setTitle('Scoring').setDescription(`\n- \`Win\`\n\`•\` **Usage**: =win \`@User/User_ID\`\n\`•\` **Aliases**: =w\n\`•\` **Description**: *Manually scores a single win, modifies elo by +25.*\n- \`Loss\`\n\`•\` **Usage**: =loss \`@User/User_ID\`\n\`•\` **Aliases**: =l\n\`•\` **Description**: *Manually scores a single loss, modifies elo by -25.*\n- \`Strike\`\n\`•\` **Usage**: =strike \`@User/User_ID ±[number]\`\n\`•\` **Description**: *Modifies a user's strikes.*\n- \`Modify\`\n\`•\` **Usage**: =modify \`wins|losses|kills|deaths|bedsbroken|bedslost|\n|winstreak|bedstreak @User/User_ID ±[number]\`\n\`•\` **Description**: *Modifies a user's stats.*`).setFooter('© Ranked Bedwars | Scoring Commands | Page 1', 'https://i.imgur.com/Nk0fcf8.jpg'),
-                new discord_js_1.MessageEmbed().setTitle('Moderation').setDescription(`\n- \`Freeze\`\n\`•\` **Usage**: .ss \`@User/User_ID [Reason]\`\n\`•\` **Description**: *Sends a screenshare request to our team.*\n- \`Ban\`\n\`•\` **Usage**: =ban \`@User/User_ID x(h)/(d) [Reason]\`\n\`•\` **Description**: *Temporarily bans a user.*\n- \`Unban\`\n\`•\` **Usage**: =unban \`@User/User_ID\`\n\`•\` **Description**: *Unbans a user.*`).setFooter('© Ranked Bedwars | Moderation Commands | Page 1', 'https://i.imgur.com/Nk0fcf8.jpg'),
-                [
-                    new discord_js_1.MessageEmbed().setTitle('Leaderboards')
-                        .setDescription(`- \`Leaderboard Elo\`\n\`•\` **Usage**: /leaderboard elo <page>\n\`•\` **Aliases**: =leaderboard elo, =lb elo \n\`•\` **Description**: *View the players with the current highest ELO.*\n- \`Leaderboard Games\`\n\`•\` **Usage**: /leaderboard games <page>\n\`•\` **Aliases**: =leaderboard games, =lb games\n\`•\` **Description**: *View the players with the most games.*\n- \`Leaderboard Wins\`\n\`•\` **Usage**: /leaderboard wins <page>\n\`•\` **Aliases**: =leaderboard wins, =lb wins\n\`•\` **Description**: *View the players with the most wins.*\n- \`Leaderboard Losses\`\n\`•\` **Usage**: /leaderboard losses <page>\n\`•\` **Aliases**: =leaderboard losses, =lb losses\n\`•\` **Description**: *View the players with the most losses.*\n- \`Leaderboard W/L\`\n\`•\` **Usage**: /leaderboard w/l <page>\n\`•\` **Aliases**: =leaderboard w/l, =lb w/l\n\`•\` **Description**: *View the players with the current highest W/L.*`)
-                        .setFooter('© Ranked Bedwars | Leaderboard Commands | Page 1', 'https://i.imgur.com/Nk0fcf8.jpg'),
-                    new discord_js_1.MessageEmbed().setTitle('Leaderboards')
-                        .setDescription(`- \`Leaderboard Kills\`\n\`•\` **Usage**: /leaderboard kills <page>\n\`•\` **Aliases**: =leaderboard kills, =lb kills\n\`•\` **Description**: View the players with the most kills.\n- \`Leaderboard Deaths\`\n\`•\` **Usage**: /leaderboard deaths <page>\n\`•\` **Aliases**: =leaderboard deaths, =lb deaths\n\`•\` **Description**: View the players with the most deaths.\n- \`Leaderboard K/D\`\n\`•\` **Usage**: /leaderboard k/d <page>\n\`•\` **Aliases**: =leaderboard k/d, =lb k/d\n\`•\` **Description**: View the players with the current highest K/D.\n- \`Leaderboard Winstreak\`\n\`•\` **Usage**: /leaderboard winstreak <page>\n\`•\` **Aliases**: =leaderboard winstreak, =lb winstreak\n\`•\` **Description**: View the players with the current highest winstreak.\n- \`Leaderboard Losestreak\`\n\`•\` **Usage**: /leaderboard losestreak <page>\n\`•\` **Aliases**: =leaderboard losestreak, =lb losestreak\n\`•\` **Description**: View the players with the current highest losestreak.`)
-                        .setFooter('© Ranked Bedwars | Leaderboard Commands | Page 2', 'https://i.imgur.com/Nk0fcf8.jpg'),
-                    new discord_js_1.MessageEmbed().setTitle('Leaderboards')
-                        .setDescription(`- \`Leaderboard BedsBroken\`\n\`•\` **Usage**: /leaderboard bedsbroken <page>\n\`•\` **Aliases**: =leaderboard bedsbroken, =lb bedbroken, =lb bb\n\`•\` **Description**: View the players with the most beds broken.\n- \`Leaderboard BedsLost\`\n\`•\` **Usage**: /leaderboard bedslost <page>\n\`•\` **Aliases**: =leaderboard bedslost, =lb bedslost, =lb bl\n\`•\` **Description**: View the players with the most beds lost.\n- \`Leaderboard BBLR\`\n\`•\` **Usage**: /leaderboard bblr <page>\n\`•\` **Aliases**: =leaderboard bblr, =lb bblr\n\`•\` **Description**: View the players with the current highest BBLR.`)
-                        .setFooter('© Ranked Bedwars | Leaderboard Commands | Page 3', 'https://i.imgur.com/Nk0fcf8.jpg'),
-                ],
-                new discord_js_1.MessageEmbed().setTitle('Ranked Bedwars Elo Bot Commands').setDescription(`\n**Main Menu:**\n\n${reactions[0]} \`Management\`\n\n${reactions[1]} \`Gameplay\`\n\n${reactions[2]} \`Scoring\`\n\n${reactions[3]} \`Moderation\`\n\n${reactions[4]} \`Leaderboards\``).setFooter('© Ranked Bedwars | Main Menu', 'https://i.imgur.com/Nk0fcf8.jpg')
+                new discord_js_1.MessageEmbed().setTitle('Management').setDescription(`\n- \`Bot Restart\`\n\`•\` **Usage**: =restart \`@IGN\`\n\`•\` **Description**: *Gets a bot back online.*\n- \`Force Close\`\n\`•\` **Usage**: =forceclose\n\`•\` **Aliases**: =fclose\n\`•\` **Description**: *Force closes a queue.*\n- \`Info Card Background Modifier\`\n\`•\` **Usage**: =setbackground \`@User/User_ID <PNG>\`\n\`•\` **Description**: *Modifies a user's info card background.*\n- \`Info Card Text Modifier\`\n\`•\` **Usage**: =settext \`@User/User_ID <text>\`\n\`•\` **Description**: *Modifies a user's info card text.*`).setFooter('© Onyx RBW | Management Commands | Page 1', constants_1.Constants.BRANDING_URL),
+                new discord_js_1.MessageEmbed().setTitle('Gameplay').setDescription(`\n- \`Stats\`\n\`•\` **Usage**: /info \`@User\`\n\`•\` **Aliases**: =info, =i\n\`•\` **Description**: *Shows a user stats.*\n- \`Pick\`\n\`•\` **Usage**: =pick \`@User\`\n\`•\` **Aliases**: =p\n\`•\` **Description**: *Allows captains to pick a remaining player in the queue.*\n- \`Strikes\`\n\`•\` **Usage**: =strikes \`@User/User_ID\`\n\`•\` **Aliases**: =getuser\n\`•\` **Description**: *Displays total strikes and ban duration.*\n- \`Queue Stats\`\n\`•\` **Usage**: =qs\n\`•\` **Aliases**: =queuestats\n\`•\` **Description**: *Displays stats of everyone in the current queue.*`).setFooter('© Onyx RBW | Gameplay Commands | Page 1', constants_1.Constants.BRANDING_URL),
+                new discord_js_1.MessageEmbed().setTitle('Scoring').setDescription(`\n- \`Win\`\n\`•\` **Usage**: =win \`@User/User_ID\`\n\`•\` **Aliases**: =w\n\`•\` **Description**: *Manually scores a single win, modifies elo by division-based gain.*\n- \`Loss\`\n\`•\` **Usage**: =loss \`@User/User_ID\`\n\`•\` **Aliases**: =l\n\`•\` **Description**: *Manually scores a single loss, modifies elo by division-based loss.*\n- \`Strike\`\n\`•\` **Usage**: =strike \`@User/User_ID ±[number]\`\n\`•\` **Description**: *Modifies a user's strikes, with division-based elo penalty.*\n- \`Void\`\n\`•\` **Usage**: =void \`GameNumber\`\n\`•\` **Description**: *Voids a game and reverses all stat changes.*\n- \`Modify\`\n\`•\` **Usage**: =modify \`wins|losses|kills|deaths|bedsbroken|bedslost|\n|winstreak|bedstreak @User/User_ID ±[number]\`\n\`•\` **Description**: *Modifies a user's stats.*`).setFooter('© Onyx RBW | Scoring Commands | Page 1', constants_1.Constants.BRANDING_URL),
+                new discord_js_1.MessageEmbed().setTitle('Moderation').setDescription(`\n- \`Freeze\`\n\`•\` **Usage**: .ss \`@User/User_ID [Reason]\`\n\`•\` **Description**: *Sends a screenshare request to our team.*\n- \`Ban\`\n\`•\` **Usage**: =ban \`@User/User_ID x(h)/(d) [Reason]\`\n\`•\` **Description**: *Temporarily bans a user.*\n- \`Unban\`\n\`•\` **Usage**: =unban \`@User/User_ID\`\n\`•\` **Description**: *Unbans a user.*`).setFooter('© Onyx RBW | Moderation Commands | Page 1', constants_1.Constants.BRANDING_URL),
+                [new discord_js_1.MessageEmbed().setTitle('Leaderboards').setDescription(`- \`Leaderboard Elo\`\n\`•\` **Usage**: /leaderboard elo <page>\n\`•\` **Aliases**: =leaderboard elo, =lb elo \n\`•\` **Description**: *View the players with the current highest ELO.*\n- \`Leaderboard Games\`\n\`•\` **Usage**: /leaderboard games <page>\n\`•\` **Aliases**: =leaderboard games, =lb games\n\`•\` **Description**: *View the players with the most games.*\n- \`Leaderboard Wins\`\n\`•\` **Usage**: /leaderboard wins <page>\n\`•\` **Aliases**: =leaderboard wins, =lb wins\n\`•\` **Description**: *View the players with the most wins.*\n- \`Leaderboard Losses\`\n\`•\` **Usage**: /leaderboard losses <page>\n\`•\` **Aliases**: =leaderboard losses, =lb losses\n\`•\` **Description**: *View the players with the most losses.*\n- \`Leaderboard W/L\`\n\`•\` **Usage**: /leaderboard w/l <page>\n\`•\` **Aliases**: =leaderboard w/l, =lb w/l\n\`•\` **Description**: *View the players with the current highest W/L.*`).setFooter('© Onyx RBW | Leaderboard Commands | Page 1', constants_1.Constants.BRANDING_URL),
+                    new discord_js_1.MessageEmbed().setTitle('Leaderboards').setDescription(`- \`Leaderboard Kills\`\n\`•\` **Usage**: /leaderboard kills <page>\n\`•\` **Aliases**: =leaderboard kills, =lb kills\n\`•\` **Description**: View the players with the most kills.\n- \`Leaderboard Deaths\`\n\`•\` **Usage**: /leaderboard deaths <page>\n\`•\` **Aliases**: =leaderboard deaths, =lb deaths\n\`•\` **Description**: View the players with the most deaths.\n- \`Leaderboard K/D\`\n\`•\` **Usage**: /leaderboard k/d <page>\n\`•\` **Aliases**: =leaderboard k/d, =lb k/d\n\`•\` **Description**: View the players with the current highest K/D.\n- \`Leaderboard Winstreak\`\n\`•\` **Usage**: /leaderboard winstreak <page>\n\`•\` **Aliases**: =leaderboard winstreak, =lb winstreak\n\`•\` **Description**: View the players with the current highest winstreak.\n- \`Leaderboard Losestreak\`\n\`•\` **Usage**: /leaderboard losestreak <page>\n\`•\` **Aliases**: =leaderboard losestreak, =lb losestreak\n\`•\` **Description**: View the players with the current highest losestreak.`).setFooter('© Onyx RBW | Leaderboard Commands | Page 2', constants_1.Constants.BRANDING_URL),
+                    new discord_js_1.MessageEmbed().setTitle('Leaderboards').setDescription(`- \`Leaderboard BedsBroken\`\n\`•\` **Usage**: /leaderboard bedsbroken <page>\n\`•\` **Aliases**: =leaderboard bedsbroken, =lb bedbroken, =lb bb\n\`•\` **Description**: View the players with the most beds broken.\n- \`Leaderboard BedsLost\`\n\`•\` **Usage**: /leaderboard bedslost <page>\n\`•\` **Aliases**: =leaderboard bedslost, =lb bedslost, =lb bl\n\`•\` **Description**: View the players with the most beds lost.\n- \`Leaderboard BBLR\`\n\`•\` **Usage**: /leaderboard bblr <page>\n\`•\` **Aliases**: =leaderboard bblr, =lb bblr\n\`•\` **Description**: View the players with the current highest BBLR.`).setFooter('© Onyx RBW | Leaderboard Commands | Page 3', constants_1.Constants.BRANDING_URL)],
+                new discord_js_1.MessageEmbed().setTitle('Onyx RBW Bot Commands').setDescription(`\n**Main Menu:**\n\n${reactions[0]} \`Management\`\n\n${reactions[1]} \`Gameplay\`\n\n${reactions[2]} \`Scoring\`\n\n${reactions[3]} \`Moderation\`\n\n${reactions[4]} \`Leaderboards\``).setFooter('© Onyx RBW | Main Menu', constants_1.Constants.BRANDING_URL)
             ];
             collector.on('collect', async (reaction, user) => {
                 const embed = embeds[reactions.indexOf(reaction.emoji.name)];
@@ -579,7 +476,8 @@ const voiceQueueMap = new discord_js_1.Collection();
                 }
                 else if (embed) {
                     if (paged === true) {
-                        paged = false, page = 0;
+                        paged = false;
+                        page = 0;
                         await replied_embed.reactions.removeAll();
                         for (const emoji of reactions) {
                             await replied_embed.react(emoji);
@@ -592,18 +490,17 @@ const voiceQueueMap = new discord_js_1.Collection();
                 if (index >= -1 && paged) {
                     const next = Math.min(Math.max(0, page + index), 2);
                     if (next === embeds[4].length - 1)
-                        replied_embed.reactions.cache.get('▶️').remove();
+                        replied_embed.reactions.cache.get('▶️')?.remove();
                     else if (next === 0)
-                        replied_embed.reactions.cache.get('◀️').remove();
+                        replied_embed.reactions.cache.get('◀️')?.remove();
                     else if (page === 0 || page === embeds[4].length - 1) {
                         await replied_embed.reactions.removeAll();
                         for (const emoji of ['◀️', '▶️', '❌']) {
                             await replied_embed.react(emoji);
                         }
                     }
-                    else {
+                    else
                         reaction.users.remove(user);
-                    }
                     page = next;
                     return replied_embed.edit(embeds[4][page]);
                 }
@@ -612,70 +509,41 @@ const voiceQueueMap = new discord_js_1.Collection();
         }
         if (message.content.toLowerCase().startsWith('=lb') || message.content.toLowerCase().startsWith('=leaderboard')) {
             const formatName = {
-                kills: 'Top Kills',
-                elo: 'Top Elo',
-                wins: 'Top Wins',
-                losses: 'Top Losses',
-                bedsBroken: 'Most Beds Broken',
-                games: 'Most Games Played',
-                wl: 'Highest W/L',
-                kd: 'Highest K/D',
-                bblr: 'Highest BBLR',
-                losestreak: 'Highest Losestreak',
-                deaths: 'Most Deaths',
-                bedsLost: 'Most Beds Lost'
+                kills: 'Top Kills', elo: 'Top Elo', wins: 'Top Wins', losses: 'Top Losses',
+                bedsBroken: 'Most Beds Broken', games: 'Most Games Played', wl: 'Highest W/L',
+                kd: 'Highest K/D', bblr: 'Highest BBLR', losestreak: 'Highest Losestreak',
+                deaths: 'Most Deaths', bedsLost: 'Most Beds Lost'
             };
             let [, name, page = 1] = message.content.split(' ');
             const prettyName = formatName[name];
-            if (!name) {
+            if (!name)
                 return message.reply(createEmbed(`${message.author}, you did not provide a valid type:\n\n**TYPES**: ${Object.keys(formatName).join(', ')}`, "RED"));
-            }
             try {
                 const nPerPage = 10;
-                const division = ['wl', 'kd', 'bblr'].includes(name);
-                const values = name === 'wl' ? ['$wins', '$losses']
-                    : name === 'kd' ? ['$kills', '$deaths']
-                        : ['$bedsBroken', '$losses'];
-                const search = division ? {
-                    [name === 'wl' ? 'wins' : name === 'kd' ? 'kills' : 'bedsBroken']: {
-                        $exists: true
-                    }
-                } : {
-                    [name]: {
-                        $exists: true
-                    }
-                };
-                const total = await db.players.find(search).count();
-                if (total < 1) {
+                const useAgg = ['wl', 'kd', 'bblr'];
+                const totalRows = await (0, database_1.query)('SELECT COUNT(*) as cnt FROM players');
+                const total = totalRows[0].cnt;
+                if (total < 1)
                     return message.channel.send(createEmbed("There's no players on this leaderboard yet. Play now, and claim a top spot!", "RED"));
-                }
                 const pages = Math.ceil(total / nPerPage);
                 if (page > pages)
                     page = pages;
-                const players = division ?
-                    await db.players
-                        .aggregate([{
-                            $project: {
-                                computed: {
-                                    $cond: [{ $eq: [values[1], 0] }, values[0], { $divide: values }]
-                                },
-                                elo: true,
-                                minecraft: true
-                            }
-                        }, {
-                            $sort: { computed: -1 }
-                        }])
-                        .skip(page > 0 ? ((page - 1) * nPerPage) : 0)
-                        .limit(nPerPage)
-                        .toArray() :
-                    await db.players
-                        .find(search)
-                        .sort({ [name]: -1 })
-                        .skip(page > 0 ? ((page - 1) * nPerPage) : 0)
-                        .limit(nPerPage)
-                        .toArray();
-                message.channel.send(createEmbed(players.map((player, i) => `\n\`#${i + 1 + (nPerPage * (page - 1))}\` ${constants_1.Constants.ELO_EMOJIS[constants_1.Constants.ELO_ROLES.indexOf(getRole(player.elo ?? 400)?.id)]} **${utils_1.toEscapedFormat(player.minecraft.name)}** : ${division ? player.computed?.toFixed?.(1) ?? 0 : (player[name] ?? 0)}`).join(""), "#228B22")
-                    .setTitle(`${prettyName} | Page ${page}/${pages}`));
+                const offset = (page - 1) * nPerPage;
+                let rows;
+                if (useAgg.includes(name)) {
+                    const col = name === 'wl' ? 'wins' : name === 'kd' ? 'kills' : 'beds_broken';
+                    const div = name === 'wl' ? 'losses' : name === 'kd' ? 'deaths' : 'losses';
+                    rows = await (0, database_1.query)(`SELECT *, (${col} / NULLIF(${div}, 0)) as computed FROM players ORDER BY computed DESC LIMIT ? OFFSET ?`, [nPerPage, offset]);
+                }
+                else {
+                    const dbCol = name.replace(/[A-Z]/g, m => '_' + m.toLowerCase());
+                    rows = await (0, database_1.query)(`SELECT * FROM players ORDER BY ${dbCol} DESC LIMIT ? OFFSET ?`, [nPerPage, offset]);
+                }
+                message.channel.send(createEmbed(rows.map((row, i) => {
+                    const roleId = getRole(row.elo ?? 400);
+                    const roleIndex = roleId ? constants_1.Constants.ELO_ROLES.indexOf(roleId.id) : 0;
+                    return `\n\`#${i + 1 + offset}\` ${constants_1.Constants.ELO_EMOJIS[roleIndex] || ''} **${(0, utils_1.toEscapedFormat)(row.minecraft_name)}** : ${useAgg.includes(name) ? (row.computed?.toFixed?.(1) ?? 0) : (row[name === 'bedsBroken' ? 'beds_broken' : name === 'bedsLost' ? 'beds_lost' : name === 'elos' ? 'elo' : name] ?? 0)}`;
+                }).join(""), "#d4a017").setTitle(`${prettyName} | Page ${page}/${pages}`));
             }
             catch (e) {
                 logger.error(`An error occurred while using the =leaderboard command:\n${e.stack}`);
@@ -685,7 +553,7 @@ const voiceQueueMap = new discord_js_1.Collection();
         if (message.content.toLowerCase().startsWith('=streakmessage')) {
             const hasPerms = constants_1.Constants.STRIKE_UNSTRIKE.ROLES.some(r => message.member?.roles.cache.has(r));
             if (!hasPerms)
-                return message.channel.send(createEmbed(`${message.author} you do not have the required permissions to run this command.`, "RED", "RBW Streak Messages!"));
+                return message.channel.send(createEmbed(`${message.author} you do not have the required permissions to run this command.`, "RED", "Onyx RBW Streak Messages!"));
             const user = message.mentions.users.first();
             if (!user)
                 return message.reply(createEmbed("Invalid User mentioned. Use =streakmessage @User <streak> <message>", "RED"));
@@ -697,14 +565,16 @@ const voiceQueueMap = new discord_js_1.Collection();
                 return message.reply(createEmbed(`Invalid usage. The streak must be either **5**, **8**, or **10**.`, "RED"));
             const player = await utils_1.Players.getByDiscord(user.id);
             if (!player)
-                return message.reply(createEmbed(`<@${user}> is not a registered Ranked Bedwars player.`, "RED"));
-            await player.update({ [`messages.${streak}`]: content.join(' ').slice(0, 250) });
+                return message.reply(createEmbed(`<@${user}> is not a registered Onyx RBW player.`, "RED"));
+            const msgs = player.messages;
+            msgs[streak] = content.join(' ').slice(0, 250);
+            await (0, database_1.query)('UPDATE players SET messages = ? WHERE id = ?', [JSON.stringify(msgs), player.id]);
             return message.reply(`${user.tag}'s streak message at ${streak} kills has been changed.`);
         }
         if (message.content.toLowerCase().startsWith('=winmessage')) {
             const hasPerms = constants_1.Constants.STRIKE_UNSTRIKE.ROLES.some(r => message.member?.roles.cache.has(r));
             if (!hasPerms)
-                return message.channel.send(createEmbed(`${message.author} you do not have the required permissions to run this command.`, "RED", "RBW Streak Messages!"));
+                return message.channel.send(createEmbed(`${message.author} you do not have the required permissions to run this command.`, "RED", "Onyx RBW Streak Messages!"));
             const user = message.mentions.users.first();
             if (!user)
                 return message.reply(createEmbed("Invalid User mentioned. Use =winmessage @User <message>", "RED"));
@@ -713,14 +583,14 @@ const voiceQueueMap = new discord_js_1.Collection();
                 return message.reply(createEmbed(`Invalid usage. \`=winmessage @user <message>\``, "RED"));
             const player = await utils_1.Players.getByDiscord(user.id);
             if (!player)
-                return message.reply(createEmbed(`<@${user}> is not a registered Ranked Bedwars player.`, "RED"));
-            await player.update({ winMessage: content.slice(0, 250) });
+                return message.reply(createEmbed(`<@${user}> is not a registered Onyx RBW player.`, "RED"));
+            await (0, database_1.query)('UPDATE players SET win_message = ? WHERE id = ?', [content.slice(0, 250), player.id]);
             return message.reply(`${user.tag}'s win message has been changed.`);
         }
         if (message.content.toLowerCase().startsWith('=losemessage')) {
             const hasPerms = constants_1.Constants.STRIKE_UNSTRIKE.ROLES.some(r => message.member?.roles.cache.has(r));
             if (!hasPerms)
-                return message.channel.send(createEmbed(`${message.author} you do not have the required permissions to run this command.`, "RED", "RBW Streak Messages!"));
+                return message.channel.send(createEmbed(`${message.author} you do not have the required permissions to run this command.`, "RED", "Onyx RBW Streak Messages!"));
             const user = message.mentions.users.first();
             if (!user)
                 return message.reply(createEmbed("Invalid User mentioned. Use =losemessage @User <message>", "RED"));
@@ -729,29 +599,26 @@ const voiceQueueMap = new discord_js_1.Collection();
                 return message.reply(createEmbed(`Invalid usage. \`=losemessage @user <message>\``, "RED"));
             const player = await utils_1.Players.getByDiscord(user.id);
             if (!player)
-                return message.reply(createEmbed(`<@${user}> is not a registered Ranked Bedwars player.`, "RED"));
-            await player.update({ loseMessage: content.slice(0, 250) });
+                return message.reply(createEmbed(`<@${user}> is not a registered Onyx RBW player.`, "RED"));
+            await (0, database_1.query)('UPDATE players SET lose_message = ? WHERE id = ?', [content.slice(0, 250), player.id]);
             return message.reply(`${user.tag}'s lose message has been changed.`);
         }
-        if (message.content.toLowerCase().startsWith('=i' || message.content.toLowerCase().startsWith('=info'))) {
-            if (constants_1.Constants.CHAT === message.channel.id) {
+        if (message.content.toLowerCase().startsWith('=i') || message.content.toLowerCase().startsWith('=info')) {
+            if (constants_1.Constants.CHAT === message.channel.id)
                 return message.reply(createEmbed(`<@${message.author.id}> commands are disabled in this channel.`, "RED"));
-            }
             const msg_arr = message.content.split(' ');
             let user = message.mentions.users.first() || message.author;
             if (!user) {
                 user = client.users.cache.get(msg_arr[1]);
-                if (!user) {
+                if (!user)
                     return message.reply(createEmbed("Invalid User mentioned. Use =info @User/User_ID", "RED"));
-                }
             }
             const lookup = user.id;
             try {
                 const player = await utils_1.Players.getByDiscord(lookup);
-                if (!player) {
-                    return message.reply(createEmbed(`<@${lookup}> is not a registered Ranked Bedwars player.`, "RED"));
-                }
-                const card = await app_1.default(player.minecraft.uuid, player.minecraft.name, player.info_card_text || 'discord.gg/rbw', player.info_card_background || '#363942', player);
+                if (!player)
+                    return message.reply(createEmbed(`<@${lookup}> is not a registered Onyx RBW player.`, "RED"));
+                const card = await (0, app_1.default)(player.minecraft.uuid, player.minecraft.name, player.info_card_text || 'discord.gg/onyxrbw', player.info_card_background || '#363942', player);
                 message.channel.send({ files: [{ attachment: card, name: 'profile.png' }] });
             }
             catch (e) {
@@ -763,8 +630,8 @@ const voiceQueueMap = new discord_js_1.Collection();
         if (constants_1.Constants.PMODIFY_VOID.CHANNELS.includes(message.channel.id) && message.content.toLowerCase().startsWith('=modify')) {
             if (!message.member)
                 return;
-            if (!(await utils_1.hasPerms(message.member, constants_1.Constants.PMODIFY_VOID.ROLES)))
-                return message.channel.send(createEmbed(`${message.author} you do not have the required permissions to run this command.`, "RED", "RBW Ban Hammer!"));
+            if (!(await (0, utils_1.hasPerms)(message.member, constants_1.Constants.PMODIFY_VOID.ROLES)))
+                return message.channel.send(createEmbed(`${message.author} you do not have the required permissions to run this command.`, "RED", "Onyx RBW!"));
             const users = message.content.split(' ').slice(2, -1).map((id) => client.users.cache.get(id)).filter((u) => u);
             users.push(...message.mentions.users.array());
             const msg_arr = message.content.split(' ');
@@ -779,585 +646,265 @@ const voiceQueueMap = new discord_js_1.Collection();
             if (users.length > 0) {
                 let ids = users.map((user) => user.id);
                 const players = (await utils_1.Players.getManyByDiscord(ids));
-                const players2 = players.map(player => player.discord);
-                ids = ids.filter((id) => players2.includes(id));
-                switch (option) {
-                    case "wins":
-                        {
-                            await db.players.updateMany({ "discord": { $in: ids } }, { $inc: { "wins": num } }, { upsert: true });
-                            break;
-                        }
-                        ;
-                    case "losses":
-                        {
-                            await db.players.updateMany({ "discord": { $in: ids } }, { $inc: { "losses": num } }, { upsert: true });
-                            break;
-                        }
-                        ;
-                    case "bedsbroken":
-                        {
-                            await db.players.updateMany({ "discord": { $in: ids } }, { $inc: { "bedsBroken": num, "elo": 10 * num } }, { upsert: true });
-                            break;
-                        }
-                        ;
-                    case "bedslost":
-                        {
-                            await db.players.updateMany({ "discord": { $in: ids } }, { $inc: { "bedsLost": num } }, { upsert: true });
-                            break;
-                        }
-                        ;
-                    case "winstreak":
-                        {
-                            await db.players.updateMany({ "discord": { $in: ids } }, { $inc: { "winstreak": num } }, { upsert: true });
-                            break;
-                        }
-                        ;
-                    case "bedstreak":
-                        {
-                            await db.players.updateMany({ "discord": { $in: ids } }, { $inc: { "bedstreak": num } }, { upsert: true });
-                            break;
-                        }
-                        ;
+                ids = ids.filter((id) => players.has(id));
+                if (ids.length === 0)
+                    return message.reply(createEmbed("No registered players found.", "RED"));
+                const placeholders = ids.map(() => '?').join(',');
+                const colMap = {
+                    wins: 'wins', losses: 'losses', kills: 'kills', deaths: 'deaths',
+                    bedsbroken: 'beds_broken', bedslost: 'beds_lost', winstreak: 'winstreak', bedstreak: 'bedstreak'
+                };
+                const col = colMap[option];
+                if (col) {
+                    const sign = num >= 0 ? '+' : '';
+                    await (0, database_1.query)(`UPDATE players SET ${col} = ${col} ${sign} ? WHERE discord_id IN (${placeholders})`, [num, ...ids]);
+                    if (option === 'bedsbroken')
+                        await (0, database_1.query)(`UPDATE players SET elo = elo + ? WHERE discord_id IN (${placeholders})`, [10 * num, ...ids]);
+                    message.reply(createEmbed(`Successfully modified ${option} by ${num} for ${ids.length} player(s).`));
                 }
-                message.reply(createEmbed(`Users → ${ids.map((id) => `<@${id}>`).join(' ')} ${option} modified successfully.`));
             }
-            else
-                message.reply(createEmbed('Invalid User/User_ID specified.'));
-            return;
         }
-        if (constants_1.Constants.PMODIFY_VOID.CHANNELS.includes(message.channel.id) && message.content.toLowerCase().startsWith('=win') || message.content.toLowerCase().startsWith('=loss') || message.content.toLowerCase().startsWith('=w') || message.content.toLowerCase().startsWith('=l ')) {
+        if (constants_1.Constants.BAN_UNBAN.CHANNELS.includes(message.channel.id) && message.content.toLowerCase().startsWith('=ban')) {
             if (!message.member)
                 return;
-            if (!(await utils_1.hasPerms(message.member, constants_1.Constants.PMODIFY_VOID.ROLES)))
-                return message.channel.send(createEmbed(`${message.author} you do not have the required permissions to run this command.`, "RED", "RBW Ban Hammer!"));
-            const users = message.content.split(' ').slice(1).map((id) => client.users.cache.get(id)).filter((u) => u);
-            users.push(...message.mentions.users.array());
-            if (users.length > 0) {
-                let ids = users.map((user) => user.id);
-                const players = (await utils_1.Players.getManyByDiscord(ids));
-                const players2 = players.map(player => player.discord);
-                ids = ids.filter((id) => players2.includes(id));
-                const winOrLoss = message.content.split(' ')[0].slice(1);
-                const elo = winOrLoss === ('win' || 'w') ? 25 : -25;
-                if (winOrLoss === 'win' || winOrLoss === 'w') {
-                    await db.players.updateMany({
-                        "discord": {
-                            $in: ids
-                        }
-                    }, {
-                        $inc: {
-                            "wins": 1,
-                            "elo": 25
-                        },
-                    }, {
-                        upsert: true
-                    });
-                    for (let i = 0; i < players2.length; i++) {
-                        const p = guild.members.cache.get(players2[i]);
-                        const player = players.get(players2[i]);
-                        if (p && player && !p.roles.cache.has(constants_1.Constants.SUPPORT_ROLE_ID))
-                            await p.setNickname(`[${player.elo + 25}] ${player.minecraft.name}`);
-                    }
-                }
-                else if (winOrLoss === 'loss' || winOrLoss === 'l') {
-                    await db.players.updateMany({
-                        "discord": {
-                            $in: ids
-                        }
-                    }, {
-                        $inc: {
-                            "losses": 1,
-                            "elo": -25
-                        },
-                    }, {
-                        upsert: true
-                    });
-                    for (let i = 0; i < players2.length; i++) {
-                        const p = guild.members.cache.get(players2[i]);
-                        const player = players.get(players2[i]);
-                        if (p && player && !p.roles.cache.has(constants_1.Constants.SUPPORT_ROLE_ID))
-                            await p.setNickname(`[${player.elo - 25}] ${player.minecraft.name}`);
-                    }
-                }
-                message.reply(createEmbed(`Users → ${ids.map((id) => `<@${id}>`).join(' ')} scored successfully.`));
-                const ch = guild.channels.cache.get(constants_1.Constants.PMODIFY_VOID.PMODIFY_RESPONSE_CHANNEL);
-                const ping = await ch.send(`${ids.map((id) => `<@${id}>`).join(' ')}`);
-                ping.edit(createEmbed(`${players.map(player => `**${player.minecraft.name}** [\`${player.elo}\` → \`${player.elo + elo}\`] ${Math.floor(player.elo / 100) === Math.floor((player.elo + elo) / 100) ? '' : `${getRole(player.elo)} → ${getRole(player.elo + elo)}`}`)}\n`).setTitle("Manual Scoring").addField('Scorer Responsible', `${message.author}`));
-                players.forEach(async (player) => {
-                    if (Math.floor(player.elo / 100) !== Math.floor((player.elo + elo) / 100)) {
-                        const member = guild.members.cache.get(player.discord);
-                        member.roles.cache.forEach(async (role) => {
-                            if (constants_1.Constants.ELO_ROLES.includes(role.id))
-                                await member?.roles.remove(role);
-                        });
-                        await member?.roles.add(getRole(player.elo + elo));
-                    }
-                });
+            if (!(await (0, utils_1.hasPerms)(message.member, constants_1.Constants.BAN_UNBAN.ROLES)))
+                return message.channel.send(createEmbed(`${message.author} you do not have the required permissions to run this command.`, "RED", "Onyx RBW Ban Hammer!"));
+            const msg_arr = message.content.split(' ');
+            if (msg_arr.length < 3)
+                return message.reply(createEmbed(`Invalid Usage. Please use format \`=ban @User/User_ID x(h)/(d) [Reason]\``, "RED"));
+            const target = message.mentions.users.first() || client.users.cache.get(msg_arr[1]);
+            if (!target)
+                return message.reply(createEmbed("Invalid User mentioned. Use =ban @User/User_ID x(h)/(d) [Reason]", "RED"));
+            const duration_str = msg_arr[2];
+            const match = duration_str.match(/(\d+)(h|d)/);
+            if (!match)
+                return message.reply(createEmbed("Invalid duration format. Use x(h) or x(d). Example: =ban @user 3h", "RED"));
+            const duration_num = parseInt(match[1]);
+            const duration_unit = match[2];
+            const duration_ms = duration_unit === 'h' ? duration_num * 3600000 : duration_num * 86400000;
+            const reason = msg_arr.slice(3).join(' ') || 'No reason provided.';
+            const player = await utils_1.Players.getByDiscord(target.id);
+            if (!player)
+                return message.reply(createEmbed(`${target.tag} is not a registered Onyx RBW player.`, "RED"));
+            await player.ban(duration_ms);
+            const member = guild.members.cache.get(target.id);
+            if (member) {
+                member.roles.add(constants_1.Constants.RANKBANNED).catch(() => null);
+                await member.setNickname(`[BANNED] ${player.minecraft.name}`).catch(() => null);
             }
-            else {
-                message.reply(createEmbed('Please enter valid user IDs or mention valid discord users to run this command.', "RED"));
+            const logChannel = guild.channels.cache.get(constants_1.Constants.BAN_UNBAN.MANUAL_BAN_RESPONSE_CHANNEL);
+            if (logChannel) {
+                logChannel.send(createEmbed(`**${message.author.tag}** banned **${target.tag}**\nDuration: ${duration_str}\nReason: ${reason}`, "RED", "Onyx RBW Ban Hammer!"));
             }
-            return;
+            message.reply(createEmbed(`Successfully banned **${target.tag}** for ${duration_str}.`));
         }
-        if (message.channel.type === 'text' && (message.content.toLowerCase().startsWith('=qs') || message.content.toLowerCase().startsWith('=queuestats')) && constants_1.Constants.CATEGORY_ARRAY.flat().includes(message.channel.parent.id)) {
-            const users = message.channel.permissionOverwrites
-                .filter((p) => p.type === 'member')
-                .map((p) => p.id);
-            const players = await utils_1.Players.getManyByDiscord(users);
-            const embed = new discord_js_1.MessageEmbed()
-                .setTitle('Queue\'s Stats')
-                .setDescription(players.map(p => `\`•\` <@${p.discord}>: **Wins:** ${p.wins ?? 0} | **Losses:** ${p.losses ?? 0} | **W/L:** ${((p.wins ?? 0) / (p.losses || 1)).toFixed(1)} | **K/D:** ${((p.kills ?? 0) / (p.deaths || 1)).toFixed(1)} | **Ws:** ${p.winstreak ?? 0}`).join('\n') || 'No players.');
-            return message.channel.send(embed);
+        if (constants_1.Constants.BAN_UNBAN.CHANNELS.includes(message.channel.id) && message.content.toLowerCase().startsWith('=unban')) {
+            if (!message.member)
+                return;
+            if (!(await (0, utils_1.hasPerms)(message.member, constants_1.Constants.BAN_UNBAN.ROLES)))
+                return message.channel.send(createEmbed(`${message.author} you do not have the required permissions to run this command.`, "RED", "Onyx RBW Ban Hammer!"));
+            const msg_arr = message.content.split(' ');
+            if (msg_arr.length < 2)
+                return message.reply(createEmbed(`Invalid Usage. Please use format \`=unban @User/User_ID\``, "RED"));
+            const target = message.mentions.users.first() || client.users.cache.get(msg_arr[1]);
+            if (!target)
+                return message.reply(createEmbed("Invalid User mentioned. Use =unban @User/User_ID", "RED"));
+            const player = await utils_1.Players.getByDiscord(target.id);
+            if (player)
+                await player.unban();
+            guild.members.unban(target.id).catch(() => null);
+            const member = guild.members.cache.get(target.id);
+            if (member) {
+                member.roles.remove(constants_1.Constants.RANKBANNED).catch(() => null);
+                const row = await (0, database_1.query)('SELECT elo, minecraft_name FROM players WHERE discord_id = ? LIMIT 1', [target.id]);
+                if (row.length > 0)
+                    await member.setNickname(`[${row[0].elo}] ${row[0].minecraft_name}`).catch(() => null);
+            }
+            const logChannel = guild.channels.cache.get(constants_1.Constants.BAN_UNBAN.UNBAN_RESPONSE_CHANNEL);
+            if (logChannel)
+                logChannel.send(createEmbed(`**${message.author.tag}** unbanned **${target.tag}**`, "#d4a017", "Onyx RBW Ban Hammer!"));
+            message.reply(createEmbed(`Successfully unbanned **${target.tag}**.`));
+        }
+        if (constants_1.Constants.STRIKE_UNSTRIKE.CHANNELS.includes(message.channel.id) && message.content.toLowerCase().startsWith('=strike')) {
+            if (!message.member)
+                return;
+            if (!(await (0, utils_1.hasPerms)(message.member, constants_1.Constants.STRIKE_UNSTRIKE.ROLES)))
+                return message.channel.send(createEmbed(`${message.author} you do not have the required permissions to run this command.`, "RED", "Onyx RBW!"));
+            const msg_arr = message.content.split(' ');
+            if (msg_arr.length < 3)
+                return message.reply(createEmbed(`Invalid Usage. Please use format \`=strike @User/User_ID ±[number]\``, "RED"));
+            const target = message.mentions.users.first() || client.users.cache.get(msg_arr[1]);
+            if (!target)
+                return message.reply(createEmbed("Invalid User mentioned. Use =strike @User/User_ID ±[number]", "RED"));
+            const strikeCount = parseInt(msg_arr[2]);
+            if (isNaN(strikeCount))
+                return message.reply(createEmbed("Invalid strike count. Use =strike @User/User_ID ±[number]", "RED"));
+            const player = await utils_1.Players.getByDiscord(target.id);
+            if (!player)
+                return message.reply(createEmbed(`${target.tag} is not a registered Onyx RBW player.`, "RED"));
+            const newStrikes = Math.max(0, player.strikes + strikeCount);
+            await (0, database_1.query)('UPDATE players SET strikes = ? WHERE id = ?', [newStrikes, player.id]);
+            const newElo = await player.strikeELO(strikeCount > 0 ? 'Strike' : 'Unstrike');
+            const member = guild.members.cache.get(target.id);
+            if (member)
+                await member.setNickname(`[${newElo}] ${player.minecraft.name}`).catch(() => null);
+            if (newStrikes >= 2) {
+                const duration = (0, utils_1.getBanDuration)(newStrikes - strikeCount, strikeCount);
+                if (duration !== '0d') {
+                    await player.ban(duration.endsWith('d') ? parseInt(duration) * 86400000 : parseInt(duration) * 3600000);
+                    if (member)
+                        member.roles.add(constants_1.Constants.RANKBANNED).catch(() => null);
+                }
+            }
+            const logChannel = guild.channels.cache.get(constants_1.Constants.STRIKE_UNSTRIKE.MANUALSTRIKE_RESPONSE_CHANNEL);
+            if (logChannel)
+                logChannel.send(createEmbed(`**${message.author.tag}** modified strikes for **${target.tag}**\nStrikes: ${player.strikes} → ${newStrikes}\nELO: ${player.elo} → ${newElo}`, strikeCount > 0 ? "RED" : "#d4a017", "Onyx RBW!"));
+            message.reply(createEmbed(`Strikes modified for **${target.tag}**: ${player.strikes} → ${newStrikes}`));
+        }
+        if (constants_1.Constants.FCLOSE_ROLES.some((r) => message.member?.roles.cache.has(r)) && (message.content.toLowerCase().startsWith('=fclose') || message.content.toLowerCase().startsWith('=forceclose'))) {
+            if (!constants_1.Constants.QUEUES_ARRAY.flat().length)
+                return message.reply(createEmbed("No queue channels configured.", "RED"));
+            for (const qId of constants_1.Constants.QUEUES_ARRAY.flat()) {
+                const vc = guild.channels.cache.get(qId);
+                if (vc && vc.members && vc.members.size > 0) {
+                    for (const [, member] of vc.members) {
+                        await member.voice.setChannel(null).catch(() => null);
+                    }
+                }
+            }
+            message.reply(createEmbed("Queue force closed. All players have been removed from queue channels.", "#d4a017"));
+        }
+        if (constants_1.Constants.PMODIFY_VOID.CHANNELS.includes(message.channel.id) && message.content.toLowerCase().startsWith('=void')) {
+            if (!message.member)
+                return;
+            if (!(await (0, utils_1.hasPerms)(message.member, constants_1.Constants.PMODIFY_VOID.ROLES)))
+                return message.channel.send(createEmbed(`${message.author} you do not have the required permissions to run this command.`, "RED", "Onyx RBW!"));
+            const msg_arr = message.content.split(' ');
+            if (msg_arr.length < 2)
+                return message.reply(createEmbed(`Invalid Usage. Please use format \`=void GameNumber\``, "RED"));
+            const gameNumber = parseInt(msg_arr[1]);
+            if (isNaN(gameNumber))
+                return message.reply(createEmbed("Invalid game number.", "RED"));
+            const gameRows = await (0, database_1.query)('SELECT id FROM games WHERE game_number = ? LIMIT 1', [gameNumber]);
+            if (gameRows.length === 0)
+                return message.reply(createEmbed(`Game #${gameNumber} not found.`, "RED"));
+            const result = await (0, utils_1.voidGame)(gameNumber);
+            if (result.error)
+                return message.reply(createEmbed(result.error, "RED"));
+            const game = utils_1.activeGames.get(gameRows[0].id);
+            if (game)
+                await game.cancel(true);
+            message.reply(createEmbed(`Game #${gameNumber} has been voided and stats reversed.`, "#d4a017"));
+            const logChannel = guild.channels.cache.get(constants_1.Constants.PMODIFY_VOID.VOID_RESPONSE_CHANNEL);
+            if (logChannel)
+                logChannel.send(createEmbed(`**${message.author.tag}** voided Game #${gameNumber}`, "RED", "Onyx RBW!"));
         }
         if (constants_1.Constants.PMODIFY_VOID.CHANNELS.includes(message.channel.id) && message.content.toLowerCase().startsWith('=pmodify')) {
             if (!message.member)
                 return;
-            if (!(await utils_1.hasPerms(message.member, constants_1.Constants.PMODIFY_VOID.ROLES)))
-                return message.channel.send(createEmbed(`${message.author} you do not have the required permissions to run this command.`, "RED", "RBW Ban Hammer!"));
+            if (!(await (0, utils_1.hasPerms)(message.member, constants_1.Constants.PMODIFY_VOID.ROLES)))
+                return message.channel.send(createEmbed(`${message.author} you do not have the required permissions to run this command.`, "RED", "Onyx RBW!"));
             const msg_arr = message.content.split(' ');
-            if (msg_arr.length !== 3) {
-                return message.channel.send(createEmbed("Invalid Usage. Use `=pModify @user/user_id ±elo`", "RED", "Have fun scoring!"));
-            }
-            let user = message.mentions.users.first();
-            if (!user) {
-                user = client.users.cache.get(msg_arr[1]);
-                if (!user) {
-                    return message.channel.send(createEmbed("You need to `mention a user or provide a user id` to change their elo.", "RED", "Have fun scoring!"));
-                }
-            }
-            let finalelo = parseInt(msg_arr[2]);
-            if (Number.isNaN(finalelo)) {
-                return message.channel.send(createEmbed("Invalid Usage. `ELO must be specified as a Number.`"));
-            }
-            const player = await utils_1.Players.getByDiscord(user.id);
-            const init_role = getRole(player?.elo ?? 400);
-            if (!player) {
-                return message.channel.send(createEmbed(`${user} is not registered.`, "RED", "Have fun scoring!"));
-            }
-            finalelo += player.elo;
-            if (finalelo < 0) {
-                return message.channel.send(createEmbed(`${message.author} you cannot remove \`${finalelo - player.elo}\` elo from ${user} as they only have \`${player?.elo}\` elo remaining.`, "RED", "Have fun scoring!"));
-            }
-            const final_role = getRole(finalelo);
-            player?.update({ elo: finalelo });
-            const mem = guild.members.cache.get(user.id);
-            if (mem && !mem.roles.cache.has(constants_1.Constants.SUPPORT_ROLE_ID))
-                await mem.setNickname(`[${finalelo}] ${player?.minecraft.name}`).catch(e => logger.error(`Failed to update a new member's nickname:\n${e.stack}`));
-            const confirmation = await message.reply(`Game Scored successfully!`);
-            message.delete({ timeout: 50 });
-            confirmation.delete({ timeout: 2000 });
-            let msg = '';
-            if (init_role && final_role && init_role.id !== final_role.id) {
-                msg = `${init_role} → ${final_role}`;
-                const member = guild.members.cache.get(user.id);
-                member.roles.cache.forEach(async (role) => {
-                    if (constants_1.Constants.ELO_ROLES.includes(role.id)) {
-                        await member?.roles.remove(role);
-                    }
-                });
-                await member?.roles.add(final_role);
-            }
-            const m = await guild.channels.cache.get(constants_1.Constants.PMODIFY_VOID.PMODIFY_RESPONSE_CHANNEL).send(`${user}`);
-            m.edit(createEmbed(`**${player.minecraft.name}** [\`${player.elo}\` → \`${finalelo}\`] ${msg}`, "#228B22", "Have fun scoring!").addField("**Scorer Responsible:**", `${message.author}`).setTitle('Manual Scoring'));
+            if (msg_arr.length < 4)
+                return message.reply(createEmbed(`Invalid Usage. Please use format \`=pmodify GameNumber @User/User_ID wins|losses ±[value]\``, "RED"));
+            const gameNumber = parseInt(msg_arr[1]);
+            if (isNaN(gameNumber))
+                return message.reply(createEmbed("Invalid game number.", "RED"));
+            const target = message.mentions.users.first() || client.users.cache.get(msg_arr[2]);
+            if (!target)
+                return message.reply(createEmbed("Invalid User mentioned.", "RED"));
+            const option = msg_arr[3].toLowerCase();
+            if (!['wins', 'losses', 'kills', 'deaths', 'bedsbroken', 'bedslost', 'winstreak', 'bedstreak', 'elo'].includes(option))
+                return message.reply(createEmbed("Invalid option.", "RED"));
+            const value = parseInt(msg_arr[4]);
+            if (isNaN(value))
+                return message.reply(createEmbed("Invalid value.", "RED"));
+            const player = await utils_1.Players.getByDiscord(target.id);
+            if (!player)
+                return message.reply(createEmbed(`${target.tag} is not a registered Onyx RBW player.`, "RED"));
+            const colMap = {
+                wins: 'wins', losses: 'losses', kills: 'kills', deaths: 'deaths',
+                bedsbroken: 'beds_broken', bedslost: 'beds_lost', winstreak: 'winstreak',
+                bedstreak: 'bedstreak', elo: 'elo'
+            };
+            const col = colMap[option];
+            const sign = value >= 0 ? '+' : '';
+            await (0, database_1.query)(`UPDATE players SET ${col} = ${col} ${sign} ? WHERE id = ?`, [value, player.id]);
+            message.reply(createEmbed(`Modified **${option}** for **${target.tag}** by **${value}**.`, "#d4a017"));
         }
-        if (constants_1.Constants.BAN_UNBAN.CHANNELS.includes(message.channel.id) && message.content.toLowerCase().startsWith('=ban')) {
-            let hasPerms = false;
-            message.member?.roles.cache.forEach((role) => {
-                if (constants_1.Constants.BAN_UNBAN.ROLES.includes(role.id)) {
-                    hasPerms = true;
-                }
-            });
-            if (!hasPerms) {
-                return message.channel.send(createEmbed(`${message.author} you do not have the required permissions to run this command.`, "RED", "RBW Ban Hammer!"));
-            }
-            const msg_arr = message.content.split(' ');
-            if (msg_arr.length < 3) {
-                return message.channel.send(createEmbed(`Invalid Usage. \`Use =ban @user/user_id x(h)/(d) [Reason: optional]\``, "RED", "RBW Ban Hammer!"));
-            }
-            let user = message.mentions.users.first();
-            if (!user) {
-                user = client.users.cache.get(msg_arr[1]);
-                if (!user) {
-                    return message.channel.send(createEmbed(`${message.author} you must mention a user to ban them.`, "RED", "RBW Ban Hammer!"));
-                }
-            }
-            const multiplier = msg_arr[2].slice(-1) === 'd' ? 24 : msg_arr[2].slice(-1) === 'h' ? 1 : undefined;
-            if (!multiplier) {
-                return message.channel.send(createEmbed(`${message.author} you must specify d for days or h for hours at the end of your message to specify ban duration.`, "RED", "RBW Ban Hammer!"));
-            }
-            if (multiplier < 0) {
-                return message.channel.send(createEmbed(`${message.author} you must specify ban duration as a positive number.`, "RED", "RBW Ban Hammer!"));
-            }
-            const number = parseFloat(msg_arr[2].substring(0, msg_arr[2].length - 1));
-            if (Number.isNaN(number)) {
-                return message.channel.send(createEmbed("Invalid Usage. `Ban duration must be specified as a Integer/Decimal.`", "RED", "RBW Ban Hammer!"));
-            }
-            const player = await utils_1.Players.getByDiscord(user.id);
-            if (!player) {
-                return message.channel.send(createEmbed(`${user} is not registered.`, "RED", "RBW Ban Hammer!"));
-            }
-            const duration = multiplier * number * 60 * 60 * 1000;
-            let final_msg = msg_arr[2];
-            if (duration === 0) {
-                player.ban();
-                final_msg = 'Full Season';
-            }
-            else {
-                player.ban(duration);
-            }
-            const member = guild.members.cache.get(user.id);
-            try {
-                await member?.roles.add(constants_1.Constants.RANKBANNED);
-                for (let i = 0; i < constants_1.Constants.ELO_ROLES.length; i++) {
-                    const role = constants_1.Constants.ELO_ROLES[i];
-                    if (member?.roles.cache.has(role)) {
-                        await member.roles.remove(role);
-                    }
+        if (constants_1.Constants.PMODIFY_VOID.CHANNELS.includes(message.channel.id) && (message.content.toLowerCase().startsWith('=win') || message.content.toLowerCase().startsWith('=loss') || message.content.toLowerCase().startsWith('=w ') || message.content.toLowerCase().startsWith('=l '))) {
+            if (!message.member)
+                return;
+            if (!(await (0, utils_1.hasPerms)(message.member, constants_1.Constants.PMODIFY_VOID.ROLES)))
+                return message.channel.send(createEmbed(`${message.author} you do not have the required permissions to run this command.`, "RED", "Onyx RBW!"));
+            const users = message.content.split(' ').slice(1).map((id) => client.users.cache.get(id)).filter((u) => u);
+            users.push(...message.mentions.users.array());
+            if (users.length === 0)
+                return message.reply(createEmbed("No valid users mentioned.", "RED"));
+            let ids = users.map((user) => user.id);
+            const players = await utils_1.Players.getManyByDiscord(ids);
+            ids = ids.filter((id) => players.has(id));
+            if (ids.length === 0)
+                return message.reply(createEmbed("No registered players found.", "RED"));
+            const cmd = message.content.split(' ')[0].slice(1).toLowerCase();
+            const isWin = cmd === 'win' || cmd === 'w';
+            for (const [discordId, player] of players) {
+                const div = (0, utils_1.getDivision)(player.elo);
+                const delta = isWin ? div.eloWin : -div.eloLoss;
+                const newElo = Math.max(0, player.elo + delta);
+                const sign = delta >= 0 ? '+' : '';
+                await (0, database_1.query)(`UPDATE players SET elo = elo ${sign} ?, ${isWin ? 'wins = wins + 1' : 'losses = losses + 1'} WHERE id = ?`, [Math.abs(delta), player.id]);
+                const member = guild.members.cache.get(discordId);
+                if (member && !member.roles.cache.has(constants_1.Constants.SUPPORT_ROLE_ID)) {
+                    await member.setNickname(`[${newElo}] ${player.minecraft.name}`).catch(() => null);
                 }
             }
-            catch {
-                logger.info(`Could not add Ban roles to ${member?.displayName}`);
+            message.reply(createEmbed(`Users → ${ids.map((id) => `<@${id}>`).join(' ')} scored successfully.`, "#d4a017"));
+            const logChannel = guild.channels.cache.get(constants_1.Constants.PMODIFY_VOID.PMODIFY_RESPONSE_CHANNEL);
+            if (logChannel) {
+                const logMsg = ids.map((id) => {
+                    const p = players.get(id);
+                    if (!p)
+                        return '';
+                    const div = (0, utils_1.getDivision)(p.elo);
+                    const delta = isWin ? div.eloWin : -div.eloLoss;
+                    const newElo = Math.max(0, p.elo + delta);
+                    const oldRole = constants_1.Constants.ELO_ROLES[Math.floor(p.elo / 300)] || '';
+                    const newRole = constants_1.Constants.ELO_ROLES[Math.floor(newElo / 300)] || '';
+                    return `**${p.minecraft.name}** [\`${p.elo}\` → \`${newElo}\`]${oldRole && newRole && oldRole !== newRole ? ` ${oldRole} → ${newRole}` : ''}`;
+                }).filter(Boolean).join('\n');
+                logChannel.send(createEmbed(logMsg, isWin ? "#228B22" : "#FF0000", "Onyx RBW!").setTitle('Manual Scoring').addField('Scorer Responsible', `${message.author}`));
             }
-            let ch = message.author.id !== client.user.id ? constants_1.Constants.BAN_UNBAN.MANUAL_BAN_RESPONSE_CHANNEL : constants_1.Constants.BAN_UNBAN.AUTOMATIC_BAN_RESPONSE_CHANNEL;
-            const m = await guild.channels.cache.get(ch).send(`${user}`);
-            const reason = msg_arr.splice(3).join(' ');
-            if (reason === '') {
-                m.edit(createEmbed(`User: ${user} \nDuration: ${final_msg}`, "#228B22", "RBW Ban Hammer").setTitle(`Ban`));
-            }
-            else {
-                m.edit(createEmbed(`**User:** ${user} \n**Duration:** ${final_msg}\n**Reason:** ${reason}`, "#228B22", "RBW Ban Hammer").setTitle(`Ban`));
-            }
-            const confirmation = await message.reply(`${user.username} was banned successfully.`);
-            confirmation.delete({ timeout: 2000 });
         }
-        else if (constants_1.Constants.BAN_UNBAN.CHANNELS.includes(message.channel.id) && message.content.toLowerCase().startsWith('=void')) {
-            let hasPerms = true;
-            message.member?.roles.cache.forEach((role) => {
-                if (constants_1.Constants.PMODIFY_VOID.ROLES.includes(role.id)) {
-                    hasPerms = true;
-                }
-            });
-            if (!hasPerms) {
-                return message.channel.send(createEmbed(`${message.author} you do not have the required permissions to run this command.`, "RED", "RBW Game Void")).catch(() => logger.info("Failed to send in no permissions embed."));
-            }
-            const msg_arr = message.content.split(' ');
-            if (msg_arr.length < 1) {
-                return message.channel.send(createEmbed(`Invalid Usage. \`Use =void gameID\``, "RED", "RBW Game Void")).catch(() => logger.info("Failed to send in correct =void usage embed"));
-            }
-            const gameId = parseInt(msg_arr[1]);
-            if (Number.isNaN(gameId)) {
-                return message.channel.send(createEmbed("Invalid Usage. `Game ID must be specified as a Number.`", "RED", "RBW Game Void")).catch(() => logger.info("Failed to send in enter specific number embed"));
-            }
-            try {
-                const db = await database_1.default;
-                const game = await db.games.findOne({ number: gameId });
-                if (!game)
-                    return message.channel.send(createEmbed(`Game not found. \`Game ${gameId} does not exist.\``, "RED", "RBW Game Void")).catch(() => logger.info("Failed to send in game does not exist embed"));
-                if (game.state === games_1.GameState.VOID)
-                    return message.channel.send(createEmbed(`Game already voided. \`Game ${gameId} is already voided.\``, "RED", "RBW Game Void")).catch(() => logger.info("Failed to send in Game already voided message"));
-                if (game.state !== games_1.GameState.FINISHED)
-                    return message.channel.send(createEmbed(`Game not finished. \`Game ${gameId} has not finished yet. Only finished games can be voided.\``, "RED", "RBW Game Void")).catch(() => logger.info("Failed to send in only finished games can be voided embed"));
-                const gamePlayers = (game.team1?.players ?? []).concat((game.team2?.players ?? [])).reduce((a, b) => {
-                    a[b.username] = b;
-                    return a;
-                }, {});
-                const op = db.players.initializeUnorderedBulkOp();
-                for (const username in gamePlayers) {
-                    const player = gamePlayers[username];
-                    op.find({ discord: player.discord }).updateOne({
-                        $inc: {
-                            games: -1,
-                            bedsBroken: -player.bedsBroken || 0,
-                            bedsLost: -player.bedsLost || 0,
-                            deaths: -player.deaths || 0,
-                            kills: -player.kills || 0,
-                            elo: -(player.newRating - player.oldRating) || 0
-                        },
-                        $set: {
-                            losestreak: player.losestreak ?? 0,
-                            winstreak: player.winstreak ?? 0,
-                            bedstreak: player.bedstreak ?? 0
-                        }
-                    });
-                    await guild.members.fetch(player.discord)
-                        .then(m => m.setNickname(`[${player.oldRating}] ${username}`))
-                        .catch(() => { });
-                }
-                await Promise.all([
-                    op.execute(),
-                    db.games.updateOne({ number: gameId }, {
-                        $set: {
-                            state: games_1.GameState.VOID,
-                        }
-                    })
-                ]);
-                message.reply(`Game ${gameId} has been voided successfully.`).catch(() => logger.info("Failed to send in successful game void message"));
-            }
-            catch (e) {
-                logger.error(`Failed to void game ${gameId} using the void command:\n${e.stack}`);
-                message.channel.send(createEmbed(`Failed to void the game. \`An error occurred.\``, "RED", "RBW Game Void")).catch(() => null);
-            }
-            return;
+        if (message.content.toLowerCase().startsWith('=qs') || message.content.toLowerCase().startsWith('=queuestats')) {
+            if (constants_1.Constants.CHAT === message.channel.id)
+                return message.reply(createEmbed(`${message.author} commands are disabled in this channel.`, "RED"));
+            const queueId = constants_1.Constants.QUEUES_ARRAY.flat()[0];
+            if (!queueId)
+                return message.reply(createEmbed("No queue configured.", "RED"));
+            const vc = guild.channels.cache.get(queueId);
+            if (!vc || !vc.members || vc.members.size === 0)
+                return message.reply(createEmbed("Queue is empty.", "RED"));
+            const members = [...vc.members.values()];
+            const players = await utils_1.Players.getManyByDiscord(members.map((m) => m.id));
+            const embed = createEmbed(undefined, "#00FFFF", "Queue Stats")
+                .setTitle("Queue Stats")
+                .setDescription(members.map((m) => {
+                const p = players.get(m.id);
+                return `${m} → ${p ? `[${p.elo}] ${p.minecraft.name} | ${p.wins}W/${p.losses}L` : 'Unregistered'}`;
+            }).join('\n'));
+            message.channel.send(embed);
         }
         if (message.content.toLowerCase().startsWith('=strikes') || message.content.toLowerCase().startsWith('=getuser')) {
-            const user = message.mentions.users.first();
-            const hasPerms = user ? constants_1.Constants.STRIKE_VIEW.ROLES.some(r => message.member?.roles.cache.has(r)) : true;
-            if (hasPerms === false) {
-                return message.channel.send(createEmbed(`${message.author} you do not have the required permissions to run this command.`, "RED", "RBW Strikes Again!"));
-            }
-            const player = await utils_1.Players.getByDiscord(user ? user.id : message.author.id);
-            const youThey = user ? ['They', 'Their'] : ['You', 'Your'];
-            return message.channel.send(createEmbed(user ? `${user.tag}'s Strikes` : 'Your Strikes', '#228B22')
-                .setDescription(`${youThey[0]} have **${player?.strikes ?? 0}** strike${player?.strikes === 1 ? '' : 's'}.${player?.banExpires ? `\n\n**BANNED**\n${player.banExpires === -1 ? `${youThey[0]} are permanently banned.` : `${youThey[1]} ban expires in **${dayjs_1.default().from(dayjs_1.default(player.banExpires), true)}**.`}` : ''}`));
-        }
-        if (message.content.toLowerCase().startsWith('=setbackground')) {
-            const user = message.mentions.users.first();
-            const hasPerms = user ? constants_1.Constants.STRIKE_UNSTRIKE.ROLES.some(r => message.member?.roles.cache.has(r)) : true;
-            if (hasPerms === false) {
-                return message.channel.send(createEmbed(`${message.author} you do not have the required permissions to run this command.`, "RED", "RBW Info Cards!"));
-            }
-            if (!user) {
-                return message.channel.send(createEmbed(`${message.author} you must mention a user to alter their card.`, "RED", "RBW Strikes Again!"));
-            }
-            const player = await utils_1.Players.getByDiscord(user.id);
-            if (!player) {
-                return message.channel.send(createEmbed(`${user} is not registered.`, "RED", "RBW Info Cards!"));
-            }
-            const url = message.content.split(' ').find((m) => /^http.*\.(?:png|jpeg|jpg)/.test(m) || m === 'default' || /#[a-f0-9]{3,6}/i.test(m));
-            if (!url && url !== 'default') {
-                return message.channel.send(createEmbed('You did not provide a valid image URL.', "RED", "RBW Info Cards!"));
-            }
-            player?.update({ info_card_background: url === 'default' ? null : url });
-            return message.reply(`${user.username}'s info card background has been updated.`);
-        }
-        if (message.content.toLowerCase().startsWith('=setemoji')) {
-            const player = await utils_1.Players.getByDiscord(message.author.id);
-            if (!player) {
-                return message.channel.send(createEmbed(`You are not registered.`, "RED", "RBW Info Cards!"));
-            }
-            const emoji = message.content.split(' ').slice(1).shift();
-            if (!emoji || /(\u00a9|\u00ae|[\u2000-\u3300]|\ud83c[\ud000-\udfff]|\ud83d[\ud000-\udfff]|\ud83e[\ud000-\udfff])/.test(emoji) === false) {
-                return message.channel.send(createEmbed(`You did not provide a valid emoji.`, "RED", "RBW Info Cards!"));
-            }
-            player?.update({ emoji: emoji });
-            return message.reply(`your info emoji has been updated.`);
-        }
-        if (message.content.toLowerCase().startsWith('=settext')) {
-            const user = message.mentions.users.first();
-            const hasPerms = user ? constants_1.Constants.STRIKE_UNSTRIKE.ROLES.some(r => message.member?.roles.cache.has(r)) : true;
-            if (hasPerms === false) {
-                return message.channel.send(createEmbed(`${message.author} you do not have the required permissions to run this command.`, "RED", "RBW Info Cards!"));
-            }
-            if (!user) {
-                return message.channel.send(createEmbed(`${message.author} you must mention a user to alter their card.`, "RED", "RBW Strikes Again!"));
-            }
-            const player = await utils_1.Players.getByDiscord(user.id);
-            if (!player) {
-                return message.channel.send(createEmbed(`${user} is not registered.`, "RED", "RBW Info Cards!"));
-            }
-            const text = message.content.split(' ').slice(2).join(' ');
-            if (!text && text !== 'default') {
-                return message.channel.send(createEmbed('You did not provide any text.', "RED", "RBW Info Cards!"));
-            }
-            player?.update({ info_card_text: text === 'default' ? null : text });
-            return message.reply(`${user.username}'s info card text has been updated.`);
-        }
-        if ((constants_1.Constants.STRIKE_UNSTRIKE.CHANNELS.includes(message.channel.id) || constants_1.Constants.STRIKE_UNSTRIKE.CATEGORY_CHANNEL === message.channel.parentID) && message.content.toLowerCase().startsWith('=strike')) {
-            let hasPerms = false;
-            message.member?.roles.cache.forEach((role) => {
-                if (constants_1.Constants.STRIKE_UNSTRIKE.ROLES.includes(role.id)) {
-                    hasPerms = true;
-                }
-            });
-            if (!hasPerms) {
-                return message.channel.send(createEmbed(`${message.author} you do not have the required permissions to run this command.`, "RED", "RBW Strikes Again!"));
-            }
-            const msg_arr = message.content.split(' ');
-            if (msg_arr.length < 3) {
-                return message.channel.send(createEmbed(`Invalid Usage. \`Use =strike @user/user_id (±)strike(s) [Reason: Optional]\``, "RED", "RBW Strikes Again!"));
-            }
-            let user = message.mentions.users.first();
-            if (!user) {
-                user = client.users.cache.get(msg_arr[1]);
-                if (!user) {
-                    return message.channel.send(createEmbed(`${message.author} you must mention a user to strike them.`, "RED", "RBW Strikes Again!"));
-                }
-            }
-            let number_of_strikes = parseInt(msg_arr[2]);
-            let heading;
-            if (Number.isNaN(number_of_strikes)) {
-                return message.channel.send(createEmbed("Invalid Usage. `Strike(s) must be specified as a Number.`"));
-            }
-            else if (number_of_strikes < 0) {
-                heading = 'Unstrike';
-            }
-            else {
-                heading = 'Strike';
-            }
-            const player = await utils_1.Players.getByDiscord(user.id);
-            if (!player) {
-                return message.channel.send(createEmbed(`${user} is not registered.`, "RED", "RBW Strikes Again!"));
-            }
-            number_of_strikes += player.strikes;
-            if (number_of_strikes < 0) {
-                return message.channel.send(createEmbed(`${message.author} you cannot remove \`${number_of_strikes - player.strikes}\` strikes from ${user} as they only have \`${player?.strikes}\` strikes.`, "RED", "RBW Strikes Again!"));
-            }
-            player?.update({ strikes: number_of_strikes });
-            const reason = msg_arr.slice(3).join(' ');
-            const isBot = message.author.id === client.user.id ? true : false;
-            const response_id = isBot ? constants_1.Constants.STRIKE_UNSTRIKE.AUTOSTRIKE_RESPONSE_CHANNEL : constants_1.Constants.STRIKE_UNSTRIKE.MANUALSTRIKE_RESPONSE_CHANNEL;
-            const m = await guild.channels.cache.get(response_id).send(`${user}`);
-            if (reason === '') {
-                if (!isBot) {
-                    m.edit(createEmbed(`**${player.minecraft.name}** [\`${player.strikes}\` → \`${number_of_strikes}\`]\n**ELO:** [\`${player.elo}\` → \`${await player.strikeELO(heading)}\`]\n**Staff Responsible:** ${message.author}`, "#228B22", `RBW ${heading}s Again!`).setTitle(`${heading}`));
-                }
-                else {
-                    m.edit(createEmbed(`**${player.minecraft.name}** [\`${player.strikes}\` → \`${number_of_strikes}\`]`, "#228B22", `RBW ${heading}s Again!`).setTitle(`${heading}`));
-                }
-            }
-            else {
-                if (!isBot) {
-                    m.edit(createEmbed(`**${player.minecraft.name}** [\`${player.strikes}\` → \`${number_of_strikes}\`]\n**ELO:** [\`${player.elo}\` → \`${await player.strikeELO(heading)}\`]\n**Reason:** ${reason}\n**Staff Responsible:** ${message.author}`, "#228B22", `RBW ${heading}s Again!`).setTitle(`${heading}`));
-                }
-                else {
-                    m.edit(createEmbed(`**${player.minecraft.name}** [\`${player.strikes}\` → \`${number_of_strikes}\`]\n**Reason:** ${reason}`, "#228B22", `RBW ${heading}s Again!`).setTitle(`${heading}`));
-                }
-            }
-            if (number_of_strikes < player.strikes) {
-                return;
-            }
-            if (number_of_strikes >= 2) {
-                guild.channels.cache.get(constants_1.Constants.COMMANDS_CHANNEL).send(`=ban ${user} ${utils_1.getBanDuration(player.strikes, Math.abs(number_of_strikes - player.strikes))} Autoban`);
-            }
-            const confirmation = await message.reply(`${user} was striked successfully.`);
-            confirmation.delete({ timeout: 2000 });
-        }
-        else if (constants_1.Constants.BAN_UNBAN.CHANNELS.includes(message.channel.id) && message.content.toLowerCase().startsWith('=unban')) {
-            let hasPerms = false;
-            message.member?.roles.cache.forEach((role) => {
-                if (constants_1.Constants.BAN_UNBAN.ROLES.includes(role.id)) {
-                    hasPerms = true;
-                }
-            });
-            if (!hasPerms) {
-                return message.channel.send(createEmbed(`${message.author} you do not have the required permissions to run this command.`, "RED", "RBW Strikes Again!"));
-            }
-            const msg_arr = message.content.split(' ');
-            if (msg_arr.length !== 2) {
-                return message.channel.send(createEmbed(`Invalid Usage. \`Use =unban @user/user_id`, "RED", "RBW Unban Hammer!"));
-            }
-            let user = message.mentions.users.first();
-            if (!user) {
-                user = client.users.cache.get(msg_arr[1]);
-                if (!user) {
-                    return message.channel.send(createEmbed(`${message.author} you must mention a user to unban them.`, "RED", "RBW Unban Hammer!"));
-                }
-            }
-            const player = await utils_1.Players.getByDiscord(user.id);
-            if (!player) {
-                return message.channel.send(createEmbed(`${user} is not registered.`, "RED", "RBW Unban Hammer!"));
-            }
-            if (!player.banned) {
-                return message.channel.send(createEmbed(`${user} is not banned yet. Please use \`=ban @user/user_id x(h)/(d)\` in order to ban the player.`, "RED", "RBW Unban Hammer!"));
-            }
-            await player.unban();
-            const member = guild.members.cache.get(user.id);
-            await member?.roles.remove(constants_1.Constants.RANKBANNED).catch(() => logger.info(`Could not remove Rank Banned Role from ${member.displayName}`));
-            await member?.roles.add(getRole(player.elo)).catch(() => logger.info(`Could not add elo role for ${member.displayName}`));
-            const m = await guild.channels.cache.get(constants_1.Constants.BAN_UNBAN.UNBAN_RESPONSE_CHANNEL).send(`${user}`);
-            if (message.author.id !== client.user.id) {
-                m.edit(createEmbed(`${user} has been unbanned!`, "#228B22", "RBW Unban Hammer").setTitle(`Unban`));
-            }
-            else {
-                m.edit(createEmbed(`${user} has been unbanned!`, "#228B22", "RBW Unban Hammer").addField("**Staff Responsible:**", `${message.author}`).setTitle(`Unban`));
-            }
-            const confirmation = await message.reply(`${user.username} was unbanned successfully.`);
-            message.delete({ timeout: 50 });
-            return confirmation.delete({ timeout: 2000 });
-        }
-        else if (message.content === "=fclose" || message.content === "=forceclose") {
-            let hasPerms = false;
-            message.member?.roles.cache.forEach((role) => {
-                if (constants_1.Constants.FCLOSE_ROLES.includes(role.id)) {
-                    hasPerms = true;
-                }
-            });
-            if (message.author.id === client.user.id)
-                hasPerms = true;
-            if (!hasPerms) {
-                return message.channel.send(createEmbed(`${message.author} you do not have the required permissions to run this command.`, "RED", "RBW Game Management")).catch(() => null);
-            }
-            const g = voiceQueueMap.find((g) => g.textChannelID === message.channel.id);
-            voiceQueueMap.delete(g?.voiceChannel);
-            const game = utils_1.activeGames.find(_game => _game.textChannel?.id === message.channel.id);
-            if (!game)
-                return message.channel.send(createEmbed("This channel is not bound to a currently active game.", "RED", "RBW Game Management")).catch(() => null);
-            await db.activeGame.deleteMany({ _id: game.id });
-            try {
-                console.trace('RAN =FCLOSE');
-                await game.cancel(true);
-            }
-            catch (e) {
-                logger.error(`Failed to run =fclose command:\n${e.stack}`);
-            }
-            ;
+            const target = message.mentions.users.first() || message.author;
+            const player = await utils_1.Players.getByDiscord(target.id);
+            if (!player)
+                return message.reply(createEmbed(`${target.tag} is not a registered Onyx RBW player.`, "RED"));
+            message.channel.send(createEmbed(`**${target.tag}**\nStrikes: ${player.strikes}\nELO: ${player.elo}\nWins: ${player.wins}\nLosses: ${player.losses}\nWinstreak: ${player.winstreak}\nBedstreak: ${player.bedstreak}`, "#00FFFF", "Player Info"));
         }
     });
-    client.on('guildMemberAdd', async (member) => {
-        const player = (await utils_1.Players.getByDiscord(member.id));
-        if (player) {
-            await member.roles.set(player.roles);
-        }
-    });
-    client.on('guildMemberRemove', async (member) => {
-        const player = (await utils_1.Players.getByDiscord(member.id));
-        if (player) {
-            player.update({ roles: member.roles.cache.map(({ id }) => id) });
-        }
-    });
-    logger.info("App is now online!");
-    setInterval(() => {
-        utils_1.Players.updateBans;
-        help_cmd_cache.forEach((cmd, index) => {
-            if (Date.now() - cmd.timeOfCreation >= 1000 * 60)
-                help_cmd_cache.splice(index, 1);
-        });
-    }, 60 * 1000);
-    async function strikeEmbed(userID, channelID) {
-        const member = await guild.members.fetch(userID).catch(() => null);
-        const cache = voiceQueueMap.get(channelID);
-        const channel = guild.channels.cache.get(cache?.textChannelID);
-        if (!member || !cache || !channel || cache.pickingOver)
-            return;
-        const game = await (await database_1.default).games.findOne({
-            $or: [
-                { voiceChannel: channelID },
-                { textChannel: channel.id }
-            ]
-        });
-        if (!game || game.state !== games_1.GameState.PRE_GAME)
-            return;
-        const message = await channel.send(cache.members.map((id) => `<@${id}>`), createEmbed(`Do you want to strike ${member} for leaving the voice channel during picking?`, '#F6BE00', 'RBW Auto-Strike')
-            .setTitle('Automatic Strike')
-            .setImage(member.user?.avatarURL()));
-        await message.react('✅');
-        await message.react('❌');
-        const reactions = await message.awaitReactions((r, u) => cache.members.includes(u.id) && ['✅', '❌'].includes(r.emoji.name), { max: 7, time: 30000 });
-        const strike = (reactions.get('✅')?.count ?? 0) > (reactions.get('❌')?.count ?? 0);
-        if (strike) {
-            const striker = guild.channels.cache.get(constants_1.Constants.STRIKE_UNSTRIKE.AUTOSTRIKE_RESPONSE_CHANNEL);
-            if (striker)
-                await striker.send(`=strike ${member} 1 Left during team picking.`);
-            await message.edit(createEmbed(`Strike Successful → ${member}`, 'GREEN', 'RBW Auto-Strike')
-                .setTitle('Auto Strike → ✅')
-                .setImage(member.user?.avatarURL()));
-        }
-        else {
-            await message.edit(createEmbed(`Strike Unsuccessful → ${member}`, 'RED', 'RBW Auto-Strike')
-                .setTitle('Auto Strike → ❌')
-                .setImage(member.user?.avatarURL()));
-        }
-        await utils_1.delay(3000);
-        return channel.delete().catch(() => { });
-    }
-}();
+    setInterval(() => utils_1.Players.updateBans(), 60000);
+    logger.info(`Bot started successfully. Watching ${guild.memberCount} players.`);
+})();
+async function strikeEmbed(userId, channelId) {
+}

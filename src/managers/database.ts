@@ -1,29 +1,28 @@
-import { MongoClient } from "mongodb";
+import mysql from "mysql2/promise";
 import Logger from "../logger";
-import type { Database } from "../typings/database";
+import type { RowDataPacket } from "mysql2";
 
 const logger = new Logger("Database Manager");
 
 const { DB_URL } = process.env;
 
 if(!DB_URL){
-    logger.error("Required environment variable DB_URL is not defined.");
-    process.exit(1);
+  logger.error("Required environment variable DB_URL is not defined.");
+  process.exit(1);
 }
 
-/** Gets the database. */
-export default new Promise<Database>((res, rej) => {
-
-    MongoClient.connect(DB_URL, { useNewUrlParser: true, useUnifiedTopology: true }).then(client => {
-
-        const db = client.db("rbw_dev");
-
-        res({
-            bots: db.collection("bots"),
-            games: db.collection("games"),
-            players: db.collection("players"),
-            activeGame: db.collection("activeGame")
-        });
-
-    }).catch(rej);
+export const pool = mysql.createPool({
+  uri: DB_URL,
+  waitForConnections: true,
+  connectionLimit: 10,
+  queueLimit: 0,
 });
+
+export async function query<T extends RowDataPacket[]>(sql: string, params?: any[]): Promise<T> {
+  const [rows] = await pool.execute<T>(sql, params);
+  return rows;
+}
+
+const database = { query };
+
+export default database;

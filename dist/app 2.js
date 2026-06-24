@@ -201,7 +201,7 @@ async function getImage(uuid, name, url, background, stats) {
         }
     }
     if (url == null)
-        url = "discord.gg/onyxrbw";
+        url = "discord.gg/rbw";
     ctx.textAlign = "center";
     ctx.fillStyle = "#ffffff";
     ctx.font = "22px Ubuntu";

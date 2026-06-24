@@ -47,7 +47,7 @@ const bot = new Promise<Client>((res, rej) => {
                 logger.warn(`Command ${commands[i].name} failed to register:\n${await v.text()}`);
             });
             logger.info("All commands registered.");
-        } catch(e){
+        } catch(e: any){
             logger.error(`Failed to register commands:\n${e.stack}`);
         }
 

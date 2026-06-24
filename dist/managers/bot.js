@@ -31,7 +31,7 @@ const bot = new Promise((res, rej) => {
         }
         logger.info("Registering commands...");
         try {
-            const responses = await Promise.all(commands_json_1.default.map(command => node_fetch_1.default(`https://discord.com/api/v8/applications/${client.user.id}/guilds/${GUILD}/commands`, {
+            const responses = await Promise.all(commands_json_1.default.map(command => (0, node_fetch_1.default)(`https://discord.com/api/v8/applications/${client.user.id}/guilds/${GUILD}/commands`, {
                 method: "POST",
                 headers: {
                     authorization: `Bot ${TOKEN}`,

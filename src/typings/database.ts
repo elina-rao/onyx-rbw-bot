@@ -1,12 +1,12 @@
-import type { Collection } from "mongodb";
-import type { activeGame } from "./activeGame";
-import type { Bot } from "./bot";
+import type { RowDataPacket } from "mysql2";
 import type { Game } from "./games";
 import type { Player } from "./players";
+import type { Bot } from "./bot";
+
+export interface PlayerRow extends RowDataPacket, Player {}
+export interface GameRow extends RowDataPacket, Game {}
+export interface BotRow extends RowDataPacket, Bot {}
 
 export interface Database {
-    bots: Collection<Bot>;
-    games: Collection<Game>;
-    players: Collection<Player>;
-    activeGame: Collection<activeGame>;
+  query: <T extends RowDataPacket[]>(sql: string, params?: any[]) => Promise<T>;
 }
