@@ -49,6 +49,8 @@ type LeaderboardStat = "kills" | "wins" | "bedsBroken" | "elo" | "losses" | "gam
     return process.exit(1);
   });
 
+  await guild.members.fetch().catch(() => null);
+
   client.on("raw", async (payload: InteractionPayload) => {
     if(payload.t !== "INTERACTION_CREATE") return;
     const logger = new Logger("Command Handler");
@@ -200,10 +202,6 @@ type LeaderboardStat = "kills" | "wins" | "bedsBroken" | "elo" | "losses" | "gam
         }
       }
     }
-  });
-
-  client.on('ready', async () => {
-    await guild.members.fetch().catch(() => null);
   });
 
   client.on("voiceStateUpdate", async (oldState, newState) => {
