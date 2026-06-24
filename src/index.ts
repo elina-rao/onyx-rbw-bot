@@ -381,7 +381,7 @@ type LeaderboardStat = "kills" | "wins" | "bedsBroken" | "elo" | "losses" | "gam
         return game.cancel(true);
       }
 
-      const query_socket = (bot ? bots.get(bot) : {})?.handshake?.query as SocketAPI.Query;
+      const query_socket = (bot ? bots.get(bot) : {})?.handshake?.query as unknown as SocketAPI.Query;
       if (bot !== query_socket.bot) {
         await loading.edit(createEmbed(`The socket for this bot (**${bot}**) is actually pointing to **${query_socket.bot}**.`, 'RED'));
         await delay(5000);

@@ -8,13 +8,13 @@ exports.query = query;
 const promise_1 = __importDefault(require("mysql2/promise"));
 const logger_1 = __importDefault(require("../logger"));
 const logger = new logger_1.default("Database Manager");
-const { DB_URL } = process.env;
-if (!DB_URL) {
-    logger.error("Required environment variable DB_URL is not defined.");
+const { MYSQL_URL } = process.env;
+if (!MYSQL_URL) {
+    logger.error("Required environment variable MYSQL_URL is not defined.");
     process.exit(1);
 }
 exports.pool = promise_1.default.createPool({
-    uri: DB_URL,
+    uri: MYSQL_URL,
     waitForConnections: true,
     connectionLimit: 10,
     queueLimit: 0,

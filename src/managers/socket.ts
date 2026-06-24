@@ -38,7 +38,7 @@ if(NODE_ENV === "development") devLogger.warn("Additional logging enabled becaus
 
 const port = process.env.PORT ? parseInt(process.env.PORT) : 8080;
 const server = createServer();
-const io = new Server(server);
+const io = new Server(server, { allowEIO3: true });
 
 io.on('connection', socket => {
   const { key, bot } = socket.handshake.query as SocketAPI.Query;
@@ -154,11 +154,11 @@ io.on('connection', socket => {
       if(!player.discord_id) continue;
       await query(`UPDATE players SET 
         wins = ?, losses = ?, kills = ?, deaths = ?, beds_broken = ?, beds_lost = ?,
-        winstreak = ?, bedstreak = ?, games = ?, elo = ?, minecraft_uuid = ?, minecraft_name = ?
+        winstreak = ?, losestreak = ?, bedstreak = ?, games = ?, elo = ?, minecraft_uuid = ?, minecraft_name = ?
         WHERE discord_id = ?`, [
         player.wins || 0, player.losses || 0, player.kills || 0, player.deaths || 0,
         player.beds_broken || 0, player.beds_lost || 0,
-        player.winstreak || 0, player.bedstreak || 0, player.games || 0, player.elo || 400,
+        player.winstreak || 0, player.losestreak || 0, player.bedstreak || 0, player.games || 0, player.elo || 400,
         player.minecraft_uuid || '', player.minecraft_name || '',
         player.discord_id
       ]);
@@ -221,8 +221,7 @@ io.on('connection', socket => {
 
   socket.on("alertStaff", async (nickIGN: string, gamePlayers: any[]) => {
     try {
-      const alertChannelId = '801294842914930698';
-      ((await defaultGuild).channels.cache.get(alertChannelId) as TextChannel).send(`**Nick Exploit Detected:** Nick --> ${nickIGN} Players --> ${gamePlayers}`);
+      ((await defaultGuild).channels.cache.get(Constants.ALERT_CHANNEL) as TextChannel).send(`**Nick Exploit Detected:** Nick --> ${nickIGN} Players --> ${gamePlayers}`);
     } catch {
       logger.info(`Failed to send player info. Nick --> ${nickIGN} Players --> ${gamePlayers}`);
     }

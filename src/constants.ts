@@ -40,6 +40,7 @@ export namespace Constants {
   export const WAITING_ROOM = '1518631606464811262';
   export const REGISTERED_ROLE = '1518626646612119752';
   export const COMMANDS_CHANNEL = '1518631179954159626';
+  export const ALERT_CHANNEL = '1519326047043194970';
   export const GAME_REPORT_CHANNEL = '1518631296354746471';
   export const TEAM_CALLS: string[] = ['1518631567738667058'];
 

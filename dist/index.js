@@ -45,7 +45,6 @@ const discord_js_1 = require("discord.js");
 const https_1 = __importDefault(require("https"));
 const node_fetch_1 = __importDefault(require("node-fetch"));
 const bot_1 = __importStar(require("./managers/bot"));
-const hypixel_1 = require("./managers/hypixel");
 const constants_1 = require("./constants");
 const utils_1 = require("./utils");
 const games_1 = require("./typings/games");
@@ -74,6 +73,7 @@ function getRole(p) {
         logger.error(`Startup failed:\n${err.stack}`);
         return process.exit(1);
     });
+    await guild.members.fetch().catch(() => null);
     client.on("raw", async (payload) => {
         if (payload.t !== "INTERACTION_CREATE")
             return;
@@ -89,7 +89,10 @@ function getRole(p) {
             return new Promise(res => {
                 req.write(JSON.stringify({
                     type: 4,
-                    data: typeof message === "string" ? { content: message } : { content: "", embeds: [message.toJSON()] }
+                    data: {
+                        flags: 64,
+                        ...(typeof message === "string" ? { content: message } : { content: "", embeds: [message.toJSON()] })
+                    }
                 }));
                 req.end();
                 req.on("error", () => null);
@@ -114,20 +117,12 @@ function getRole(p) {
                         respond(createEmbed("Minecraft account not found.", "RED"));
                         break;
                     }
-                    const hypixelData = await (0, hypixel_1.getHypixelPlayer)(d.id);
-                    const discord = hypixelData?.player?.socialMedia?.links?.DISCORD;
-                    if (!discord) {
-                        respond(createEmbed(`**${d.name}** does not have a Discord account linked. For more information, read ${guild.channels.cache.get('800070737091624970')}`, "RED"));
-                        break;
-                    }
-                    if (discord !== `${user.username}#${user.discriminator}`) {
-                        respond(createEmbed(`**${d.name}** has another Discord account or server linked. If this is you, change your linked Discord to **${user.username}#${user.discriminator}**.\n\n**Changed your Discord username?** You'll need to change your linked account in game.`, "RED"));
-                        break;
-                    }
                     const existing = await utils_1.Players.getByDiscord(user.id);
+                    let member = guild.members.cache.get(user.id);
+                    if (!member)
+                        member = await guild.members.fetch(user.id).catch(() => null);
                     if (existing) {
                         await (0, database_1.query)('UPDATE players SET minecraft_uuid = ?, minecraft_name = ?, registered_at = ? WHERE discord_id = ?', [d.id, d.name, Date.now(), user.id]);
-                        const member = guild.members.cache.get(user.id);
                         if (member) {
                             if (!member.roles.cache.has(constants_1.Constants.SUPPORT_ROLE_ID))
                                 await member.setNickname(`[${existing.elo}] ${d.name}`).catch(e => logger.error(`Failed to update nickname:\n${e.stack}`));
@@ -142,16 +137,15 @@ function getRole(p) {
                             }
                             await member.roles.remove(constants_1.Constants.REGISTERED_ROLE).catch(() => null);
                             await member.roles.add(constants_1.Constants.REGISTERED_ROLE).catch(() => null);
+                            await member.roles.remove(constants_1.Constants.UNREGISTERED_ROLE).catch(() => null);
                         }
                         respond(createEmbed(`You have successfully changed your linked Minecraft account to **${(0, utils_1.toEscapedFormat)(d.name)}**.`, "#d4a017"));
                     }
                     else {
                         await (0, database_1.query)('INSERT INTO players (discord_id, minecraft_uuid, minecraft_name, registered_at, elo) VALUES (?, ?, ?, ?, 400) ON DUPLICATE KEY UPDATE minecraft_uuid = VALUES(minecraft_uuid), minecraft_name = VALUES(minecraft_name), registered_at = VALUES(registered_at)', [user.id, d.id, d.name, Date.now()]);
-                        const mem = guild.members.cache.get(user.id);
-                        if (mem && !mem.roles.cache.has(constants_1.Constants.SUPPORT_ROLE_ID))
-                            await mem.setNickname(`[400] ${d.name}`).catch(e => logger.error(`Failed to update a new member's nickname:\n${e.stack}`));
+                        if (member && !member.roles.cache.has(constants_1.Constants.SUPPORT_ROLE_ID))
+                            await member.setNickname(`[400] ${d.name}`).catch(e => logger.error(`Failed to update a new member's nickname:\n${e.stack}`));
                         respond(createEmbed(`You have successfully registered with the username **${(0, utils_1.toEscapedFormat)(d.name)}**. Welcome to Onyx RBW!`, "#d4a017"));
-                        const member = guild.members.cache.get(user.id);
                         if (member) {
                             member.roles.cache.forEach(async (role) => {
                                 if (constants_1.Constants.ELO_ROLES.includes(role.id))
@@ -161,6 +155,7 @@ function getRole(p) {
                             if (roleId)
                                 await member.roles.add(roleId.id).catch(() => null);
                             await member.roles.add(constants_1.Constants.REGISTERED_ROLE).catch(() => null);
+                            await member.roles.remove(constants_1.Constants.UNREGISTERED_ROLE).catch(() => null);
                         }
                     }
                 }
@@ -242,7 +237,6 @@ function getRole(p) {
             }
         }
     });
-    client.on('ready', async () => { });
     client.on("voiceStateUpdate", async (oldState, newState) => {
         if (oldState.channelID === newState.channelID)
             return;

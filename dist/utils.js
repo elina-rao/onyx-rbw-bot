@@ -47,7 +47,6 @@ exports.updateRoles = updateRoles;
 exports.voidGame = voidGame;
 exports.delay = delay;
 exports.findOpenCategory = findOpenCategory;
-exports.checkStatus = checkStatus;
 exports.toEscapedFormat = toEscapedFormat;
 const discord_js_1 = require("discord.js");
 const constants_1 = require("./constants");
@@ -56,10 +55,7 @@ const bot_1 = __importStar(require("./managers/bot"));
 const database_1 = require("./managers/database");
 const games_1 = require("./typings/games");
 const divisions_json_1 = __importDefault(require("./divisions.json"));
-const { HYPIXEL_KEY } = process.env;
 const socket_1 = require("./managers/socket");
-const Hypixel = require('hypixel-api-reborn');
-const hypixel = new Hypixel.Client(HYPIXEL_KEY);
 const maps_object = {
     "Extinction": { img: "https://media.discordapp.net/attachments/796082875475689506/810012638955175986/extiction-png.png", limit: "+95" },
     "Enchanted": { img: "https://media.discordapp.net/attachments/796082875475689506/810015425155825687/enchanted-png.png", limit: "+100" },
@@ -781,16 +777,6 @@ function findOpenCategory(categories) {
             }
         }, 5000);
     });
-}
-async function checkStatus(username) {
-    let bool = false;
-    await hypixel.getPlayer(username).then((player) => {
-        console.log(`isOnline --> ${player.isOnline}`);
-        bool = player.isOnline;
-    }).catch((e) => {
-        console.error('ASD', e);
-    });
-    return bool;
 }
 function toEscapedFormat(str) {
     return str.replace(/_/g, "\\_");

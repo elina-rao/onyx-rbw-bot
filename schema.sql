@@ -12,6 +12,7 @@ CREATE TABLE IF NOT EXISTS players (
   beds_broken INT DEFAULT 0,
   beds_lost INT DEFAULT 0,
   winstreak INT DEFAULT 0,
+  losestreak INT DEFAULT 0,
   bedstreak INT DEFAULT 0,
   games INT DEFAULT 0,
   strikes INT DEFAULT 0,

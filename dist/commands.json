@@ -1,10 +1,10 @@
 [
     {
         "name": "register",
-        "description": "Links your Discord account to a Minecraft account, verifying your ownership of it.",
+        "description": "Links your Discord account to your Minecraft account.",
         "options": [
             {
-                "name": "IGN",
+                "name": "ign",
                 "description": "The username of the Minecraft account to verify as yours.",
                 "type": 3,
                 "required": true
