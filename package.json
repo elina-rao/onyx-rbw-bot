@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node dist/index.js",
-    "build": "rm -rf dist && tsc && cp -r fonts dist/fonts && cp -r images dist/images",
+    "build": "rm -rf dist && tsc && cp -r src/fonts dist/fonts && cp -r src/images dist/images",
     "watch": "tsc -w"
   },
   "engines": {
