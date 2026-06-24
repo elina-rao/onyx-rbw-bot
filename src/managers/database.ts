@@ -4,15 +4,15 @@ import type { RowDataPacket } from "mysql2";
 
 const logger = new Logger("Database Manager");
 
-const { DB_URL } = process.env;
+const { MYSQL_URL } = process.env;
 
-if(!DB_URL){
-  logger.error("Required environment variable DB_URL is not defined.");
+if(!MYSQL_URL){
+  logger.error("Required environment variable MYSQL_URL is not defined.");
   process.exit(1);
 }
 
 export const pool = mysql.createPool({
-  uri: DB_URL,
+  uri: MYSQL_URL,
   waitForConnections: true,
   connectionLimit: 10,
   queueLimit: 0,
