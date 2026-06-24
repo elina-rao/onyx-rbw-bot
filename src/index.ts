@@ -87,10 +87,11 @@ type LeaderboardStat = "kills" | "wins" | "bedsBroken" | "elo" | "losses" | "gam
           const d = JSON.parse(mojang);
           if(!d.id){ respond(createEmbed("Minecraft account not found.", "RED")); break; }
 
-          const existing = await Players.getByDiscord(user.id);
+            const existing = await Players.getByDiscord(user.id);
+          let member = guild.members.cache.get(user.id);
+          if(!member) member = await guild.members.fetch(user.id).catch(() => null) as any;
           if(existing){
             await query('UPDATE players SET minecraft_uuid = ?, minecraft_name = ?, registered_at = ? WHERE discord_id = ?', [d.id, d.name, Date.now(), user.id]);
-            const member = guild.members.cache.get(user.id);
             if(member){
               if(!member.roles.cache.has(Constants.SUPPORT_ROLE_ID))
                 await member.setNickname(`[${existing.elo}] ${d.name}`).catch(e => logger.error(`Failed to update nickname:\n${e.stack}`));
@@ -109,11 +110,9 @@ type LeaderboardStat = "kills" | "wins" | "bedsBroken" | "elo" | "losses" | "gam
             respond(createEmbed(`You have successfully changed your linked Minecraft account to **${toEscapedFormat(d.name)}**.`, "#d4a017"));
           } else {
             await query('INSERT INTO players (discord_id, minecraft_uuid, minecraft_name, registered_at, elo) VALUES (?, ?, ?, ?, 400) ON DUPLICATE KEY UPDATE minecraft_uuid = VALUES(minecraft_uuid), minecraft_name = VALUES(minecraft_name), registered_at = VALUES(registered_at)', [user.id, d.id, d.name, Date.now()]);
-            const mem = guild.members.cache.get(user.id);
-            if(mem && !mem.roles.cache.has(Constants.SUPPORT_ROLE_ID))
-              await mem.setNickname(`[400] ${d.name}`).catch(e => logger.error(`Failed to update a new member's nickname:\n${e.stack}`));
+            if(member && !member.roles.cache.has(Constants.SUPPORT_ROLE_ID))
+              await member.setNickname(`[400] ${d.name}`).catch(e => logger.error(`Failed to update a new member's nickname:\n${e.stack}`));
             respond(createEmbed(`You have successfully registered with the username **${toEscapedFormat(d.name)}**. Welcome to Onyx RBW!`, "#d4a017"));
-            const member = guild.members.cache.get(user.id);
             if(member){
               member.roles.cache.forEach(async role => {
                 if(Constants.ELO_ROLES.includes(role.id)) await member.roles.remove(role).catch(() => null);
@@ -203,7 +202,9 @@ type LeaderboardStat = "kills" | "wins" | "bedsBroken" | "elo" | "losses" | "gam
     }
   });
 
-  client.on('ready', async () => {});
+  client.on('ready', async () => {
+    await guild.members.fetch().catch(() => null);
+  });
 
   client.on("voiceStateUpdate", async (oldState, newState) => {
     if (oldState.channelID === newState.channelID) return;
