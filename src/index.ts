@@ -11,7 +11,7 @@ import https from "https";
 import fetch from "node-fetch";
 import bot, { defaultGuild } from "./managers/bot";
 import database from "./managers/database";
-import { getHypixelPlayer } from "./managers/hypixel";
+
 import type { InteractionPayload } from "./typings/commands";
 import { Constants } from "./constants";
 import { activeGames, BotManager, createNewGame, delay, findOpenCategory, getBanDuration, hasPerms, Player, Players, toEscapedFormat, gameReport, calculateElo, getDivision, voidGame } from "./utils";
@@ -86,16 +86,6 @@ type LeaderboardStat = "kills" | "wins" | "bedsBroken" | "elo" | "losses" | "gam
           if(!mojang){ respond(createEmbed("Minecraft account not found.", "RED")); break; }
           const d = JSON.parse(mojang);
           if(!d.id){ respond(createEmbed("Minecraft account not found.", "RED")); break; }
-          const hypixelData = await getHypixelPlayer(d.id);
-          const discord = hypixelData?.player?.socialMedia?.links?.DISCORD;
-          if(!discord){
-            respond(createEmbed(`**${d.name}** does not have a Discord account linked. For more information, read ${guild.channels.cache.get('800070737091624970')}`, "RED"));
-            break;
-          }
-          if(discord !== `${user.username}#${user.discriminator}`){
-            respond(createEmbed(`**${d.name}** has another Discord account or server linked. If this is you, change your linked Discord to **${user.username}#${user.discriminator}**.\n\n**Changed your Discord username?** You'll need to change your linked account in game.`, "RED"));
-            break;
-          }
 
           const existing = await Players.getByDiscord(user.id);
           if(existing){
@@ -114,6 +104,7 @@ type LeaderboardStat = "kills" | "wins" | "bedsBroken" | "elo" | "losses" | "gam
               }
               await member.roles.remove(Constants.REGISTERED_ROLE).catch(() => null);
               await member.roles.add(Constants.REGISTERED_ROLE).catch(() => null);
+              await member.roles.remove(Constants.UNREGISTERED_ROLE).catch(() => null);
             }
             respond(createEmbed(`You have successfully changed your linked Minecraft account to **${toEscapedFormat(d.name)}**.`, "#d4a017"));
           } else {
@@ -130,6 +121,7 @@ type LeaderboardStat = "kills" | "wins" | "bedsBroken" | "elo" | "losses" | "gam
               const roleId = getRole(400);
               if(roleId) await member.roles.add(roleId.id).catch(() => null);
               await member.roles.add(Constants.REGISTERED_ROLE).catch(() => null);
+              await member.roles.remove(Constants.UNREGISTERED_ROLE).catch(() => null);
             }
           }
         } catch(e: any){

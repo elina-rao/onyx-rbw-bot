@@ -24,7 +24,6 @@
     "dayjs": "^1.10.4",
     "discord.js": "^12.5.1",
     "dotenv": "^8.2.0",
-    "hypixel-api-reborn": "^5.1.1",
     "mysql2": "^3.22.5",
     "node-fetch": "^2.6.1",
     "socket.io": "^3.0.5",

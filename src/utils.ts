@@ -7,10 +7,7 @@ import { Game as _Game, GamePlayer, GameState, Team } from "./typings/games";
 import type { Player as _Player } from "./typings/players";
 import type { PlayerRow, GameRow, BotRow } from "./typings/database";
 import divisions from "./divisions.json";
-const { HYPIXEL_KEY } = process.env;
 import { bots, devLogger } from "./managers/socket";
-const Hypixel = require('hypixel-api-reborn');
-const hypixel = new Hypixel.Client(HYPIXEL_KEY);
 
 interface _Map {
   img: string;
@@ -772,17 +769,6 @@ export function findOpenCategory(categories: CategoryChannel[]){
       }
     }, 5000);
   });
-}
-
-export async function checkStatus(username: string) {
-  let bool = false;
-  await hypixel.getPlayer(username).then((player: { isOnline: boolean; }) => {
-    console.log(`isOnline --> ${player.isOnline}`);
-    bool = player.isOnline;
-  }).catch((e: any) => {
-    console.error('ASD', e);
-  });
-  return bool;
 }
 
 export function toEscapedFormat(str: string) {
