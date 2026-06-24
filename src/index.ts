@@ -67,7 +67,10 @@ type LeaderboardStat = "kills" | "wins" | "bedsBroken" | "elo" | "losses" | "gam
       return new Promise(res => {
         req.write(JSON.stringify({
           type: 4,
-          data: typeof message === "string" ? { content: message } : { content: "", embeds: [message.toJSON()] }
+          data: {
+            flags: 64,
+            ...(typeof message === "string" ? { content: message } : { content: "", embeds: [message.toJSON()] })
+          }
         }));
         req.end();
         req.on("error", () => null);
