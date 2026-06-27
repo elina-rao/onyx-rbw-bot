@@ -1,0 +1,4 @@
+lp user notelina permission set bw.admin true
+lp user notelina permission set bw.cmd true
+lp user notelina permission set bw.setup true
+say Permissions set via LuckPerms. Server ready.

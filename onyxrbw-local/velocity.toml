@@ -1,0 +1,26 @@
+#If you are using modern or BungeeGuard IP forwarding, configure a file that contains a unique secret here.
+#The file is expected to be UTF-8 encoded and not empty.
+forwarding-secret-file = "forwarding.secret"
+config-version = "2.7"
+#Should the proxy enforce the new public key security standard? By default, this is on.
+force-key-authentication = false
+# What should be the MOTD? This gets displayed when the player adds your server to
+# their server list. Only MiniMessage format is accepted.
+motd = "\\<#09add3>A Velocity Server"
+
+[server]
+	motd = "Onyx RBW"
+	bind = "0.0.0.0:25565"
+	online-mode = false
+	compression-threshold = 256
+	show-max-players = 500
+[forwarding]
+	mode = "none"
+[servers]
+	lobby = "127.0.0.1:30001"
+[forced-hosts]
+	"play.onyxrbw.com" = ["lobby"]
+[advanced]
+	#Allows players transferred from other hosts via the
+	#Transfer packet (Minecraft 1.20.5) to be received.
+	accepts-transfers = false

@@ -1,0 +1,83 @@
+# Binaries
+*.jar
+*.exe
+*.msi
+
+# World data (regeneratable)
+world/
+world_nether/
+world_the_end/
+
+# Logs & cache
+logs/
+cache/
+
+# Plugin cache/runtime data
+lang/
+
+# Maps archive (too large for git)
+extracted-maps/
+
+# Build tools
+BuildTools.*
+PortableGit-*/
+
+# === Paper plugin runtime data ===
+
+# Arena world data (large, regeneratable)
+paper/plugins/BedWars1058/Arenas/
+
+# BedWars1058 auto-generated configs (not customized)
+paper/plugins/BedWars1058/generators.yml
+paper/plugins/BedWars1058/levels.yml
+paper/plugins/BedWars1058/rewards.yml
+paper/plugins/BedWars1058/shop.yml
+paper/plugins/BedWars1058/signs.yml
+paper/plugins/BedWars1058/sounds.yml
+paper/plugins/BedWars1058/upgrades2.yml
+paper/plugins/BedWars1058/Languages/
+
+# OpenLogin runtime data
+paper/plugins/OpeNLogin/
+paper/plugins/OnyxRBW/libs/
+
+# LuckPerms platform-specific
+paper/plugins/LuckPerms/libs/
+paper/plugins/LuckPerms/translations/
+paper/plugins/LuckPerms/yaml-storage/users/
+paper/plugins/LuckPerms/yaml-storage/uuidcache.txt
+
+# Metrics
+paper/plugins/PluginMetrics/
+paper/plugins/bStats/
+plugins/bStats/
+
+# === Paper server auto-generated ===
+
+# Whitelist/bans (don't need to sync)
+paper/banned-ips.json
+paper/banned-players.json
+paper/usercache.json
+paper/whitelist.json
+
+# Auto-generated configs
+paper/commands.yml
+paper/help.yml
+paper/permissions.yml
+paper/eula.txt
+
+# Root-level server.properties (leftover, only paper/server.properties matters)
+/server.properties
+
+# Auto-generated EULA
+eula.txt
+paper/eula.txt
+
+
+
+# LuckPerms UUID cache (auto-generated)
+paper/plugins/LuckPerms/yaml-storage/uuidcache.txt
+
+# OS files
+.DS_Store
+Thumbs.db
