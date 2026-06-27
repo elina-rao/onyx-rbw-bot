@@ -1,0 +1,1447 @@
+# Turkish translation by https://kuzeeeyk.me [kuzeeeyk#7268 or @kuzeeeyk]
+prefix: ''
+name: Türkçe
+cmd-main-list:
+- ''
+- '&2▪ &7/bw stats'
+- '&2▪ &7/bw join &o<harita/grup>'
+- '&2▪ &7/bw leave'
+- '&2▪ &7/bw lang'
+- '&2▪ &7/bw gui'
+- '&2▪ &7/bw start &3(vip)'
+cmd-lang-list-header: '{prefix} &2Mevcut diller:'
+cmd-lang-list-format: '&a▪  &7{iso} - &f{name}'
+cmd-lang-usage: '{prefix}&7Kullanım: /lang &f&o<iso>'
+cmd-lang-not-exist: '{prefix}&cBu dil bulunmuyor!'
+cmd-lang-set: '{prefix}&aDil değiştirildi!'
+cmd-lang-not-set: '{prefix}&cOyun sırasında dili değiştiremezsin.'
+cmd-join-usage: '§a▪ §7Kullanım: /bw join §o<arena/group>'
+cmd-join-not-found: '{prefix}&c{name} adında bir grup veya harita bulunamadı!'
+cmd-join-arena-full: '{prefix}&cBu harita dolu!'
+cmd-join-arenas-full: '{prefix}&cŞu anda hiç boş harita bulunamadı ;('
+cmd-join-arena-full-vips: |-
+  {prefix}&cÜzgünüz fakat bu harita dolu.
+  &cBağışçı olduğunu biliyoruz ama bu harita diğer bağışçı ya da yetkililer ile dolu.
+cmd-join-party-big: '{prefix}&cPartin bu harita bir takım olarak katılabilmek için
+  çok büyük!'
+cmd-join-not-leader: '{prefix}&cSadece parti lideri harita seçebilir.'
+cmd-join-success: '{prefix}&7{player} &ekatıldı (&b{on}&e/&b{max}&e)!'
+cmd-join-spectate: |-
+  {prefix}§6Şu anda §9{arena}§6 haritasını seyrediyorsun.
+  {prefix}§eHaritadan ayrılmak için §c/leave§e komudunu kullanabilirsin.
+cmd-join-spectate-denied: '&cBu harita seyircilere kapalı!'
+cmd-tp-player-not-found: '{prefix}&cOyuncu bulunamadı!'
+cmd-tp-not-in-arena: '{prefix}&cBu oyuncu bir haritada değil!'
+cmd-tp-not-started: '{prefix}&cOyuncunun bulunduğu haritada oyun henüz başlamadı!'
+cmd-tp-usage: '{prefix}&cKullanım: /bw tp <username>'
+cmd-rejoin-no-arena: '{prefix}&cYeniden katılabilmen için bir harita bulunmuyor.'
+cmd-rejoin-denied: '{prefix}&cYeniden katılımazsın çünkü yataklar kırılmış ya da oyun
+  bitmiş.'
+cmd-rejoin-allowed: '{prefix}&a{arena}&e haritasına yeniden katılıyorsun!'
+cmd-rejoin-player-reconnected: '{prefix}&7{player} &eyeniden katıldı!'
+cmd-not-in-arena: '{prefix}&cHaritada değilsin!'
+cmd-leave: '{prefix}&7{player} &eayrıldı!'
+cmd-blocked-in-game: '{prefix}&cBu komutu oyun sırasında kullanamazsın!'
+cmd-not-found: '{prefix}&cBu komut bulunamadı veya yetkin yok!'
+cmd-party-help:
+- '&6▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬'
+- '&aParti Komutları:'
+- '&e/party help &7- &bBu mesajı yazdırır'
+- '&e/party invite <player> &7- &bOyuncuyu partine davet eder'
+- '&e/party leave &7- &bPartiden ayrılır'
+- '&e/party info &7- &bShow party members and owner'
+- '&e/party promote <player> &7- &bTransfer party ownership'
+- '&e/party remove <player> &7- &bOyuncuyu partiden kovar'
+- '&e/party accept <player> &7- &bParti davetini kabul eder'
+- '&e/party disband &7- &bPartiyi dağıtır'
+cmd-party-invite-usage: '{prefix}&eKullanım: &7/party invite <player>'
+cmd-party-offline: '{prefix}&7{player} &eadlı oyuncu çevrimdışı!'
+cmd-party-invite: '{prefix}&7{player}&6 adlı oyuncuya parti daveti gönderildi.'
+cmd-party-invite-received: '{prefix}&b{player} &eadlı oyuncu seni bir partiye davet
+  etti! &o&7(Kabul Et)'
+cmd-party-invite-self: '{prefix}&cKendini davet edemezsin!'
+cmd-party-no-invite: '{prefix}&cKabul etmek için bir davet bulunmuyor!'
+cmd-party-already-in: '{prefix}&eZaten bir partidesin!'
+cmd-party-no-perm: '{prefix}&cSadece parti lideri bu komutu kullanabilir.'
+cmd-party-accept-usage: '{prefix}&eKullanım: &7/party accept <player>'
+cmd-party-join: '{prefix}&7{player} &eadlı oyuncu partiye katıldı!'
+cmd-party-not-in: '{prefix}&cHerhangi bir partide değilsin!'
+cmd-party-cant-leave: |-
+  {prefix}&cKendi partinden ayrılamazsın!
+  &ePartiyi dağıtmayı dene: &b/party disband
+cmd-party-leave: '{prefix}&7{player} &eadlı oyuncu partiden ayrıldı!'
+cmd-party-disband: '{prefix}&eParti dağıtıldı!'
+cmd-party-remove-usage: '{prefix}&7Kullanım: &e/party remove <player>'
+cmd-party-remove: '{prefix}&7{player} &eadlı oyuncu partiden kovuldu!'
+cmd-party-remove-not-in: '{prefix}&7{player} &eadlı oyuncu parti üyesi değil!'
+cmd-party-promote-owner: '{prefix}&e{player}''i sahibi yaptın!'
+cmd-party-owner: '{prefix}&eGrup sahibi sen oldun!'
+cmd-party-owner-changed: '{prefix}&7 &e{player} artık grup sahibi!'
+cmd-party-info-owner: |2-
+
+  {prefix}&eGrup sahibi: &7{owner}
+cmd-party-info-players: '{prefix}&eGrup üyeleri:'
+cmd-party-info-player: '&7{player}'
+cmd-start-no-game: §c▪ §7Oyunda değilsin!
+cmd-start: §c▪ §7Geris sayım kısaltıldı!
+cmd-start-no-perm: '{prefix}&7Bu işlemi uygulamak için bağışçı olman lazım!'
+cmd-cooldown: '&cŞu anda bunu yapamazsın! {seconds} saniye sonra tekrar dene.'
+arena-kicked-by-vip: '{prefix}&cÜzgünüm, bir bağışçı haritaya katılmaya çalıştığı
+  için haritadan atıldın!'
+arena-countdown-stopped: '{prefix}§cOyun başlamıyor! §7Yeterli oyuncu yok!'
+arena-restart-kick: '{prefix}&eBulunduğun harita yeniden başlatılıyor'
+arena-status-playing: '&cOynanıyor'
+arena-status-restarting: '&4Yeniden Başlatılıyor'
+arena-status-waiting: '&2Bekleniyor §c{full}'
+arena-status-starting: '&6Başlatılıyor §c{full}'
+arena-selector-gui-name: '&8Katılm'
+arena-selector-content-name: '&a&l{name}'
+arena-selector-content-lore:
+- ''
+- '&7Durum: {status}'
+- '&7Oyuncular: &f{on}&7/&f{max}'
+- '&7Tür: &a{group}'
+- ''
+- '&aKatılmak için sol tıkla.'
+- '&eİzlemek için sağ tıkla.'
+arena-selector-skipped-item-name: '&r{serverIp}'
+arena-selector-skipped-item-lore: []
+arena-start-countdown: '{prefix}&eOyun, &6{time} &esaniye içinde başlıyor!'
+arena-start-countdown-title: ' '
+arena-start-countdown-subtitle: '&a{second}'
+arena-start-countdown-subtitle-5: '&e❺'
+arena-start-countdown-subtitle-4: '&e❹'
+arena-start-countdown-subtitle-3: '&c❸'
+arena-start-countdown-subtitle-2: '&c❷'
+arena-start-countdown-subtitle-1: '&c❶'
+arena-countdown-stopped-subtitle: '&cDaha fazla oyuncu bekleniyor...'
+arena-start-title: '&aGO'
+arena-start-tutorial:
+- '&a▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬'
+- '&f                                   &l&cBed&r&lWars'
+- ''
+- '&e&l    Yatağını savun ve düşman yataklarını parçala!'
+- '&e&l      Üreticilerden Demir, Altın, Zümrüt ve Elmas'
+- '&e&l   kazanarak yükseltmelere erişim sağla ve takımını'
+- '&e&l             güçlendir. Bol şans!'
+- ''
+- '&a▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬'
+arena-join-denied-selector: '{prefix}&cÜzgünüm ama bu haritaya şu anda katılamazsın.
+  Seyirci olmak için sağ tıkla.'
+arena-spectate-denied-selector: '{prefix}&cÜzgünüm ama bu haritayı şu anda seyredemezsin.
+  Katılmak için sol tıkla.'
+arena-join-denied-no-bwp: "&cÜzgünüm ama BedWarsProxy kullanmalısın. \n&eEğer haritayı\
+  \ düzenlemek istiyorsan kendine bw.setup yetkisini vermeyi unutma!"
+spectator-tp-gui-name: '&8Işınlayıcı'
+spectator-tp-gui-head-name: '{prefix}{player}'
+spectator-tp-gui-head-lore:
+- '&7Can: &f{health}%'
+- '&7Açlık: &f{food}'
+- ''
+- '&7Seyretmek için sol tıkla'
+spectator-tp-name: '&c&lLobiye dön'
+spectator-tp-lore:
+- '&7Lobiye dönmek için sol tıkla.'
+spectator-first-person-enter-title: '&7{player} &aseyrediliyor'
+spectator-first-person-enter-subtitle: '&cAyrılmak için eğilme tuşuna bas.'
+spectator-first-person-quit-title: '&eSeyirci modundan ayrılınıyor...'
+spectator-first-person-quit-subtitle: ''
+arena-leave-party-disbanded: '{prefix}§cParti sahibi oyundan ayrıldı ve parti kapatıldı.'
+generator-tier: '&eSeviye &c{tier}'
+generator-diamond: '&b&lElmas'
+generator-emerald: '&a&lZümrüt'
+generator-timer: '&c{seconds} &esaniye sonra üretiliyor'
+generator-upgrade-announce: '{prefix}{generatorType} Üreticileri &eSeviye &c{tier}
+  &eoldu!'
+format-chat-lobby: '{level}{vPrefix}&7{player}{vSuffix}: {message}'
+format-chat-waiting: '{level}{vPrefix}&7{player}{vSuffix}: {message}'
+format-chat-global: '{level}{vPrefix}&6[SHOUT] {team} &7{player}&f{vSuffix}: {message}'
+format-chat-team: '{level}{vPrefix}&f{team}&7 {player}{vSuffix} {message}'
+format-chat-spectator: '{level}{vPrefix}&7[SPECTATOR] {player}{vSuffix}: {message}'
+format-sb-health:
+- '&c❤'
+- '&aCan'
+format-sb-date: dd/MM/yyyy
+format-sb-team-generic: '{TeamColor}{TeamLetter}&f {TeamName}: {TeamStatus}'
+format-sb-team-eliminated: '&c&l✘'
+format-sb-bed-destroyed: '&a{remainingPlayers}'
+format-sb-team-alive: '&a&l✓'
+format-sb-generator-timer: mm:ss
+format-sb-you: '&7 SEN'
+format-action-tracking: '&fHedef: {team} &f- Mesafe: {distance}m'
+format-winner-team: '      {TeamColor}{TeamName} &7- {members}'
+format-winner-solo: '                 {TeamColor}{TeamName} &7- {members}'
+format-tier1: I
+format-tier2: II
+format-tier3: III
+format-despawnable-health: '▮ '
+format-stats-time: dd/MM/yyyy HH:mm
+format-papi-player-team: '{TeamColor}[{TeamName}]'
+format-papi-player-shout: '&6[HERKES]'
+format-papi-player-spectator: '&7[SEYIRCI]'
+meaning-full: Tam
+meaning-shout: Herkes
+meaning-nobody: Kimse
+meaning-never: Asla
+meaning-iron-singular: Demir
+meaning-iron-plural: Demir
+meaning-gold-singular: Altın
+meaning-gold-plural: Altın
+meaning-emerald-singular: Zümrüt
+meaning-emerald-plural: Zümrüt
+meaning-diamond-singular: Elmas
+meaning-diamond-plural: Elmas
+meaning-vault-singular: ₺
+meaning-vault-plural: ₺
+interact-cant-place: '{prefix}&cBuraya blok koyamazsın!'
+interact-cant-break: '{prefix}&cSadece oyuncular tarafından yerleştirilen blokları
+  kırabilirsin!'
+interact-cant-destroy-bed: '&cKendi yatağını kıramazsın!'
+interact-bed-destroy-chat: |2
+
+  &f&lYATAK KIRMA > {TeamColor}{TeamName} Yatak&7, {PlayerColor}{PlayerName}&7 tarafından parçalandı!
+interact-bed-destroy-title: '&cYATAK KIRILDI'
+interact-bed-destroy-subtitle: '&fArtık yeniden doğamayacaksın!'
+interact-bed-destroy-team: '&f&lBED DESTRUCTION > &7Yatağın {PlayerColor}{PlayerName}&7
+  tarafından yok edildi!'
+interact-cant-open-chest: '&cElenmemiş bir takımın sandığını açamazsın!'
+interact-invisibility-removed-damaged: '&cYou are no longer invisible because you
+  have taken damage!'
+player-die-void-regular: '{PlayerColor}{PlayerName} &7boşluğa düştü.'
+player-die-void-final: '{PlayerColor}{PlayerName} &7boşluğa düştü. &b&lFINAL KILL!'
+player-die-knocked-void-regular: '{PlayerColor}{PlayerName} &7 adlı oyuncu {KillerColor}{KillerName}&7
+  tarafından boşluğa atıldı.'
+player-die-knocked-void-final: '{PlayerColor}{PlayerName} &7adlı oyuncu {KillerColor}{KillerName}&7
+  tarafından boşluğa atıldı. &b&lFINAL KILL!'
+player-die-pvp-log-out-regular: '{PlayerColor}{PlayerName} &7adlı oyuncu {KillerColor}{KillerName}&7
+  ile savaşırken oyundan ayrıldı.'
+player-die-pvp-log-out-final: '{PlayerColor}{PlayerName} &7adlı oyuncu {KillerColor}{KillerName}&7
+  ile savaşırken oyundan ayrıldı. &b&lFINAL KILL!'
+player-die-knocked-fall-regular: '{PlayerColor}{PlayerName} &7adlı oyuncu {KillerColor}{KillerName}&7
+  tarafından uçuruldu.'
+player-die-knocked-fall-final: '{PlayerColor}{PlayerName} &7adlı oyuncu {KillerColor}{KillerName}&7
+  tarafından uçuruldu. &b&lFINAL KILL!'
+player-die-bomb-regular: '{PlayerColor}{PlayerName} &7adlı oyuncu {KillerColor}{KillerName}&7
+  tarafından bombalandı.'
+player-die-bomb-final: '{PlayerColor}{PlayerName} &7adlı oyuncu {KillerColor}{KillerName}&7
+  tarafından bombalandı. &b&lFINAL KILL!'
+player-die-bomb2-regular: '{PlayerColor}{PlayerName} &7bombalandı.'
+player-die-bomb2-final: '{PlayerColor}{PlayerName} &7bombalandı. &b&lFINAL KILL!'
+player-die-attack-regular: '{PlayerColor}{PlayerName} &7adlı oyuncu {KillerColor}{KillerName}&7
+  tarafından öldürüldü.'
+player-die-attack-final: '{PlayerColor}{PlayerName} &7adlı oyuncu {KillerColor}{KillerName}&7
+  tarafından öldürüldü. &b&lFINAL KILL!'
+player-die-unknown-regular: '{PlayerColor}{PlayerName} &7öldü.'
+player-die-unknown-final: '{PlayerColor}{PlayerName} &7öldü. &b&lFINAL KILL!'
+player-die-shoot-regular: '{PlayerColor}{PlayerName} &7adlı oyuncu {KillerColor}{KillerName}&7
+  tarafından ok ile vuruldu.'
+player-die-shoot-final: '{PlayerColor}{PlayerName} &7adlı oyuncu {KillerColor}{KillerName}&7
+  tarafından ok ile vuruldu. &b&lFINAL KILL!'
+player-die-bedbug-regular: '{PlayerColor}{PlayerName} &7adlı oyuncu {KillerColor}{KillerTeamName}
+  Takım&7''ın Yatak Böceği tarafından katledildi!'
+player-die-bedbug-final: '{PlayerColor}{PlayerName} &7adlı oyuncu {KillerColor}{KillerTeamName}
+  Takım&7''ın Yatak Böceği tarafından katledildi! &b&lFINAL KILL!'
+player-die-golem-regular: '{PlayerColor}{PlayerName} &7adlı oyuncu {KillerColor}{KillerTeamName}
+  Takım&7''ın Demir Golemi tarafından katledildi!'
+player-die-golem-final: '{PlayerColor}{PlayerName} &7adlı oyuncu {KillerColor}{KillerTeamName}
+  Takım&7''ın Demir Golemi tarafından katledildi! &b&lFINAL KILL!'
+player-loot-diamond: '{prefix}&b+{amount} {meaning}'
+player-loot-emerald: '{prefix}&a+{amount} {meaning}'
+player-loot-iron: '{prefix}&f+{amount} {meaning}'
+player-loot-gold: '{prefix}&6+{amount} {meaning}'
+player-respawn-title: '&cÖLDÜN!'
+player-respawn-subtitle: '&c{time} &esaniye sonra yeniden doğacaksın!'
+player-respawn-timer-chat: '{prefix}&e{time} &esaniye sonra yeniden doğacaksın!'
+player-respawned-title: '&aYENİDEN DOĞDUN!'
+player-eliminated-chat: '{prefix}&cOyundan elendin!'
+player-hit-bow: '{prefix}{TeamColor}{PlayerName} &7 adlı oyuncu &c{amount} &7cana
+  sahip!'
+game-end-game-over-title: '&c&lOYUN BİTTİ'
+game-end-victory-title: '&6&lGALİBİYET!'
+game-end-winner-team: '{prefix}{TeamColor}{TeamName} &aoyunu kazandı!'
+game-end-top-chat:
+- '&a▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬'
+- '&f                                   &l&cBed&r&lWars'
+- ''
+- '{winnerFormat}'
+- ''
+- ''
+- '&6                      &6⭐ &l1. Oyuncu &7- {topTeamColor}{topPlayerDisplayName}
+  &7- &l{topValue} &7öldürme'
+- '&e                        &l2. Oyuncu &7- {topTeamColor}{topPlayerDisplayName}
+  &7- &l{topValue} &7öldürme'
+- '&c                        &l3. Oyuncu &7- {topTeamColor}{topPlayerDisplayName}
+  &7- &l{topValue} &7öldürme'
+- ''
+- '&a▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬'
+bed-hologram-defend: '&c&lYatağını savun!'
+bed-hologram-destroyed: '&c&lYatağın kırıldı!'
+npc-team-upgrades: '&bTAKIM YÜKSELTMELERİ,&e&lSAĞ TIKLA'
+npc-solo-upgrades: '&bOYUNCU YÜKSELTMELERİ,&e&lSAĞ TIKLA'
+npc-team-shop: '&bTAKIM MARKETİ,&e&lSAĞ TIKLA'
+npc-solo-shop: '&bEŞYA MARKETİ,&e&lSAĞ TIKLA'
+team-eliminated: |2
+
+  &f&lTAKIM ELENDİ > {TeamColor}{TeamName} Takım &celendi!
+next-event-beds-destroy: '&cYatak Kırma'
+next-event-diamondII: '&fElmas II'
+next-event-diamondIII: '&fElmas III'
+next-event-dragon-spawn: '&fEjderha Saldırısı'
+next-event-emeraldII: '&fZümrüt II'
+next-event-emeraldIII: '&fZümrüt III'
+next-event-game-end: '&4Oyun Sonu'
+next-event-beds-destroy-title: '&cYATAK KIRMA!'
+next-event-beds-destroy-sub-title: '&fTüm yataklar parçalandı!'
+next-event-beds-destroy-chat: '&c&lTüm yataklar parçalandı!'
+next-event-sudden-death-title: '&cEjderha Saldırısı'
+next-event-sudden-death-sub-title: ''
+next-event-sudden-death-chat: '&cEJDERHA SALDIRISI: &6&b{TeamDragons} {TeamColor}{TeamName}
+  Ejderha!'
+xp-reward-per-minute: '{prefix}&6+{xp} BedWars puanı kazanıldı (Oynama Süresi)'
+xp-reward-game-win: '{prefix}&6+{xp} BBedWars puanı kazanıldı (Galibiyet)'
+xp-reward-per-teammate: '{prefix}&6+{xp} BedWars puanı kazanıldı (Takım Yardımı)'
+xp-reward-bed-destroyed: '{prefix}&6+{xp} BedWars puanı kazanıldı (Yatak Kırma)'
+xp-reward-regular-kill: '{prefix}&6+{xp} BedWars puanı kazanıldı (Öldürme)'
+xp-reward-final-kill: '{prefix}&6+{xp} BedWars puanı kazanıldı (Final Kill)'
+money-reward-per-teammate: '{prefix}&6+{money} Para (Oynama Süresi)'
+money-reward-game-win: '{prefix}&6+{money} Para (Galibiyet)'
+money-reward-per-minute: '{prefix}&6+{money} Para (Takım Yardımı)'
+money-reward-bed-destroyed: '{prefix}&6+{money} Para (Yatak Kırma)'
+money-reward-final-kill: '{prefix}&6+{money} Para (Final Kill)'
+money-reward-regular-kill: '{prefix}&6+{money} Para (Öldürme)'
+lobby-items-stats-name: '&eİstatistikler'
+lobby-items-stats-lore:
+- '&fİstatistiklerini görmek için sağ tıkla!'
+lobby-items-arena-selector-name: '&eHarita Seçici'
+lobby-items-arena-selector-lore:
+- '&fHarita seçmek için sağ tıkla!'
+lobby-items-leave-name: '&eLobiye Dön'
+lobby-items-leave-lore:
+- '&fBedWars''tan ayrılmak için sağ tıkla!'
+pre-game-items-stats-name: '&eİstatistikler'
+pre-game-items-stats-lore:
+- '&fİstatistiklerini görmek için sağ tıkla!'
+pre-game-items-leave-name: '&eLobiye Dön'
+pre-game-items-leave-lore:
+- '&Lobiye dönmek için sağ tıkla!'
+spectator-items-teleporter-name: '&eIşınlayıcı'
+spectator-items-leave-name: '&eLobiye Dön'
+spectator-items-leave-lore:
+- '&fHaritadan ayrılmak için sağ tıkla!'
+stats-inv-name: '&8{player} İstatistikleri'
+stats-wins-name: '&6Galibiyet'
+stats-wins-lore:
+- '&f{wins}'
+stats-losses-name: '&6Malubiyet'
+stats-losses-lore:
+- '&f{losses}'
+stats-kills-name: '&6Öldürme'
+stats-kills-lore:
+- '&f{kills}'
+stats-deaths-name: '&6Ölüm'
+stats-deaths-lore:
+- '&f{deaths}'
+stats-final-kills-name: '&6Final Öldürme'
+stats-final-kills-lore:
+- '&f{finalKills}'
+stats-final-deaths-name: '&6Final Ölüm'
+stats-final-deaths-lore:
+- '&f{finalDeaths}'
+stats-beds-destroyed-name: '&6Yatak Kırma'
+stats-beds-destroyed-lore:
+- '&f{bedsDestroyed}'
+stats-first-play-name: '&6İlk Oyun'
+stats-first-play-lore:
+- '&f{firstPlay}'
+stats-last-play-name: '&6Son Oyun'
+stats-last-play-lore:
+- '&f{lastPlay}'
+stats-games-played-name: '&6Oynanan Oyun'
+stats-games-played-lore:
+- '&f{gamesPlayed}'
+sidebar:
+  lobby:
+  - '&f&lBED WARS,&f&lBED WARS,&f&lBED WARS,&f&lBED WARS,&f&lBED WARS,&f&lBED WARS,&f&lBED
+    WARS,&f&l{poweredBy},&f&l{poweredBy},&f&l{poweredBy},&e&lBED WARS,&e&lBED WARS,&e&lBED
+    WARS,&e&lBED WARS,&e&lBED WARS,&e&lBED WARS,&e&lBED WARS,&e&l{poweredBy},&e&l{poweredBy},&e&l{poweredBy}'
+  - '&fSeviyen: {level}'
+  - ''
+  - '&fİlerleme: &a{currentXp}&7/&b{requiredXp}'
+  - '{progress}'
+  - ''
+  - '&7{player}'
+  - ''
+  - '&fPara: &a{money}'
+  - ''
+  - '&fGalibiyet: &a{wins}'
+  - '&fToplam Öldürme: &a{kills}'
+  - ''
+  - '&e{serverIp}'
+  Default:
+    waiting:
+      player:
+      - '&f&lBED WARS,&f&lBED WARS,&f&lBED WARS,&f&lBED WARS,&f&lBED WARS,&f&lBED
+        WARS,&f&lBED WARS,&f&l{poweredBy},&f&l{poweredBy},&f&l{poweredBy},&e&lBED
+        WARS,&e&lBED WARS,&e&lBED WARS,&e&lBED WARS,&e&lBED WARS,&e&lBED WARS,&e&lBED
+        WARS,&e&l{poweredBy},&e&l{poweredBy},&e&l{poweredBy}'
+      - '&7{date} &8{server}'
+      - ''
+      - '&fHarita: &a{map}'
+      - ''
+      - '&fOyuncular: &a{on}/{max}'
+      - ''
+      - '&fBekleniyor,&fBekleniyor.,&fBekleniyor..,&fBekleniyor...'
+      - ''
+      - '&fTür: &a{group}'
+      - '&fSürüm: &7{version}'
+      - ''
+      - '&e{serverIp}'
+      spectator:
+      - '&f&lBED WARS,&f&lBED WARS,&f&lBED WARS,&f&lBED WARS,&f&lBED WARS,&f&lBED
+        WARS,&f&lBED WARS,&f&l{poweredBy},&f&l{poweredBy},&f&l{poweredBy},&e&lBED
+        WARS,&e&lBED WARS,&e&lBED WARS,&e&lBED WARS,&e&lBED WARS,&e&lBED WARS,&e&lBED
+        WARS,&e&l{poweredBy},&e&l{poweredBy},&e&l{poweredBy}'
+      - '&7{date} &8{server}'
+      - '&o&7Spectating'
+      - '&fHarita: &a{map}'
+      - ''
+      - '&fOyuncular: &a{on}/{max}'
+      - ''
+      - '&fBekleniyor,&fBekleniyor.,&fBekleniyor..,&fBekleniyor...'
+      - ''
+      - '&fTür: &a{group}'
+      - '&fSürüm: &7{version}'
+      - ''
+      - '&e{serverIp}'
+    starting:
+      player:
+      - '&f&lBED WARS,&f&lBED WARS,&f&lBED WARS,&f&lBED WARS,&f&lBED WARS,&f&lBED
+        WARS,&f&lBED WARS,&f&l{poweredBy},&f&l{poweredBy},&f&l{poweredBy},&e&lBED
+        WARS,&e&lBED WARS,&e&lBED WARS,&e&lBED WARS,&e&lBED WARS,&e&lBED WARS,&e&lBED
+        WARS,&e&l{poweredBy},&e&l{poweredBy},&e&l{poweredBy}'
+      - '&7{date} &8{server}'
+      - ''
+      - '&fHarita: &a{map}'
+      - ''
+      - '&fOyuncular: &a{on}/{max}'
+      - ''
+      - '&f&a{time}s sonra başlatılıyor'
+      - ''
+      - '&fTür: &a{group}'
+      - '&fSürüm: &7{version}'
+      - ''
+      - '&e{serverIp}'
+      spectator:
+      - '&f&lBED WARS,&f&lBED WARS,&f&lBED WARS,&f&lBED WARS,&f&lBED WARS,&f&lBED
+        WARS,&f&lBED WARS,&f&l{poweredBy},&f&l{poweredBy},&f&l{poweredBy},&e&lBED
+        WARS,&e&lBED WARS,&e&lBED WARS,&e&lBED WARS,&e&lBED WARS,&e&lBED WARS,&e&lBED
+        WARS,&e&l{poweredBy},&e&l{poweredBy},&e&l{poweredBy}'
+      - '&7{date} &8{server}'
+      - '&o&7Spectating'
+      - '&fHarita: &a{map}'
+      - ''
+      - '&fOyuncular: &a{on}/{max}'
+      - ''
+      - '&f&a{time}s sonra başlatılıyor'
+      - ''
+      - '&fTür: &a{group}'
+      - '&fSürüm: &7{version}'
+      - ''
+      - '&e{serverIp}'
+    playing:
+      alive:
+      - '&f&lBED WARS,&f&lBED WARS,&f&lBED WARS,&f&lBED WARS,&f&lBED WARS,&f&lBED
+        WARS,&f&lBED WARS,&f&l{poweredBy},&f&l{poweredBy},&f&l{poweredBy},&e&lBED
+        WARS,&e&lBED WARS,&e&lBED WARS,&e&lBED WARS,&e&lBED WARS,&e&lBED WARS,&e&lBED
+        WARS,&e&l{poweredBy},&e&l{poweredBy},&e&l{poweredBy}'
+      - '&7{date}'
+      - ''
+      - '&a{time} sonra &f{nextEvent}'
+      - ''
+      - '{team}'
+      - '{team}'
+      - '{team}'
+      - '{team}'
+      - '{team}'
+      - '{team}'
+      - '{team}'
+      - '{team}'
+      - '{team}'
+      - '{team}'
+      - ''
+      - '&e{serverIp}'
+      spectator:
+      - '&f&lBED WARS,&f&lBED WARS,&f&lBED WARS,&f&lBED WARS,&f&lBED WARS,&f&lBED
+        WARS,&f&lBED WARS,&f&l{poweredBy},&f&l{poweredBy},&f&l{poweredBy},&e&lBED
+        WARS,&e&lBED WARS,&e&lBED WARS,&e&lBED WARS,&e&lBED WARS,&e&lBED WARS,&e&lBED
+        WARS,&e&l{poweredBy},&e&l{poweredBy},&e&l{poweredBy}'
+      - '&7{date}'
+      - '&o&7Spectating {spectatorTarget}'
+      - '&a{time} sonra &f{nextEvent}'
+      - ''
+      - '{team}'
+      - '{team}'
+      - '{team}'
+      - '{team}'
+      - '{team}'
+      - '{team}'
+      - '{team}'
+      - '{team}'
+      - '{team}'
+      - '{team}'
+      - ''
+      - '&e{serverIp}'
+    restarting:
+      spectator:
+      - '&f&lBED WARS,&f&lBED WARS,&f&lBED WARS,&f&lBED WARS,&f&lBED WARS,&f&lBED
+        WARS,&f&lBED WARS,&f&l{poweredBy},&f&l{poweredBy},&f&l{poweredBy},&e&lBED
+        WARS,&e&lBED WARS,&e&lBED WARS,&e&lBED WARS,&e&lBED WARS,&e&lBED WARS,&e&lBED
+        WARS,&e&l{poweredBy},&e&l{poweredBy},&e&l{poweredBy}'
+      - '&7{date}'
+      - ''
+      - '&6Winner: {winnerTeamColor}{winnerTeamName} &6⭐'
+      - ''
+      - '&7&lTop Kills:'
+      - '&f{topTeamColor}{topPlayerDisplayName}&7 - &l{topValue}'
+      - '&f{topTeamColor}{topPlayerDisplayName}&7 - &l{topValue}'
+      - '&f{topTeamColor}{topPlayerDisplayName}&7 - &l{topValue}'
+      - '&f{topTeamColor}{topPlayerDisplayName}&7 - &l{topValue}'
+      - '&f{topTeamColor}{topPlayerDisplayName}&7 - &l{topValue}'
+      - '&f{topTeamColor}{topPlayerDisplayName}&7 - &l{topValue}'
+      - '&f{topTeamColor}{topPlayerDisplayName}&7 - &l{topValue}'
+      - '&f{topTeamColor}{topPlayerDisplayName}&7 - &l{topValue}'
+      - ''
+      - '&e{serverIp}'
+      winner-alive:
+      - '&f&lBED WARS,&f&lBED WARS,&f&lBED WARS,&f&lBED WARS,&f&lBED WARS,&f&lBED
+        WARS,&f&lBED WARS,&f&l{poweredBy},&f&l{poweredBy},&f&l{poweredBy},&e&lBED
+        WARS,&e&lBED WARS,&e&lBED WARS,&e&lBED WARS,&e&lBED WARS,&e&lBED WARS,&e&lBED
+        WARS,&e&l{poweredBy},&e&l{poweredBy},&e&l{poweredBy}'
+      - '&7{date}'
+      - ''
+      - '&6Winner: {winnerTeamColor}{winnerTeamName} &6⭐'
+      - ''
+      - '&7&lTop Kills:'
+      - '&f{topTeamColor}{topPlayerDisplayName}&7 - &l{topValue}'
+      - '&f{topTeamColor}{topPlayerDisplayName}&7 - &l{topValue}'
+      - '&f{topTeamColor}{topPlayerDisplayName}&7 - &l{topValue}'
+      - '&f{topTeamColor}{topPlayerDisplayName}&7 - &l{topValue}'
+      - '&f{topTeamColor}{topPlayerDisplayName}&7 - &l{topValue}'
+      - '&f{topTeamColor}{topPlayerDisplayName}&7 - &l{topValue}'
+      - '&f{topTeamColor}{topPlayerDisplayName}&7 - &l{topValue}'
+      - '&f{topTeamColor}{topPlayerDisplayName}&7 - &l{topValue}'
+      - ''
+      - '&e{serverIp}'
+      winner-eliminated:
+      - '&f&lBED WARS,&f&lBED WARS,&f&lBED WARS,&f&lBED WARS,&f&lBED WARS,&f&lBED
+        WARS,&f&lBED WARS,&f&l{poweredBy},&f&l{poweredBy},&f&l{poweredBy},&e&lBED
+        WARS,&e&lBED WARS,&e&lBED WARS,&e&lBED WARS,&e&lBED WARS,&e&lBED WARS,&e&lBED
+        WARS,&e&l{poweredBy},&e&l{poweredBy},&e&l{poweredBy}'
+      - '&7{date}'
+      - ''
+      - '&6Winner: {winnerTeamColor}{winnerTeamName} &6⭐'
+      - ''
+      - '&7&lTop Kills:'
+      - '&f{topTeamColor}{topPlayerDisplayName}&7 - &l{topValue}'
+      - '&f{topTeamColor}{topPlayerDisplayName}&7 - &l{topValue}'
+      - '&f{topTeamColor}{topPlayerDisplayName}&7 - &l{topValue}'
+      - '&f{topTeamColor}{topPlayerDisplayName}&7 - &l{topValue}'
+      - '&f{topTeamColor}{topPlayerDisplayName}&7 - &l{topValue}'
+      - '&f{topTeamColor}{topPlayerDisplayName}&7 - &l{topValue}'
+      - '&f{topTeamColor}{topPlayerDisplayName}&7 - &l{topValue}'
+      - '&f{topTeamColor}{topPlayerDisplayName}&7 - &l{topValue}'
+      - ''
+      - '&e{serverIp}'
+      loser:
+      - '&f&lBED WARS,&f&lBED WARS,&f&lBED WARS,&f&lBED WARS,&f&lBED WARS,&f&lBED
+        WARS,&f&lBED WARS,&f&l{poweredBy},&f&l{poweredBy},&f&l{poweredBy},&e&lBED
+        WARS,&e&lBED WARS,&e&lBED WARS,&e&lBED WARS,&e&lBED WARS,&e&lBED WARS,&e&lBED
+        WARS,&e&l{poweredBy},&e&l{poweredBy},&e&l{poweredBy}'
+      - '&7{date}'
+      - ''
+      - '&6Winner: {winnerTeamColor}{winnerTeamName} &6⭐'
+      - ''
+      - '&7&lTop Kills:'
+      - '&f{topTeamColor}{topPlayerDisplayName}&7 - &l{topValue}'
+      - '&f{topTeamColor}{topPlayerDisplayName}&7 - &l{topValue}'
+      - '&f{topTeamColor}{topPlayerDisplayName}&7 - &l{topValue}'
+      - '&f{topTeamColor}{topPlayerDisplayName}&7 - &l{topValue}'
+      - '&f{topTeamColor}{topPlayerDisplayName}&7 - &l{topValue}'
+      - '&f{topTeamColor}{topPlayerDisplayName}&7 - &l{topValue}'
+      - '&f{topTeamColor}{topPlayerDisplayName}&7 - &l{topValue}'
+      - '&f{topTeamColor}{topPlayerDisplayName}&7 - &l{topValue}'
+      - ''
+      - '&e{serverIp}'
+  Doubles:
+    playing:
+      alive:
+      - '&f&lBED WARS,&f&lBED WARS,&f&lBED WARS,&f&lBED WARS,&f&lBED WARS,&f&lBED
+        WARS,&f&lBED WARS,&f&l{poweredBy},&f&l{poweredBy},&f&l{poweredBy},&e&lBED
+        WARS,&e&lBED WARS,&e&lBED WARS,&e&lBED WARS,&e&lBED WARS,&e&lBED WARS,&e&lBED
+        WARS,&e&l{poweredBy},&e&l{poweredBy},&e&l{poweredBy}'
+      - '&7{date}'
+      - ''
+      - '&a{time} sonra &f{nextEvent}'
+      - ''
+      - '{team}'
+      - '{team}'
+      - '{team}'
+      - '{team}'
+      - '{team}'
+      - '{team}'
+      - '{team}'
+      - '{team}'
+      - ''
+      - '&e{serverIp}'
+      spectator:
+      - '&f&lBED WARS,&f&lBED WARS,&f&lBED WARS,&f&lBED WARS,&f&lBED WARS,&f&lBED
+        WARS,&f&lBED WARS,&f&l{poweredBy},&f&l{poweredBy},&f&l{poweredBy},&e&lBED
+        WARS,&e&lBED WARS,&e&lBED WARS,&e&lBED WARS,&e&lBED WARS,&e&lBED WARS,&e&lBED
+        WARS,&e&l{poweredBy},&e&l{poweredBy},&e&l{poweredBy}'
+      - '&7{date}'
+      - '&o&7Spectating {spectatorTarget}'
+      - '&a{time} sonra &f{nextEvent}'
+      - ''
+      - '{team}'
+      - '{team}'
+      - '{team}'
+      - '{team}'
+      - '{team}'
+      - '{team}'
+      - '{team}'
+      - '{team}'
+      - ''
+      - '&e{serverIp}'
+  3v3v3v3:
+    playing:
+      alive:
+      - '&f&lBED WARS,&f&lBED WARS,&f&lBED WARS,&f&lBED WARS,&f&lBED WARS,&f&lBED
+        WARS,&f&lBED WARS,&f&l{poweredBy},&f&l{poweredBy},&f&l{poweredBy},&e&lBED
+        WARS,&e&lBED WARS,&e&lBED WARS,&e&lBED WARS,&e&lBED WARS,&e&lBED WARS,&e&lBED
+        WARS,&e&l{poweredBy},&e&l{poweredBy},&e&l{poweredBy}'
+      - '&7{date}'
+      - ''
+      - '&a{time} sonra &f{nextEvent}'
+      - ''
+      - '{team}'
+      - '{team}'
+      - '{team}'
+      - '{team}'
+      - '{team}'
+      - '{team}'
+      - '{team}'
+      - '{team}'
+      - ''
+      - '&fÖldürme: &a{kills}'
+      - '&fFinal Öldürme: &a{finalKills}'
+      - '&fYatak Kırma: &a{beds}'
+      - ''
+      - '&e{serverIp}'
+      spectator:
+      - '&f&lBED WARS,&f&lBED WARS,&f&lBED WARS,&f&lBED WARS,&f&lBED WARS,&f&lBED
+        WARS,&f&lBED WARS,&f&l{poweredBy},&f&l{poweredBy},&f&l{poweredBy},&e&lBED
+        WARS,&e&lBED WARS,&e&lBED WARS,&e&lBED WARS,&e&lBED WARS,&e&lBED WARS,&e&lBED
+        WARS,&e&l{poweredBy},&e&l{poweredBy},&e&l{poweredBy}'
+      - '&7{date}'
+      - '&o&7Spectating {spectatorTarget}'
+      - '&a{time} sonra &f{nextEvent}'
+      - ''
+      - '{team}'
+      - '{team}'
+      - '{team}'
+      - '{team}'
+      - '{team}'
+      - '{team}'
+      - '{team}'
+      - '{team}'
+      - ''
+      - '&fÖldürme: &a{kills}'
+      - '&fFinal Öldürme: &a{finalKills}'
+      - '&fYatak Kırma: &a{beds}'
+      - ''
+      - '&e{serverIp}'
+  4v4v4v4:
+    playing:
+      alive:
+      - '&f&lBED WARS,&f&lBED WARS,&f&lBED WARS,&f&lBED WARS,&f&lBED WARS,&f&lBED
+        WARS,&f&lBED WARS,&f&l{poweredBy},&f&l{poweredBy},&f&l{poweredBy},&e&lBED
+        WARS,&e&lBED WARS,&e&lBED WARS,&e&lBED WARS,&e&lBED WARS,&e&lBED WARS,&e&lBED
+        WARS,&e&l{poweredBy},&e&l{poweredBy},&e&l{poweredBy}'
+      - '&7{date}'
+      - ''
+      - '&a{time} sonra &f{nextEvent}'
+      - ''
+      - '{team}'
+      - '{team}'
+      - '{team}'
+      - '{team}'
+      - ''
+      - '&fÖldürme: &a{kills}'
+      - '&fFinal Öldürme: &a{finalKills}'
+      - '&fYatak Kırma: &a{beds}'
+      - ''
+      - '&e{serverIp}'
+      spectator:
+      - '&f&lBED WARS,&f&lBED WARS,&f&lBED WARS,&f&lBED WARS,&f&lBED WARS,&f&lBED
+        WARS,&f&lBED WARS,&f&l{poweredBy},&f&l{poweredBy},&f&l{poweredBy},&e&lBED
+        WARS,&e&lBED WARS,&e&lBED WARS,&e&lBED WARS,&e&lBED WARS,&e&lBED WARS,&e&lBED
+        WARS,&e&l{poweredBy},&e&l{poweredBy},&e&l{poweredBy}'
+      - '&7{date}'
+      - '&o&7Spectating {spectatorTarget}'
+      - '&a{time} sonra &f{nextEvent}'
+      - ''
+      - '{team}'
+      - '{team}'
+      - '{team}'
+      - '{team}'
+      - ''
+      - '&fÖldürme: &a{kills}'
+      - '&fFinal Öldürme: &a{finalKills}'
+      - '&fYatak Kırma: &a{beds}'
+      - ''
+      - '&e{serverIp}'
+format-tab:
+  lobby:
+    header:
+    - '                                                                                                        '
+    - '&a{serverIp}'
+    - ''
+    footer:
+    - ''
+    - '&fThere are {on} players on this lobby'
+    - Powered by {poweredBy},&a{serverIp}
+    - ''
+    prefix:
+    - '{vPrefix}'
+    suffix:
+    - ' {level}'
+  waiting:
+    player:
+      header:
+      - '                                                                                                        '
+      - '&a{serverIp}'
+      - ''
+      footer:
+      - ''
+      - Waiting for more players,Waiting for more players.,Waiting for more players.., Waiting for more players...
+      - '&f{on}&a/&f{max}'
+      - ''
+      - '&a{serverIp}'
+      - '&fPowered by {poweredBy}'
+      - ''
+      prefix:
+      - '{vPrefix}'
+      suffix:
+      - ' {level}'
+    spectator:
+      header:
+      - '                                                                                                        '
+      - '&a{serverIp}'
+      - ''
+      footer:
+      - ''
+      - '&7&oYou are spectating'
+      - Waiting for more players,Waiting for more players.,Waiting for more players.., Waiting for more players...
+      - '&f{on}&a/&f{max}'
+      - ''
+      - '&a{serverIp}'
+      - '&fPowered by {poweredBy}'
+      - ''
+      prefix:
+      - '{vPrefix}'
+      suffix:
+      - ' {level}'
+  starting:
+    player:
+      header:
+      - '                                                                                                        '
+      - '&a{serverIp}'
+      - '&7{date}'
+      - '&7Map: &f{map} &7Mode: &f{group}'
+      - ''
+      footer:
+      - ''
+      - '&fStarting in &a{time} &fseconds,&fStarting in &a{time} &fseconds.,&fStarting
+        in &a{time} &fseconds..,&fStarting in &a{time} &fseconds..'
+      - '&f{on}&a/&f{max}'
+      - ''
+      - '&a{serverIp}'
+      - '&fPowered by {poweredBy}'
+      - ''
+      prefix:
+      - '{vPrefix} '
+      suffix:
+      - ' {level}'
+    spectator:
+      header:
+      - '                                                                                                        '
+      - '&a{serverIp}'
+      - '&7{date}'
+      - '&7Map: &f{map} &7Mode: &f{group}'
+      - ''
+      footer:
+      - ''
+      - '&fStarting in &a{time} &fseconds,&fStarting in &a{time} &fseconds.,&fStarting
+        in &a{time} &fseconds..,&fStarting in &a{time} &fseconds..'
+      - '&f{on}&a/&f{max}'
+      - ''
+      - '&a{serverIp}'
+      - '&fPowered by {poweredBy}'
+      - ''
+  playing:
+    alive:
+      header:
+      - '                                                                                                        '
+      - '&a{serverIp}'
+      - '&7{date}'
+      - '&7Map: &f{map} &7Mode: &f{group}'
+      - ''
+      - '{nextEvent} in {time}'
+      - ''
+      footer:
+      - ''
+      - '&fYou are playing on the {teamColor}{teamName} Team'
+      - '&a{serverIp}'
+      - '&fPowered by {poweredBy}'
+      - ''
+      prefix:
+      - '{teamColor}{teamName} '
+      suffix:
+      - ' {vPrefix}'
+      - ' {level}'
+    eliminated:
+      header:
+      - '                                                                                                        '
+      - '&a{serverIp}'
+      - '&7{date}'
+      - '&7Map: &f{map} &7Mode: &f{group}'
+      - ''
+      - '{nextEvent} in {time}'
+      - ''
+      - '&7&oAYou''ve been eliminated,&f&oAYou''ve been eliminated'
+      footer:
+      - ''
+      - '&fYou have played in the {teamColor}{teamName} Team'
+      - '&a{serverIp}'
+      - '&fPowered by {poweredBy}'
+      - ''
+      prefix:
+      - '&f&oSpectator '
+      suffix:
+      - ' &c&oEliminated {teamColor}&o{teamName}'
+      - ' {teamColor}&oEliminated {vPrefix}'
+      - '{teamColor}&oEliminated {level}'
+    spectator:
+      header:
+      - '                                                                                                        '
+      - '&a{serverIp}'
+      - '&7{date}'
+      - '&7Map: &f{map} &7Mode: &f{group}'
+      - ''
+      - '{nextEvent} in {time}'
+      - ''
+      footer:
+      - ''
+      - '&fPowered by {poweredBy}'
+      - ''
+      prefix:
+      - '&f&oSpectator '
+      suffix:
+      - ' {vPrefix}'
+      - ' {level}'
+  restarting:
+    winner-alive:
+      header:
+      - '                                                                                                        '
+      - '&6⭐ {winnerTeamColor}&lYour team won the game! &6⭐'
+      - '&7{date}'
+      - '&7Map: &f{map} &7Mode: &f{group}'
+      - ''
+      footer:
+      - ''
+      - '&6&lYou won in the {teamColor}&l{teamName} Team&6&l!,&6&lYou won in the {teamColor}&l{teamName}
+        Team&6&l!,&f&lYou won in the {teamColor}&l{teamName} Team&f&l!'
+      - '&7Statistics from this match'
+      - '&eKills: &f{kills} &8| &eFinal Kills: &f{finalKills} &8| &eBeds Destroyed:
+        &f{beds} &8| &eDeaths: &f{deaths},&eKills: &7{kills} &8| &eFinal Kills: &7{finalKills}
+        &8| &eBeds Destroyed: &7{beds} &8| &eDeaths: &7{deaths}'
+      - ''
+      - '&fThanks for playing {player}!'
+      - '&a{serverIp}'
+      - '&fPowered by {poweredBy}'
+      - ''
+      prefix:
+      - '&6&l⭐ {teamColor}{teamName} '
+      suffix:
+      - ' {vPrefix}'
+      - ' {level}'
+    winner-dead:
+      header:
+      - '                                                                                                        '
+      - '&6⭐ {winnerTeamColor}&l{winnerTeamName} Team won the game! &6⭐'
+      - '&7{date}'
+      - '&7Map: &f{map} &7Mode: &f{group}'
+      - ''
+      footer:
+      - ''
+      - '&6&lYou won in the {teamColor}&l{teamName} Team&6&l!,&6&lYou won in the {teamColor}&l{teamName}
+        Team&6&l!,&f&lYou won in the {teamColor}&l{teamName} Team&f&l!'
+      - '&7Statistics from this match'
+      - '&eKills: &f{kills} &8| &eFinal Kills: &f{finalKills} &8| &eBeds Destroyed:
+        &f{beds} &8| &eDeaths: &f{deaths},&eKills: &7{kills} &8| &eFinal Kills: &7{finalKills}
+        &8| &eBeds Destroyed: &7{beds} &8| &eDeaths: &7{deaths}'
+      - '&fThanks for playing {player}!'
+      - '&a{serverIp}'
+      - '&fPowered by {poweredBy}'
+      - ''
+      prefix:
+      - '&6&l⭐ {teamColor}{teamName} '
+      suffix:
+      - ' {vPrefix}'
+      - ' &c&oEliminated'
+      - ' {level}'
+      - ' &c&oEliminated'
+    loser:
+      header:
+      - '                                                                                                        '
+      - '&6⭐ {winnerTeamColor}&l{winnerTeamName} Team won the game! &6⭐'
+      - '&7{date}'
+      - '&7Map: &f{map} &7Mode: &f{group}'
+      - ''
+      footer:
+      - ''
+      - '&fYou have lost in the {teamColor}{teamName} Team'
+      - '&7Statistics from this match'
+      - '&eKills: &f{kills} &8| &eFinal Kills: &f{finalKills} &8| &eBeds Destroyed:
+        &f{beds} &8| &eDeaths: &f{deaths},&eKills: &7{kills} &8| &eFinal Kills: &7{finalKills}
+        &8| &eBeds Destroyed: &7{beds} &8| &eDeaths: &7{deaths}'
+      - '&fThanks for playing {player}!'
+      - '&a{serverIp}'
+      - '&fPowered by {poweredBy}'
+      - ''
+      prefix:
+      - '{teamColor}{teamName} '
+      suffix:
+      - ' {vPrefix}'
+      - ' &c&oEliminated'
+      - ' {level}'
+      - ' &c&oEliminated'
+    spectator:
+      header:
+      - '                                                                                                        '
+      - '&a{serverIp}'
+      - '&6⭐ {winnerTeamColor}&l{winnerTeamName} Team won the game! &6⭐'
+      - '&7{date}'
+      - '&7Map: &f{map} &7Mode: &f{group}'
+      - ''
+      - '&fThanks for playing {player}!'
+      - ''
+      footer:
+      - ''
+      - '&fPowered by {poweredBy}'
+      - ''
+      prefix:
+      - '&f&oSpectator '
+      suffix:
+      - ' {vPrefix}'
+      - ' {level}'
+shop-items-messages:
+  inventory-name: '&8Hızlı Alım'
+  quick-buy-add-inventory-name: '&8Hızlı Alıma ekleniyor...'
+  separator-item-name: '&8⇧ Kategoriler'
+  separator-item-lore:
+  - '&8⇩ Eşyalar'
+  quick-buy-item-name: '&bHızlı Alım'
+  quick-buy-item-lore: []
+  quick-buy-empty-item-name: '&cBoş slot!'
+  quick-buy-empty-item-lore:
+  - '&7Bu bir Hızlı Alım slotu!'
+  - '&7Buraya eşya eklemek için marketteki'
+  - '&7bir eşyaya eğilme tuşu ile tıkla!'
+  can-buy-color: '&a'
+  cant-buy-color: '&c'
+  blocks-category:
+    inventory-name: '&8Bloklar'
+    category-item-name: '&aBloklar'
+    category-item-lore:
+    - '&eGörmek için tıkla!'
+    content-item-wool-name: '{color}Yün'
+    content-item-wool-lore:
+    - '&7Ücret: &f{cost} {currency}'
+    - ''
+    - '&7Düşman adalara yol yapmak'
+    - '&7için ideal. Takımının'
+    - '&7rengine bürünür.'
+    - ''
+    - '{quick_buy}'
+    - '{buy_status}'
+    content-item-clay-name: '{color}Kil'
+    content-item-clay-lore:
+    - '&7Ücret: {cost} {currency}'
+    - ''
+    - '&7Yatağını savunmak için harika.'
+    - ''
+    - '{quick_buy}'
+    - '{buy_status}'
+    content-item-glass-name: '{color}Cam'
+    content-item-glass-lore:
+    - '&7Ücret: {cost} {currency}'
+    - ''
+    - '&7Patlamaları etkisiz kılar.'
+    - ''
+    - '{quick_buy}'
+    - '{buy_status}'
+    content-item-stone-name: '{color}End Taşı'
+    content-item-stone-lore:
+    - '&7Ücret: {cost} {currency}'
+    - ''
+    - '&7Sert bir savunma.'
+    - ''
+    - '{quick_buy}'
+    - '{buy_status}'
+    content-item-ladder-name: '{color}Merdiven'
+    content-item-ladder-lore:
+    - '&7Ücret: {cost} {currency}'
+    - ''
+    - '&7Ağaçlarda mahsur kalan'
+    - '&7kedileri kurtarmak için süper'
+    - ''
+    - '{quick_buy}'
+    - '{buy_status}'
+    content-item-obsidian-name: '{color}Obsidyen'
+    content-item-obsidian-lore:
+    - '&7Ücret: {cost} {currency}'
+    - ''
+    - '&7Rakiplerin senden nefret edecek!'
+    - ''
+    - '{quick_buy}'
+    - '{buy_status}'
+    content-item-wood-name: '{color}Tahta'
+    content-item-wood-lore:
+    - '&7Ücret: {cost} {currency}'
+    - ''
+    - '&7Yatak savunması için ucuz bir çözüm.'
+    - ''
+    - '{quick_buy}'
+    - '{buy_status}'
+  melee-category:
+    inventory-name: '&8Yakın Saldırı'
+    category-item-name: '&aYakın Saldırı'
+    category-item-lore:
+    - '&eGörmek için tıkla!'
+    content-item-stone-sword-name: '{color}Taş Kılıç'
+    content-item-stone-sword-lore:
+    - '&7Ücret: {cost} {currency}'
+    - ''
+    - '{quick_buy}'
+    - '{buy_status}'
+    content-item-iron-sword-name: '{color}Demir Kılıç'
+    content-item-iron-sword-lore:
+    - '&7Ücret: {cost} {currency}'
+    - ''
+    - '{quick_buy}'
+    - '{buy_status}'
+    content-item-diamond-sword-name: '{color}Elmas Kılıç'
+    content-item-diamond-sword-lore:
+    - '&7Ücret: {cost} {currency}'
+    - ''
+    - '{quick_buy}'
+    - '{buy_status}'
+    content-item-stick-name: '{color}Çubuk (Savurma I)'
+    content-item-stick-lore:
+    - '&7Ücret: {cost} {currency}'
+    - ''
+    - '{quick_buy}'
+    - '{buy_status}'
+  armor-category:
+    inventory-name: '&8Zırh'
+    category-item-name: '&8Zırh'
+    category-item-lore:
+    - '&eGörmek için tıkla!'
+    content-item-chainmail-name: '{color}Zincir Zırh'
+    content-item-chainmail-lore:
+    - '&7Ücret: {cost} {currency}'
+    - ''
+    - '&7Ölünce kaybolmayan'
+    - '&7zincir pantolon ve ayakkabı'
+    - ''
+    - ''
+    - '{quick_buy}'
+    - '{buy_status}'
+    content-item-iron-armor-name: '{color}Demir Zırh'
+    content-item-iron-armor-lore:
+    - '&7Ücret: {cost} {currency}'
+    - ''
+    - '&7Ölünce kaybolmayan'
+    - '&7demir pantolon ve ayakkabı'
+    - ''
+    - ''
+    - '{quick_buy}'
+    - '{buy_status}'
+    content-item-diamond-armor-name: '{color}Elmas Zırh'
+    content-item-diamond-armor-lore:
+    - '&7Ücret: {cost} {currency}'
+    - ''
+    - '&7Ölünce kaybolmayan'
+    - '&7elmas pantolon ve ayakkabı'
+    - ''
+    - ''
+    - '{quick_buy}'
+    - '{buy_status}'
+  tools-category:
+    inventory-name: '&8Alet'
+    category-item-name: '&8Alet'
+    category-item-lore:
+    - '&eGörmek için tıkla!'
+    content-item-shears-name: '{color}Makas'
+    content-item-shears-lore:
+    - '&7Ücret: {cost} {currency}'
+    - ''
+    - '&7Ölünce kaybolmayan bir makas. Yünlerden'
+    - '&7kurtulmak için dört dörtlük.'
+    - ''
+    - ''
+    - '{quick_buy}'
+    - '{buy_status}'
+    content-item-pickaxe-name: '{color}Kazma {tier}'
+    content-item-pickaxe-lore:
+    - '&7Ücret: {cost} {currency}'
+    - '&7Seviye: &e{tier}'
+    - ''
+    - '&7Bu bir yükseltilebilir eşya.'
+    - '&7Her öldüğünde'
+    - 1 seviye düşer
+    - ''
+    - '&7Bu eşya, ölsen bile'
+    - '&7en düşük seviyesi ile'
+    - '&7üstünde kalır.'
+    - ''
+    - '{quick_buy}'
+    - '{buy_status}'
+    content-item-axe-name: '{color}Balta {tier}'
+    content-item-axe-lore:
+    - '&7Ücret: {cost} {currency}'
+    - '&7Seviye: &e{tier}'
+    - ''
+    - '&7Bu bir yükseltilebilir eşya.'
+    - '&7Her öldüğünde'
+    - 1 seviye düşer
+    - ''
+    - '&7Bu eşya, ölsen bile'
+    - '&7en düşük seviyesi ile'
+    - '&7üstünde kalır.'
+    - ''
+    - '{quick_buy}'
+    - '{buy_status}'
+  ranged-category:
+    inventory-name: '&8Uzun Mesafe'
+    category-item-name: '&aUzun Mesafe'
+    category-item-lore:
+    - '&eGörmek için tıkla!'
+    content-item-arrow-name: '{color}Ok'
+    content-item-arrow-lore:
+    - '&7Ücret: {cost} {currency}'
+    - ''
+    - '{quick_buy}'
+    - '{buy_status}'
+    content-item-bow1-name: '{color}Yay'
+    content-item-bow1-lore:
+    - '&7Ücret: {cost} {currency}'
+    - ''
+    - '{quick_buy}'
+    - '{buy_status}'
+    content-item-bow2-name: '{color}Yay (Güç I)'
+    content-item-bow2-lore:
+    - '&7Ücret: {cost} {currency}'
+    - ''
+    - '{quick_buy}'
+    - '{buy_status}'
+    content-item-bow3-name: '{color}Yay (Güç I, Yumruk I)'
+    content-item-bow3-lore:
+    - '&7Ücret: {cost} {currency}'
+    - ''
+    - '{quick_buy}'
+    - '{buy_status}'
+  potions-category:
+    inventory-name: '&8İksirler'
+    category-item-name: '&8İksirler'
+    category-item-lore:
+    - '&eGörmek için tıkla!'
+    content-item-speed-potion-name: '{color}Hız II İksiri (45 saniye)'
+    content-item-speed-potion-lore:
+    - '&7Ücret: {cost} {currency}'
+    - ''
+    - '{quick_buy}'
+    - '{buy_status}'
+    content-item-jump-potion-name: '{color}Zıplama Desteği V İksiri (45 saniye)'
+    content-item-jump-potion-lore:
+    - '&7Ücret: {cost} {currency}'
+    - ''
+    - '{quick_buy}'
+    - '{buy_status}'
+    content-item-invisibility-name: '{color}Görünmezlik İksiri (30 saniye)'
+    content-item-invisibility-lore:
+    - '&7Ücret: {cost} {currency}'
+    - ''
+    - '{quick_buy}'
+    - '{buy_status}'
+  utility-category:
+    inventory-name: '&8Diğer'
+    category-item-name: '&8Diğer'
+    category-item-lore:
+    - '&eGörmek için tıkla!'
+    content-item-golden-apple-name: '{color}Altın Elma'
+    content-item-golden-apple-lore:
+    - '&7Ücret: {cost} {currency}'
+    - ''
+    - '&7Well-rounded healing.'
+    - ''
+    - '{quick_buy}'
+    - '{buy_status}'
+    content-item-bedbug-name: '{color}BedBug'
+    content-item-bedbug-lore:
+    - '&7Ücret: {cost} {currency}'
+    - ''
+    - '&7Kartopunu attığın yerde'
+    - '&7rakiplerin dikkatini dağıtmak için'
+    - '&7böcekler doğurur. 15 saniye sonra kaybolur.'
+    - ''
+    - '{quick_buy}'
+    - '{buy_status}'
+    content-item-dream-defender-name: '{color}Demir Golem'
+    content-item-dream-defender-lore:
+    - '&7Ücret: {cost} {currency}'
+    - ''
+    - '&7Takımını savunmana yardım'
+    - '&7eder. 4 dakika sonra kaybolur.'
+    - ''
+    - '{quick_buy}'
+    - '{buy_status}'
+    content-item-fireball-name: '{color}Ateş Topu'
+    content-item-fireball-lore:
+    - '&7Ücret: {cost} {currency}'
+    - ''
+    - '&7Sağ tıklayarak ateşle! Rakiplerinin'
+    - '&7yürüdükleri köprüleri patlatmak'
+    - '&7için harika bir ürün!'
+    - ''
+    - '{quick_buy}'
+    - '{buy_status}'
+    content-item-tnt-name: '{color}TNT'
+    content-item-tnt-lore:
+    - '&7Ücret: {cost} {currency}'
+    - ''
+    - '&7Direkt ateşlenir, diğer takımların'
+    - '&7korumaları için iyi bir çözüm'
+    - ''
+    - '{quick_buy}'
+    - '{buy_status}'
+    content-item-ender-pearl-name: '{color}Ender İncisi'
+    content-item-ender-pearl-lore:
+    - '&7Ücret: {cost} {currency}'
+    - ''
+    - '&7Diğer takımların adalarına'
+    - '&7gitmenin en hızlı yolu.'
+    - ''
+    - '{quick_buy}'
+    - '{buy_status}'
+    content-item-water-bucket-name: '{color}Su Kovası'
+    content-item-water-bucket-lore:
+    - '&7Ücret: {cost} {currency}'
+    - ''
+    - '&7Patlamaları etkisiz'
+    - '&7bırakır.'
+    - ''
+    - ''
+    - '{quick_buy}'
+    - '{buy_status}'
+    content-item-bridge-egg-name: '{color}Köprü Yumurtası'
+    content-item-bridge-egg-lore:
+    - '&7Ücret: {cost} {currency}'
+    - ''
+    - '&7Atılan doğrultuda'
+    - '&7bir köprü yapar.'
+    - ''
+    - '{quick_buy}'
+    - '{buy_status}'
+    content-item-magic-milk-name: '{color}Sihirli Süt'
+    content-item-magic-milk-lore:
+    - '&7Ücret: {cost} {currency}'
+    - ''
+    - '&7İçildikten sonra 60 saniye'
+    - '&7boyunca düşman tuzaklarından korur.'
+    - ''
+    - '{quick_buy}'
+    - '{buy_status}'
+    content-item-sponge-name: '{color}Sünger'
+    content-item-sponge-lore:
+    - '&7Ücret: {cost} {currency}'
+    - ''
+    - '&7Suyu yok etmenin basit bir yolu.'
+    - ''
+    - '{quick_buy}'
+    - '{buy_status}'
+    content-item-tower-name: '&cName not set'
+    content-item-tower-lore: '&cLore not set'
+shop-insuff-money: '{prefix}&cYeteri kadar {currency} sahibi değilsin! {amount} tane
+  daha bulmalısın!'
+shop-new-purchase: '{prefix}&6{item} &asatın aldın'
+shop-already-bought: '{prefix}&cBunu zaten satın aldın!'
+shop-utility-silverfish: '{TeamColor}&l{TeamName} &r{TeamColor}Böcek'
+shop-utility-iron-golem: '{TeamColor}{despawn}s &8[ {TeamColor}{health}&8]'
+shop-lore-status-can-buy: '&eSatın almak için tıkla!'
+shop-lore-status-cant-afford: '&cYeteri kadar {currency} sahibi değilsin!'
+shop-lore-status-tier-maxed: '&aEN YÜKSEK SEVİYEDE!'
+shop-lore-quick-add: '&bHızlı Alıma eklemek için eğilerek tıkla'
+shop-lore-quick-remove: '&bHızlı Alımdan kaldırmak için eğilerek tıkla'
+meaning-no-trap: Tuzak yok!
+format-spectator-target: '{targetTeamColor}{targetDisplayName}'
+format-upgrade-trap-cost: '&7Ücret: {currencyColor}{cost} {currency}'
+format-upgrade-color-can-afford: '&e'
+format-upgrade-color-cant-afford: '&c'
+format-upgrade-color-unlocked: '&a'
+format-tier-color-locked: '&7'
+format-tier-color-unlocked: '&a'
+upgrades-lore-click-buy: '{color}Satın almak için tıkla!'
+upgrades-lore-insuff-money: '{color}Yeteri kadar {currency} yok!'
+upgrades-lore-locked: '&cKİLİTLENDİ'
+upgrades-lore-unlocked: '{color}KİLİT KALDIRILDI'
+upgrades-new-purchase: '&a{player} adlı oyuncu &6{upgradeName} satın aldı'
+upgrades-upgrade-name-forge-tier-1: '{color}Demir Ocağı'
+upgrades-upgrade-lore-forge:
+- '&7Adanda üretilen kaynak'
+- '&7sayısını arttırır.'
+- ''
+- '{tier_1_color}Seviye 1: +50% Kaynak Artışı, &b{tier_1_cost} {tier_1_currency}'
+- '{tier_2_color}Seviye 2: +100% Kaynak Artışı, &b{tier_2_cost} {tier_2_currency}'
+- '{tier_3_color}Seviye 3: Zümrüt üretir, &b{tier_3_cost} {tier_3_currency}'
+- '{tier_4_color}Seviye 4: +200% Kaynak Artışı, &b{tier_4_cost} {tier_4_currency}'
+- ''
+upgrades-upgrade-name-forge-tier-2: '{color}Altın Ocağı'
+upgrades-upgrade-name-forge-tier-3: '{color}Zümrüt Ocağı'
+upgrades-upgrade-name-forge-tier-4: '{color}Mistik Ocak'
+upgrades-category-item-name-traps: '&eTızak satın al'
+upgrades-category-item-lore-traps:
+- '&7Alınan tuzaklar'
+- '&7sağda sıralanacak.'
+- ''
+- '&eGöz atmak için tıkla!'
+upgrades-upgrade-name-swords-tier-1: '{color}Keskin Kılıçlar'
+upgrades-upgrade-lore-swords:
+- '&7Takımının kılıç ve'
+- '&7baltalarında kalıcı olarak'
+- '&7Keskinlik I olacak!'
+- ''
+- '{tier_1_color}Ücret: &b{tier_1_cost} {tier_1_currency}'
+- ''
+upgrades-upgrade-name-armor-tier-1: '{color}Korumalı Zırh I'
+upgrades-upgrade-lore-armor:
+- '&7Takımının zırhlarında kalıcı'
+- '&7koruma olur!'
+- ''
+- '{tier_1_color}Seviye 1: Koruma I, &b{tier_1_cost} {tier_1_currency}'
+- '{tier_2_color}Seviye 2: Koruma II, &b{tier_2_cost} {tier_2_currency}'
+- '{tier_3_color}Seviye 3: Koruma III, &b{tier_3_cost} {tier_3_currency}'
+- '{tier_4_color}Seviye 4: Koruma IV, &b{tier_4_cost} {tier_4_currency}'
+- ''
+upgrades-upgrade-name-armor-tier-2: '{color}Korumalı Zırh II'
+upgrades-upgrade-name-armor-tier-3: '{color}Korumalı Zırh III'
+upgrades-upgrade-name-armor-tier-4: '{color}Korumalı Zırh IV'
+upgrades-upgrade-name-miner-tier-1: '{color}Manyak Madenci I'
+upgrades-upgrade-lore-miner:
+- '&7Takımındaki oyuncular, kalıcı'
+- '&7Acele efektine sahip olurlar.'
+- ''
+- '{tier_1_color}Seviye 1: Acele I, &b{tier_1_cost} {tier_1_currency}'
+- '{tier_2_color}Seviye 2: Acele II, &b{tier_2_cost} {tier_2_currency}'
+- ''
+upgrades-upgrade-name-miner-tier-2: '{color}Manyak Madenci II'
+upgrades-upgrade-name-heal-pool-tier-1: '{color}Can Havuzu'
+upgrades-upgrade-lore-heal-pool:
+- '&7Adanda durduğun sürece'
+- '&7canın yenilenir!'
+- ''
+- '{tier_1_color}Ücret: &b{tier_1_cost} {tier_1_currency}'
+- ''
+upgrades-upgrade-name-dragon-tier-1: '{color}Dragon Buff'
+upgrades-upgrade-lore-dragon:
+- '&7Ejderha Saldırısı sırasında'
+- '&7takımın 2 Ejderhaya sahip olur'
+- ''
+- '{tier_1_color}Ücret: &b{tier_1_cost} {tier_1_currency}'
+- ''
+upgrades-separator-item-name-glass: '&8⬆&7Satın Alınabilir'
+upgrades-separator-item-lore-glass:
+- '&8⬇&7Tuzak Listesi'
+upgrades-trap-slot-item-name-first: '{color}Tuzak #1: {name}'
+upgrades-trap-slot-item-lore1-first:
+- '&7Adana giren ilk'
+- '&7kişi bu tuzağı'
+- '&7aktifleştirir!'
+upgrades-trap-slot-item-lore2-first:
+- ''
+- '&7Bu tuzağı satın almak,'
+- '&7tuzağı sıraya ekler. Fiyat,'
+- '&7adandaki tuzak sayısına'
+- '&7göre belirlenir.'
+- ''
+- '&7Sıradaki tuzak: &b{cost} {currency}'
+upgrades-trap-slot-item-name-second: '{color}Tuzak #2: {name}'
+upgrades-trap-slot-item-lore1-second:
+- '&7Adana giren ikinci'
+- '&7kişi bu tuzağı'
+- '&7aktifleştirir!'
+upgrades-trap-slot-item-lore2-second:
+- ''
+- '&7Bu tuzağı satın almak,'
+- '&7tuzağı sıraya ekler. Fiyat,'
+- '&7adandaki tuzak sayısına'
+- '&7göre belirlenir.'
+- ''
+- '&7Sıradaki tuzak: &b{cost} {currency}'
+upgrades-trap-slot-item-name-third: '{color}Tuzak #3: {name}'
+upgrades-trap-slot-item-lore1-third:
+- '&7Adana giren üçüncü'
+- '&7kişi bu tuzağı'
+- '&7aktifleştirir!'
+upgrades-trap-slot-item-lore2-third:
+- ''
+- '&7Bu tuzağı satın almak,'
+- '&7tuzağı sıraya ekler. Fiyat,'
+- '&7adandaki tuzak sayısına'
+- '&7göre belirlenir.'
+- ''
+- '&7Sıradaki tuzak: &b{cost} {currency}'
+upgrades-base-trap-name-1: '{color}Bu bir tuzak!'
+upgrades-base-trap-lore-1:
+- '&75 saniye boyunca Körlük ve'
+- '&7Yavaşlık verir.'
+- ''
+upgrades-base-trap-name-2: '{color}Karşı Saldırı Tuzağı'
+upgrades-base-trap-lore-2:
+- '&7Tetiklendiğinde, adandaki takım arkadaşlarına'
+- '&7Hız efekti verir.'
+- ''
+upgrades-base-trap-name-3: '{color}Alaram Tuzağı'
+upgrades-base-trap-lore-3:
+- '&7Görünmez oyuncuları'
+- '&7görünür kılar.'
+- ''
+upgrades-base-trap-name-4: '{color}Madenci Yorgunluğu Tuzağı'
+upgrades-base-trap-lore-4:
+- '&710 saniye boyunca'
+- '&7Madenci Yorgunluğu verir.'
+- ''
+upgrades-separator-item-name-back: '&aGeri'
+upgrades-separator-item-lore-back:
+- '&7Yükseltmeler & Tuzaklar'
+upgrades-category-gui-name-traps: '&8Tuzak Ekle'
+upgrades-trap-queue-full: '&cTrap sırası dolu!'
+upgrades-trap-default-msg: '&c&l{trap} tetiklendi!'
+upgrades-trap-default-title: '&cTUZAK TETİKLENDİ!'
+upgrades-trap-default-subtitle: '&f{trap} &ftuzağın tetiklendi!'
+upgrades-base-trap-msg-3: '&c&lAlarm, {color}&l{team} &c&ltakımdaki &7&l{player} &c&ltarafından
+  tetiklendi!'
+upgrades-base-trap-title-3: '&c&lALARM!!!'
+upgrades-base-trap-subtitle-3: '&fAlarm, {color}{team} &fTakım tarafından tetiklendi!'
+upgrades-menu-gui-name-default: '&8Upgrades & Traps'

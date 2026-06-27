@@ -1,0 +1,10 @@
+uuid: ffb19414-5bb4-e0f7-04ea-83ed0557bf0d
+name: notelina
+primary-group: default
+permissions:
+- bw.admin:
+    value: true
+- bw.cmd:
+    value: true
+- bw.setup:
+    value: true

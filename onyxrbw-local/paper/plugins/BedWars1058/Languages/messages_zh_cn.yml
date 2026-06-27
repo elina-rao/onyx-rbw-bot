@@ -1,0 +1,1359 @@
+prefix: ''
+name: 简体中文
+cmd-main-list:
+- ''
+- '&2▪ &7/bw stats'
+- '&2▪ &7/bw join &o<游戏/模式>'
+- '&2▪ &7/bw leave'
+- '&2▪ &7/bw lang'
+- '&2▪ &7/bw gui'
+- '&2▪ &7/bw start &3（赞助者）'
+cmd-lang-list-header: '{prefix} &2可用的语言：'
+cmd-lang-list-format: '&a▪  &7{iso} - &f{name}'
+cmd-lang-usage: '{prefix}&用法：/lang &f&o<iso>'
+cmd-lang-not-exist: '{prefix}&c该语言不存在！'
+cmd-lang-set: '{prefix}&a语言已设置！'
+cmd-lang-not-set: '{prefix}&c你不能在游戏进行时修改语言。'
+cmd-join-usage: '&a▪ &7用法：/bw join &o<游戏/模式>'
+cmd-join-not-found: '{prefix}&c游戏{name}不存在！'
+cmd-join-arena-full: |-
+  {prefix}&c游戏已满！
+  &a请考虑赞助以支持我们！ &7&o(点击查看)
+cmd-join-arenas-full: '{prefix}&c现在没有可用的游戏:('
+cmd-join-arena-full-vips: |-
+  {prefix}&c很抱歉，虽然我们已知道你已赞助，但该游戏已满。
+  &c此游戏中全是赞助者或管理员。
+cmd-join-party-big: '{prefix}&c你的队伍人数太多了，不能作为一个队伍加入该游戏:('
+cmd-join-not-leader: '{prefix}&c只有队长才能选择游戏。'
+cmd-join-success: '{prefix}&7{player}&e加入了游戏(&b{on}&e/&b{max}&e)！'
+cmd-join-spectate: |-
+  {prefix}&6你正在观战&9{arena}&6。
+  {prefix}&e输入 &c/leave &e离开。
+cmd-join-spectate-denied: '&c该游戏不允许旁观！'
+cmd-tp-player-not-found: '{prefix}&c无法找到这位玩家！'
+cmd-tp-not-in-arena: '{prefix}&c该玩家不在任何一场起床战争游戏中！'
+cmd-tp-not-started: '{prefix}&c该玩家所在的游戏还没开始！'
+cmd-tp-usage: '{prefix}&c用法：/bw tp <玩家名>'
+cmd-rejoin-no-arena: '{prefix}&c没有可以重新加入的游戏！'
+cmd-rejoin-denied: '{prefix}&c由于你所属队伍的床被破坏或游戏已经结束，你不能重新加入。'
+cmd-rejoin-allowed: '{prefix}&e正在重新加入&a{arena}&e！'
+cmd-rejoin-player-reconnected: '{prefix}&7{player}&e重新连接。'
+cmd-not-in-arena: '{prefix}&c你不在一场起床战争游戏中！'
+cmd-leave: '{prefix}&7{player}&e离开了！'
+cmd-blocked-in-game: '{prefix}&c你在游戏中不可以这么做。'
+cmd-not-found: '{prefix}&c指令无效或你没有权限！'
+cmd-party-help:
+- '&6▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬'
+- '&a队伍指令：'
+- '&e/party help &7- &b查看该提示'
+- '&e/party invite <玩家> &7- &b邀请一位玩家到你的队伍'
+- '&e/party leave &7- &b离开当前队伍'
+- '&e/party info &7- &bShow party members and owner'
+- '&e/party promote <player> &7- &bTransfer party ownership'
+- '&e/party remove <玩家> &7- &b将玩家移出队伍'
+- '&e/party accept <玩家> &7- &b接受队伍邀请'
+- '&e/party disband &7- &bD解散队伍'
+cmd-party-invite-usage: '{prefix}&e用法：&7/party invite <玩家>'
+cmd-party-offline: '{prefix}&7{player}&e不在线！'
+cmd-party-invite: '{prefix}&e已向&7{player}&e发送邀请&6。'
+cmd-party-invite-received: '{prefix}&b{player}&e邀请你加入队伍！ &o&7(点击接受)'
+cmd-party-invite-self: '{prefix}&c你不可以邀请你自己！'
+cmd-party-no-invite: '{prefix}&c没有可以接受的队伍邀请！'
+cmd-party-already-in: '{prefix}&e你已经在队伍中了！'
+cmd-party-no-perm: '{prefix}&c只有队长才可以这么做！'
+cmd-party-accept-usage: '{prefix}&e用法：&7/party accept <玩家>'
+cmd-party-join: '{prefix}&7{player}&e加入了队伍！'
+cmd-party-not-in: '{prefix}&c你不在队伍中！'
+cmd-party-cant-leave: |-
+  {prefix}&c你不可以离开由你带领的队伍！
+  &e使用：&b/party disband &e来解散队伍。
+cmd-party-leave: '{prefix}&7{player}&e离开了队伍！'
+cmd-party-disband: '{prefix}&e队伍已解散！'
+cmd-party-remove-usage: '{prefix}&7用法：&e/party remove <玩家>'
+cmd-party-remove: '{prefix}&7{player}&e被移出了队伍。'
+cmd-party-remove-not-in: '{prefix}&7{player}&e不在你的队伍中！'
+cmd-party-promote-owner: '{prefix}&e你成功将 {player} 提升为群主'
+cmd-party-owner: '{prefix}&e你已被提升为群主'
+cmd-party-owner-changed: '{prefix}&7 &e{player} 已被提升为群主'
+cmd-party-info-owner: |2-
+
+  {prefix}&e群主为: &7{owner}
+cmd-party-info-players: '{prefix}&e群成员有：'
+cmd-party-info-player: '&7{player}'
+cmd-start-no-game: '&c▪ &7你不在游戏中！'
+cmd-start: '&c▪ &7游戏开始倒计时缩短！'
+cmd-start-no-perm: |-
+  {prefix}&7你不可以强制开始游戏！
+  &7请考虑赞助以得到对应权限！
+cmd-cooldown: '&c你不能这么做！ 请等待 {seconds} 秒！'
+arena-kicked-by-vip: |-
+  {prefix}&c抱歉，由于有一位赞助者加入该游戏，因此你被移出了该游戏。
+  &a请考虑赞助以支持我们！ &7&o(点击查看)
+arena-countdown-stopped: '{prefix}&c玩家不足！ 倒计时取消！'
+arena-restart-kick: '{prefix}&e当前游戏正在重启。'
+arena-status-playing: '&c游戏中'
+arena-status-restarting: '&4重启中'
+arena-status-waiting: '&3等待中 &c{full}'
+arena-status-starting: '&6即将开始 &c{full}'
+arena-selector-gui-name: '&8点击加入'
+arena-selector-content-name: '&a&l{name}'
+arena-selector-content-lore:
+- ''
+- '&7状态：{status}'
+- '&7玩家数：&f{on}&7/&f{max}'
+- '&7模式：&a{group}'
+- ''
+- '&a点击进入'
+- '&e右击观赛'
+arena-selector-skipped-item-name: '&r{serverIp}'
+arena-selector-skipped-item-lore: []
+arena-start-countdown: '{prefix}&e游戏将在 &6{time}&e 秒后开始！'
+arena-start-countdown-title: ' '
+arena-start-countdown-subtitle: '&a{second}'
+arena-start-countdown-subtitle-5: '&e❺'
+arena-start-countdown-subtitle-4: '&e❹'
+arena-start-countdown-subtitle-3: '&c❸'
+arena-start-countdown-subtitle-2: '&c❷'
+arena-start-countdown-subtitle-1: '&c❶'
+arena-countdown-stopped-subtitle: '&c等待更多玩家……'
+arena-start-title: '&a游戏开始'
+arena-start-tutorial:
+- '&a▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬'
+- '&f                                  &l起床战争'
+- ''
+- '&e&l                            保护你的床并破坏敌人的床，'
+- '&e&l                        从资源点收集铁锭、金锭、绿宝石和钻石，'
+- '&e&l                        来购买强力装备和进行升级来使自己变强！'
+- '&a▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬'
+arena-join-denied-selector: '{prefix}&c抱歉，你现在不能加入该游戏。右键来观赛！'
+arena-spectate-denied-selector: '{prefix}&c抱歉，你现在不能观赛。右键来加入游戏！'
+arena-join-denied-no-bwp: "&c抱歉，你必须通过 BedWarsProxy 来加入游戏。 \n&e如果你想设置游戏，你可以给予你自己 bw.setup\
+  \ 权限来直接进入服务器！"
+spectator-tp-gui-name: '&8传送'
+spectator-tp-gui-head-name: '{vPrefix}{player}'
+spectator-tp-gui-head-lore:
+- '&7生命值：&f{health}%'
+- '&7饱食度：&f{food}'
+- ''
+- '&7左键传送'
+spectator-tp-name: '&c&l回到大厅'
+spectator-tp-lore:
+- '&7右键离开起床战争大厅！'
+spectator-first-person-enter-title: '&a正在旁观&7{player}'
+spectator-first-person-enter-subtitle: '&c潜行以退出！'
+spectator-first-person-quit-title: '&e退出旁观者模式'
+spectator-first-person-quit-subtitle: ''
+arena-leave-party-disbanded: '{prefix}&c由于队长离开了，队伍解散！'
+generator-tier: '&e等级&c{tier}'
+generator-diamond: '&b&l钻石'
+generator-emerald: '&a&l绿宝石'
+generator-timer: '&c{seconds}&e 秒后生成'
+generator-upgrade-announce: '{prefix}{generatorType}资源点&e升级到&c{tier}级。'
+format-chat-lobby: '{level}{vPrefix}&7{player}{vSuffix}：{message}'
+format-chat-waiting: '{level}{vPrefix}&7{player}{vSuffix}：{message}'
+format-chat-global: '{level}{vPrefix}&6[公屏] {team} &7{player}&f{vSuffix}：{message}'
+format-chat-team: '{level}{vPrefix}&f{team}&7 {player}{vSuffix} {message}'
+format-chat-spectator: '{level}{vPrefix}&7[旁观者] {player}{vSuffix}：{message}'
+format-sb-health:
+- '&c❤'
+- '&a生命值'
+format-sb-date: yy/MM/dd
+format-sb-team-generic: '{TeamColor}{TeamLetter}&f {TeamName}：{TeamStatus}'
+format-sb-team-eliminated: '&c&l✘'
+format-sb-bed-destroyed: '&a{remainingPlayers}'
+format-sb-team-alive: '&a&l✓'
+format-sb-generator-timer: mm:ss
+format-sb-you: '&7 你'
+format-action-tracking: '&f正在追踪：{team} &f- 距离：{distance}m'
+format-winner-team: '      {TeamColor}{TeamName} &7- {members}'
+format-winner-solo: '                 {TeamColor}{TeamName} &7- {members}'
+format-tier1: I
+format-tier2: II
+format-tier3: III
+format-despawnable-health: '▮ '
+format-stats-time: yyyy/MM/dd HH:mm
+format-papi-player-team: '{TeamColor}[{TeamName}]'
+format-papi-player-shout: '&6[公屏]'
+format-papi-player-spectator: '&7[旁观者]'
+meaning-full: 已满
+meaning-shout: 公屏
+meaning-nobody: 无玩家
+meaning-never: 从不
+meaning-iron-singular: 铁锭
+meaning-iron-plural: 铁锭
+meaning-gold-singular: 金锭
+meaning-gold-plural: 金锭
+meaning-emerald-singular: 绿宝石
+meaning-emerald-plural: 绿宝石
+meaning-diamond-singular: 钻石
+meaning-diamond-plural: 钻石
+meaning-vault-singular: $
+meaning-vault-plural: $
+interact-cant-place: '{prefix}&c你不能在这里放置方块！'
+interact-cant-break: '{prefix}&c你只能破坏由玩家放置的方块！'
+interact-cant-destroy-bed: '&c你不能破坏自己的床！'
+interact-bed-destroy-chat: |2
+
+  &f&l床被破坏 > {TeamColor}{TeamName}的床&7被{PlayerColor}{PlayerName}&7破坏了！
+interact-bed-destroy-title: '&c床被破坏！'
+interact-bed-destroy-subtitle: '&f你不能再重生！'
+interact-bed-destroy-team: |
+  &f&l床被破坏 > &7你的床被{PlayerColor}{PlayerName}&7破坏了！
+interact-cant-open-chest: '&c此队伍还未被团灭，因此你不能打开该团队箱子！'
+interact-invisibility-removed-damaged: '&c你因受到伤害而被迫退出隐身！'
+player-die-void-regular: '{PlayerColor}{PlayerName}&7掉进了虚空。'
+player-die-void-final: '{PlayerColor}{PlayerName}&7掉进了虚空。 &b&l最终击杀！'
+player-die-knocked-void-regular: '{PlayerColor}{PlayerName}&7被{KillerColor}{KillerName}&7丢进了虚空。'
+player-die-knocked-void-final: '{PlayerColor}{PlayerName}&7被{KillerColor}{KillerName}&7丢进了虚空。
+  &b&l最终击杀！'
+player-die-pvp-log-out-regular: '{PlayerColor}{PlayerName}&7在与{KillerColor}{KillerName}&7战斗时断开连接。'
+player-die-pvp-log-out-final: '{PlayerColor}{PlayerName}&7在与{KillerColor}{KillerName}&7战斗时断开连接。
+  &b&l最终击杀！'
+player-die-knocked-fall-regular: '{PlayerColor}{PlayerName}&7被{KillerColor}{KillerName}&7推下了悬崖。'
+player-die-knocked-fall-final: '{PlayerColor}{PlayerName}&7被{KillerColor}{KillerName}&7推下了悬崖。
+  &b&l最终击杀！'
+player-die-bomb-regular: '{PlayerColor}{PlayerName}&7被{KillerColor}{KillerName}&7炸死了。'
+player-die-bomb-final: '{PlayerColor}{PlayerName}&7被{KillerColor}{KillerName}&7炸死了。
+  &b&l最终击杀！'
+player-die-bomb2-regular: '{PlayerColor}{PlayerName}&7爆炸了。'
+player-die-bomb2-final: '{PlayerColor}{PlayerName}&7爆炸了。 &b&l最终击杀！'
+player-die-attack-regular: '{PlayerColor}{PlayerName}&7被{KillerColor}{KillerName}&7击杀。'
+player-die-attack-final: '{PlayerColor}{PlayerName}&7被{KillerColor}{KillerName}&7击杀。
+  &b&l最终击杀！'
+player-die-unknown-regular: '{PlayerColor}{PlayerName}&7死了。'
+player-die-unknown-final: '{PlayerColor}{PlayerName}&7死了。 &b&l最终击杀！'
+player-die-shoot-regular: '{PlayerColor}{PlayerName}&7被{KillerColor}{KillerName}&7射死了！'
+player-die-shoot-final: '{PlayerColor}{PlayerName}&7被{KillerColor}{KillerName}&7射死了！
+  &b&l最终击杀！'
+player-die-bedbug-regular: '{PlayerColor}{PlayerName}&7被{KillerColor}{KillerTeamName}&7的蠹虫杀死了！'
+player-die-bedbug-final: '{PlayerColor}{PlayerName}&7被{KillerColor}{KillerTeamName}&7的蠹虫杀死了！
+  &b&l最终击杀！'
+player-die-golem-regular: '{PlayerColor}{PlayerName}&7被{KillerColor}{KillerTeamName}&7的铁傀儡杀死了！'
+player-die-golem-final: '{PlayerColor}{PlayerName}&7被{KillerColor}{KillerTeamName}&7的铁傀儡杀死了！
+  &b&l最终击杀！'
+player-loot-diamond: '{prefix}&b+{amount}{meaning}'
+player-loot-emerald: '{prefix}&a+{amount}{meaning}'
+player-loot-iron: '{prefix}&f+{amount}{meaning}'
+player-loot-gold: '{prefix}&6+{amount}{meaning}'
+player-respawn-title: '&c你死了！'
+player-respawn-subtitle: '&e你将在 &a{time} &e秒后重生！'
+player-respawn-timer-chat: '{prefix}&e你将在 &a{time} &e秒后重生！'
+player-respawned-title: '&a已重生！'
+player-eliminated-chat: '{prefix}&c你已被淘汰！'
+player-hit-bow: '{prefix}{TeamColor}{PlayerName}&7还有 &e{amount} &c生命值！'
+game-end-game-over-title: '&c&l游戏结束！'
+game-end-victory-title: '&6&l胜利！'
+game-end-winner-team: '{prefix}{TeamColor}{TeamName}&a赢得了这场游戏！'
+game-end-top-chat:
+- '&a▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬'
+- '&f                                   &l起床战争'
+- ''
+- '{winnerFormat}'
+- ''
+- ''
+- '&6                      &6⭐ &l击杀第一名 &7- {topTeamColor}{topPlayerDisplayName} &7-
+  &l{topValue}'
+- '&e                        &l击杀第二名 &7- {topTeamColor}{topPlayerDisplayName} &7-
+  &l{topValue}'
+- '&c                        &l击杀第三名 &7- {topTeamColor}{topPlayerDisplayName} &7-
+  &l{topValue}'
+- ''
+- '&a▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬'
+bed-hologram-defend: '&c&l保护你的床！'
+bed-hologram-destroyed: '&c&l你的床被破坏了！'
+npc-team-upgrades: '&b队伍升级,&e&l右键点击'
+npc-solo-upgrades: '&b单挑升级,&e&l右键点击'
+npc-team-shop: '&b队伍商店,&e&l右键点击'
+npc-solo-shop: '&b单挑商店,&e&l右键点击'
+team-eliminated: |2
+
+  &f&l队伍团灭 > {TeamColor}{TeamName}&c已被团灭！
+next-event-beds-destroy: '&c床被破坏'
+next-event-diamondII: '&f钻石II级'
+next-event-diamondIII: '&f钻石III级'
+next-event-dragon-spawn: '&f绝杀模式'
+next-event-emeraldII: '&f绿宝石II级'
+next-event-emeraldIII: '&f绿宝石III级'
+next-event-game-end: '&4游戏结束！'
+next-event-beds-destroy-title: '&c床被破坏！'
+next-event-beds-destroy-sub-title: '&f所有床已被破坏！'
+next-event-beds-destroy-chat: '&c&l所有床已被破坏！'
+next-event-sudden-death-title: '&c绝杀模式'
+next-event-sudden-death-sub-title: ''
+next-event-sudden-death-chat: '&c绝杀模式：&6&b{TeamDragons} {TeamColor}{TeamName}的龙！'
+xp-reward-per-minute: '{prefix}&6+{xp}起床战争经验(游戏时间)'
+xp-reward-game-win: '{prefix}&6+{xp}起床战争经验(游戏胜利)'
+xp-reward-per-teammate: '{prefix}&6+{xp}起床战争经验(团队协作)'
+xp-reward-bed-destroyed: '{prefix}&6+{xp}起床战争经验(破坏床)'
+xp-reward-regular-kill: '{prefix}&6+{xp}起床战争经验(击杀)'
+xp-reward-final-kill: '{prefix}&6+{xp}起床战争经验(最终击杀)'
+money-reward-per-teammate: '{prefix}&6+{money}金币(游戏时间)'
+money-reward-game-win: '{prefix}&6+{money}金币(游戏胜利)'
+money-reward-per-minute: '{prefix}&6+{money}金币(团队协作)'
+money-reward-bed-destroyed: '{prefix}&6+{money}金币(破坏床)'
+money-reward-final-kill: '{prefix}&6+{money}金币(最终击杀)'
+money-reward-regular-kill: '{prefix}&6+{money}金币(击杀)'
+lobby-items-stats-name: '&e战绩'
+lobby-items-stats-lore:
+- '&f右键显示你的战绩！'
+lobby-items-arena-selector-name: '&e选择游戏'
+lobby-items-arena-selector-lore:
+- '&f右键选择游戏！'
+lobby-items-leave-name: '&e回到主大厅'
+lobby-items-leave-lore:
+- '&f右键离开起床战争！'
+pre-game-items-stats-name: '&e战绩'
+pre-game-items-stats-lore:
+- '&f右键显示你的战绩！'
+pre-game-items-leave-name: '&e返回大厅'
+pre-game-items-leave-lore:
+- '&f右键离开游戏！'
+spectator-items-teleporter-name: '&e传送'
+spectator-items-leave-name: '&e回到大厅'
+spectator-items-leave-lore:
+- '&f右键离开游戏！'
+stats-inv-name: '&8{player}的战绩'
+stats-wins-name: '&6胜场数'
+stats-wins-lore:
+- '&f{wins}'
+stats-losses-name: '&6失败场数'
+stats-losses-lore:
+- '&f{losses}'
+stats-kills-name: '&6击杀数'
+stats-kills-lore:
+- '&f{kills}'
+stats-deaths-name: '&6死亡数'
+stats-deaths-lore:
+- '&f{deaths}'
+stats-final-kills-name: '&6最终击杀数'
+stats-final-kills-lore:
+- '&f{finalKills}'
+stats-final-deaths-name: '&6最终死亡数'
+stats-final-deaths-lore:
+- '&f{finalDeaths}'
+stats-beds-destroyed-name: '&6破坏床数'
+stats-beds-destroyed-lore:
+- '&f{bedsDestroyed}'
+stats-first-play-name: '&6首次游玩'
+stats-first-play-lore:
+- '&f{firstPlay}'
+stats-last-play-name: '&6上次游玩'
+stats-last-play-lore:
+- '&f{lastPlay}'
+stats-games-played-name: '&6总游玩场数'
+stats-games-played-lore:
+- '&f{gamesPlayed}'
+sidebar:
+  lobby:
+  - '&6&l起床战争,&4&l起&6&l床战争,&6&l起&4&l床&6&l战争,&6&l起床&4&l战&6&l争,&6&l起床战&4&l争,&6&l起床战争'
+  - '&f等级：{level}'
+  - ''
+  - '&f进度：&a{currentXp}&7/&b{requiredXp}'
+  - '{progress}'
+  - ''
+  - '&7{player}'
+  - ''
+  - '&f金币：&a{money}'
+  - ''
+  - '&f总胜场：&a{wins}'
+  - '&f总击杀：&a{kills}'
+  - ''
+  - '&e{serverIp}'
+  Default:
+    waiting:
+      player:
+      - '&f&l起床战争'
+      - '&7{date} &8{server}'
+      - ''
+      - '&f地图：&a{map}'
+      - ''
+      - '&f玩家数：&a{on}/{max}'
+      - ''
+      - '&f等待中,&f等待中.,&f等待中..,&f等待中...'
+      - ''
+      - '&f模式：&a{group}'
+      - '&f版本：&7{version}'
+      - ''
+      - '&e{serverIp}'
+      spectator:
+      - '&f&l起床战争'
+      - '&7{date} &8{server}'
+      - '&o&7Spectating'
+      - '&f地图：&a{map}'
+      - ''
+      - '&f玩家数：&a{on}/{max}'
+      - ''
+      - '&f等待中,&f等待中.,&f等待中..,&f等待中...'
+      - ''
+      - '&f模式：&a{group}'
+      - '&f版本：&7{version}'
+      - ''
+      - '&e{serverIp}'
+    starting:
+      player:
+      - '&f&l起床战争'
+      - '&7{date} &8{server}'
+      - ''
+      - '&f地图：&a{map}'
+      - ''
+      - '&f玩家数：&a{on}/{max}'
+      - ''
+      - '&f &a{time} &f秒后开始'
+      - ''
+      - '&f模式：&a{group}'
+      - '&f模式：&7{version}'
+      - ''
+      - '&e{serverIp}'
+      spectator:
+      - '&f&l起床战争'
+      - '&7{date} &8{server}'
+      - '&o&7Spectating'
+      - '&f地图：&a{map}'
+      - ''
+      - '&f玩家数：&a{on}/{max}'
+      - ''
+      - '&f &a{time} &f秒后开始'
+      - ''
+      - '&f模式：&a{group}'
+      - '&f模式：&7{version}'
+      - ''
+      - '&e{serverIp}'
+    playing:
+      alive:
+      - '&e&l起床战争'
+      - '&7{date}'
+      - ''
+      - '&f{nextEvent} - &a{time}'
+      - ''
+      - '{team}'
+      - '{team}'
+      - '{team}'
+      - '{team}'
+      - '{team}'
+      - '{team}'
+      - '{team}'
+      - '{team}'
+      - '{team}'
+      - '{team}'
+      - ''
+      - '&e{serverIp}'
+      spectator:
+      - '&e&l起床战争'
+      - '&7{date}'
+      - '&o&7Spectating {spectatorTarget}'
+      - '&f{nextEvent} - &a{time}'
+      - ''
+      - '{team}'
+      - '{team}'
+      - '{team}'
+      - '{team}'
+      - '{team}'
+      - '{team}'
+      - '{team}'
+      - '{team}'
+      - '{team}'
+      - '{team}'
+      - ''
+      - '&e{serverIp}'
+    restarting:
+      spectator:
+      - '&f&lBED WARS,&f&lBED WARS,&f&lBED WARS,&f&lBED WARS,&f&lBED WARS,&f&lBED
+        WARS,&f&lBED WARS,&f&l{poweredBy},&f&l{poweredBy},&f&l{poweredBy},&e&lBED
+        WARS,&e&lBED WARS,&e&lBED WARS,&e&lBED WARS,&e&lBED WARS,&e&lBED WARS,&e&lBED
+        WARS,&e&l{poweredBy},&e&l{poweredBy},&e&l{poweredBy}'
+      - '&7{date}'
+      - ''
+      - '&6Winner: {winnerTeamColor}{winnerTeamName} &6⭐'
+      - ''
+      - '&7&lTop Kills:'
+      - '&f{topTeamColor}{topPlayerDisplayName}&7 - &l{topValue}'
+      - '&f{topTeamColor}{topPlayerDisplayName}&7 - &l{topValue}'
+      - '&f{topTeamColor}{topPlayerDisplayName}&7 - &l{topValue}'
+      - '&f{topTeamColor}{topPlayerDisplayName}&7 - &l{topValue}'
+      - '&f{topTeamColor}{topPlayerDisplayName}&7 - &l{topValue}'
+      - '&f{topTeamColor}{topPlayerDisplayName}&7 - &l{topValue}'
+      - '&f{topTeamColor}{topPlayerDisplayName}&7 - &l{topValue}'
+      - '&f{topTeamColor}{topPlayerDisplayName}&7 - &l{topValue}'
+      - ''
+      - '&e{serverIp}'
+      winner-alive:
+      - '&f&lBED WARS,&f&lBED WARS,&f&lBED WARS,&f&lBED WARS,&f&lBED WARS,&f&lBED
+        WARS,&f&lBED WARS,&f&l{poweredBy},&f&l{poweredBy},&f&l{poweredBy},&e&lBED
+        WARS,&e&lBED WARS,&e&lBED WARS,&e&lBED WARS,&e&lBED WARS,&e&lBED WARS,&e&lBED
+        WARS,&e&l{poweredBy},&e&l{poweredBy},&e&l{poweredBy}'
+      - '&7{date}'
+      - ''
+      - '&6Winner: {winnerTeamColor}{winnerTeamName} &6⭐'
+      - ''
+      - '&7&lTop Kills:'
+      - '&f{topTeamColor}{topPlayerDisplayName}&7 - &l{topValue}'
+      - '&f{topTeamColor}{topPlayerDisplayName}&7 - &l{topValue}'
+      - '&f{topTeamColor}{topPlayerDisplayName}&7 - &l{topValue}'
+      - '&f{topTeamColor}{topPlayerDisplayName}&7 - &l{topValue}'
+      - '&f{topTeamColor}{topPlayerDisplayName}&7 - &l{topValue}'
+      - '&f{topTeamColor}{topPlayerDisplayName}&7 - &l{topValue}'
+      - '&f{topTeamColor}{topPlayerDisplayName}&7 - &l{topValue}'
+      - '&f{topTeamColor}{topPlayerDisplayName}&7 - &l{topValue}'
+      - ''
+      - '&e{serverIp}'
+      winner-eliminated:
+      - '&f&lBED WARS,&f&lBED WARS,&f&lBED WARS,&f&lBED WARS,&f&lBED WARS,&f&lBED
+        WARS,&f&lBED WARS,&f&l{poweredBy},&f&l{poweredBy},&f&l{poweredBy},&e&lBED
+        WARS,&e&lBED WARS,&e&lBED WARS,&e&lBED WARS,&e&lBED WARS,&e&lBED WARS,&e&lBED
+        WARS,&e&l{poweredBy},&e&l{poweredBy},&e&l{poweredBy}'
+      - '&7{date}'
+      - ''
+      - '&6Winner: {winnerTeamColor}{winnerTeamName} &6⭐'
+      - ''
+      - '&7&lTop Kills:'
+      - '&f{topTeamColor}{topPlayerDisplayName}&7 - &l{topValue}'
+      - '&f{topTeamColor}{topPlayerDisplayName}&7 - &l{topValue}'
+      - '&f{topTeamColor}{topPlayerDisplayName}&7 - &l{topValue}'
+      - '&f{topTeamColor}{topPlayerDisplayName}&7 - &l{topValue}'
+      - '&f{topTeamColor}{topPlayerDisplayName}&7 - &l{topValue}'
+      - '&f{topTeamColor}{topPlayerDisplayName}&7 - &l{topValue}'
+      - '&f{topTeamColor}{topPlayerDisplayName}&7 - &l{topValue}'
+      - '&f{topTeamColor}{topPlayerDisplayName}&7 - &l{topValue}'
+      - ''
+      - '&e{serverIp}'
+      loser:
+      - '&f&lBED WARS,&f&lBED WARS,&f&lBED WARS,&f&lBED WARS,&f&lBED WARS,&f&lBED
+        WARS,&f&lBED WARS,&f&l{poweredBy},&f&l{poweredBy},&f&l{poweredBy},&e&lBED
+        WARS,&e&lBED WARS,&e&lBED WARS,&e&lBED WARS,&e&lBED WARS,&e&lBED WARS,&e&lBED
+        WARS,&e&l{poweredBy},&e&l{poweredBy},&e&l{poweredBy}'
+      - '&7{date}'
+      - ''
+      - '&6Winner: {winnerTeamColor}{winnerTeamName} &6⭐'
+      - ''
+      - '&7&lTop Kills:'
+      - '&f{topTeamColor}{topPlayerDisplayName}&7 - &l{topValue}'
+      - '&f{topTeamColor}{topPlayerDisplayName}&7 - &l{topValue}'
+      - '&f{topTeamColor}{topPlayerDisplayName}&7 - &l{topValue}'
+      - '&f{topTeamColor}{topPlayerDisplayName}&7 - &l{topValue}'
+      - '&f{topTeamColor}{topPlayerDisplayName}&7 - &l{topValue}'
+      - '&f{topTeamColor}{topPlayerDisplayName}&7 - &l{topValue}'
+      - '&f{topTeamColor}{topPlayerDisplayName}&7 - &l{topValue}'
+      - '&f{topTeamColor}{topPlayerDisplayName}&7 - &l{topValue}'
+      - ''
+      - '&e{serverIp}'
+  Doubles:
+    playing:
+      alive:
+      - '&e&l起床战争'
+      - '&7{date}'
+      - ''
+      - '&f{nextEvent} - &a{time}'
+      - ''
+      - '{team}'
+      - '{team}'
+      - '{team}'
+      - '{team}'
+      - '{team}'
+      - '{team}'
+      - '{team}'
+      - '{team}'
+      - ''
+      - '&e{serverIp}'
+      spectator:
+      - '&e&l起床战争'
+      - '&7{date}'
+      - '&o&7Spectating {spectatorTarget}'
+      - '&f{nextEvent} - &a{time}'
+      - ''
+      - '{team}'
+      - '{team}'
+      - '{team}'
+      - '{team}'
+      - '{team}'
+      - '{team}'
+      - '{team}'
+      - '{team}'
+      - ''
+      - '&e{serverIp}'
+  3v3v3v3:
+    playing:
+      alive:
+      - '&e&l起床战争'
+      - '&7{date}'
+      - ''
+      - '&f{nextEvent} - &a{time}'
+      - ''
+      - '{team}'
+      - '{team}'
+      - '{team}'
+      - '{team}'
+      - '{team}'
+      - '{team}'
+      - '{team}'
+      - '{team}'
+      - ''
+      - '&f击杀：&a{kills}'
+      - '&f最终击杀：&a{finalKills}'
+      - '&f破坏床：&a{beds}'
+      - ''
+      - '&e{serverIp}'
+      spectator:
+      - '&e&l起床战争'
+      - '&7{date}'
+      - '&o&7Spectating {spectatorTarget}'
+      - '&f{nextEvent} - &a{time}'
+      - ''
+      - '{team}'
+      - '{team}'
+      - '{team}'
+      - '{team}'
+      - '{team}'
+      - '{team}'
+      - '{team}'
+      - '{team}'
+      - ''
+      - '&f击杀：&a{kills}'
+      - '&f最终击杀：&a{finalKills}'
+      - '&f破坏床：&a{beds}'
+      - ''
+      - '&e{serverIp}'
+  4v4v4v4:
+    playing:
+      alive:
+      - '&e&l起床战争'
+      - '&7{date}'
+      - ''
+      - '&f{nextEvent} - &a{time}'
+      - ''
+      - '{team}'
+      - '{team}'
+      - '{team}'
+      - '{team}'
+      - ''
+      - '&f击杀：&a{kills}'
+      - '&f最终击杀：&a{finalKills}'
+      - '&f破坏床：&a{beds}'
+      - ''
+      - '&e{serverIp}'
+      spectator:
+      - '&e&l起床战争'
+      - '&7{date}'
+      - '&o&7Spectating {spectatorTarget}'
+      - '&f{nextEvent} - &a{time}'
+      - ''
+      - '{team}'
+      - '{team}'
+      - '{team}'
+      - '{team}'
+      - ''
+      - '&f击杀：&a{kills}'
+      - '&f最终击杀：&a{finalKills}'
+      - '&f破坏床：&a{beds}'
+      - ''
+      - '&e{serverIp}'
+format-tab:
+  lobby:
+    header:
+    - '                                                                                                        '
+    - '&a{serverIp}'
+    - ''
+    footer:
+    - ''
+    - '&fThere are {on} players on this lobby'
+    - Powered by {poweredBy},&a{serverIp}
+    - ''
+    prefix:
+    - '{vPrefix}'
+    suffix:
+    - ' {level}'
+  waiting:
+    player:
+      header:
+      - '                                                                                                        '
+      - '&a{serverIp}'
+      - ''
+      footer:
+      - ''
+      - Waiting for more players,Waiting for more players.,Waiting for more players.., Waiting for more players...
+      - '&f{on}&a/&f{max}'
+      - ''
+      - '&a{serverIp}'
+      - '&fPowered by {poweredBy}'
+      - ''
+      prefix:
+      - '{vPrefix}'
+      suffix:
+      - ' {level}'
+    spectator:
+      header:
+      - '                                                                                                        '
+      - '&a{serverIp}'
+      - ''
+      footer:
+      - ''
+      - '&7&oYou are spectating'
+      - Waiting for more players,Waiting for more players.,Waiting for more players.., Waiting for more players...
+      - '&f{on}&a/&f{max}'
+      - ''
+      - '&a{serverIp}'
+      - '&fPowered by {poweredBy}'
+      - ''
+      prefix:
+      - '{vPrefix}'
+      suffix:
+      - ' {level}'
+  starting:
+    player:
+      header:
+      - '                                                                                                        '
+      - '&a{serverIp}'
+      - '&7{date}'
+      - '&7Map: &f{map} &7Mode: &f{group}'
+      - ''
+      footer:
+      - ''
+      - '&fStarting in &a{time} &fseconds,&fStarting in &a{time} &fseconds.,&fStarting
+        in &a{time} &fseconds..,&fStarting in &a{time} &fseconds..'
+      - '&f{on}&a/&f{max}'
+      - ''
+      - '&a{serverIp}'
+      - '&fPowered by {poweredBy}'
+      - ''
+      prefix:
+      - '{vPrefix} '
+      suffix:
+      - ' {level}'
+    spectator:
+      header:
+      - '                                                                                                        '
+      - '&a{serverIp}'
+      - '&7{date}'
+      - '&7Map: &f{map} &7Mode: &f{group}'
+      - ''
+      footer:
+      - ''
+      - '&fStarting in &a{time} &fseconds,&fStarting in &a{time} &fseconds.,&fStarting
+        in &a{time} &fseconds..,&fStarting in &a{time} &fseconds..'
+      - '&f{on}&a/&f{max}'
+      - ''
+      - '&a{serverIp}'
+      - '&fPowered by {poweredBy}'
+      - ''
+  playing:
+    alive:
+      header:
+      - '                                                                                                        '
+      - '&a{serverIp}'
+      - '&7{date}'
+      - '&7Map: &f{map} &7Mode: &f{group}'
+      - ''
+      - '{nextEvent} in {time}'
+      - ''
+      footer:
+      - ''
+      - '&fYou are playing on the {teamColor}{teamName} Team'
+      - '&a{serverIp}'
+      - '&fPowered by {poweredBy}'
+      - ''
+      prefix:
+      - '{teamColor}{teamName} '
+      suffix:
+      - ' {vPrefix}'
+      - ' {level}'
+    eliminated:
+      header:
+      - '                                                                                                        '
+      - '&a{serverIp}'
+      - '&7{date}'
+      - '&7Map: &f{map} &7Mode: &f{group}'
+      - ''
+      - '{nextEvent} in {time}'
+      - ''
+      - '&7&oAYou''ve been eliminated,&f&oAYou''ve been eliminated'
+      footer:
+      - ''
+      - '&fYou have played in the {teamColor}{teamName} Team'
+      - '&a{serverIp}'
+      - '&fPowered by {poweredBy}'
+      - ''
+      prefix:
+      - '&f&oSpectator '
+      suffix:
+      - ' &c&oEliminated {teamColor}&o{teamName}'
+      - ' {teamColor}&oEliminated {vPrefix}'
+      - '{teamColor}&oEliminated {level}'
+    spectator:
+      header:
+      - '                                                                                                        '
+      - '&a{serverIp}'
+      - '&7{date}'
+      - '&7Map: &f{map} &7Mode: &f{group}'
+      - ''
+      - '{nextEvent} in {time}'
+      - ''
+      footer:
+      - ''
+      - '&fPowered by {poweredBy}'
+      - ''
+      prefix:
+      - '&f&oSpectator '
+      suffix:
+      - ' {vPrefix}'
+      - ' {level}'
+  restarting:
+    winner-alive:
+      header:
+      - '                                                                                                        '
+      - '&6⭐ {winnerTeamColor}&lYour team won the game! &6⭐'
+      - '&7{date}'
+      - '&7Map: &f{map} &7Mode: &f{group}'
+      - ''
+      footer:
+      - ''
+      - '&6&lYou won in the {teamColor}&l{teamName} Team&6&l!,&6&lYou won in the {teamColor}&l{teamName}
+        Team&6&l!,&f&lYou won in the {teamColor}&l{teamName} Team&f&l!'
+      - '&7Statistics from this match'
+      - '&eKills: &f{kills} &8| &eFinal Kills: &f{finalKills} &8| &eBeds Destroyed:
+        &f{beds} &8| &eDeaths: &f{deaths},&eKills: &7{kills} &8| &eFinal Kills: &7{finalKills}
+        &8| &eBeds Destroyed: &7{beds} &8| &eDeaths: &7{deaths}'
+      - ''
+      - '&fThanks for playing {player}!'
+      - '&a{serverIp}'
+      - '&fPowered by {poweredBy}'
+      - ''
+      prefix:
+      - '&6&l⭐ {teamColor}{teamName} '
+      suffix:
+      - ' {vPrefix}'
+      - ' {level}'
+    winner-dead:
+      header:
+      - '                                                                                                        '
+      - '&6⭐ {winnerTeamColor}&l{winnerTeamName} Team won the game! &6⭐'
+      - '&7{date}'
+      - '&7Map: &f{map} &7Mode: &f{group}'
+      - ''
+      footer:
+      - ''
+      - '&6&lYou won in the {teamColor}&l{teamName} Team&6&l!,&6&lYou won in the {teamColor}&l{teamName}
+        Team&6&l!,&f&lYou won in the {teamColor}&l{teamName} Team&f&l!'
+      - '&7Statistics from this match'
+      - '&eKills: &f{kills} &8| &eFinal Kills: &f{finalKills} &8| &eBeds Destroyed:
+        &f{beds} &8| &eDeaths: &f{deaths},&eKills: &7{kills} &8| &eFinal Kills: &7{finalKills}
+        &8| &eBeds Destroyed: &7{beds} &8| &eDeaths: &7{deaths}'
+      - '&fThanks for playing {player}!'
+      - '&a{serverIp}'
+      - '&fPowered by {poweredBy}'
+      - ''
+      prefix:
+      - '&6&l⭐ {teamColor}{teamName} '
+      suffix:
+      - ' {vPrefix}'
+      - ' &c&oEliminated'
+      - ' {level}'
+      - ' &c&oEliminated'
+    loser:
+      header:
+      - '                                                                                                        '
+      - '&6⭐ {winnerTeamColor}&l{winnerTeamName} Team won the game! &6⭐'
+      - '&7{date}'
+      - '&7Map: &f{map} &7Mode: &f{group}'
+      - ''
+      footer:
+      - ''
+      - '&fYou have lost in the {teamColor}{teamName} Team'
+      - '&7Statistics from this match'
+      - '&eKills: &f{kills} &8| &eFinal Kills: &f{finalKills} &8| &eBeds Destroyed:
+        &f{beds} &8| &eDeaths: &f{deaths},&eKills: &7{kills} &8| &eFinal Kills: &7{finalKills}
+        &8| &eBeds Destroyed: &7{beds} &8| &eDeaths: &7{deaths}'
+      - '&fThanks for playing {player}!'
+      - '&a{serverIp}'
+      - '&fPowered by {poweredBy}'
+      - ''
+      prefix:
+      - '{teamColor}{teamName} '
+      suffix:
+      - ' {vPrefix}'
+      - ' &c&oEliminated'
+      - ' {level}'
+      - ' &c&oEliminated'
+    spectator:
+      header:
+      - '                                                                                                        '
+      - '&a{serverIp}'
+      - '&6⭐ {winnerTeamColor}&l{winnerTeamName} Team won the game! &6⭐'
+      - '&7{date}'
+      - '&7Map: &f{map} &7Mode: &f{group}'
+      - ''
+      - '&fThanks for playing {player}!'
+      - ''
+      footer:
+      - ''
+      - '&fPowered by {poweredBy}'
+      - ''
+      prefix:
+      - '&f&oSpectator '
+      suffix:
+      - ' {vPrefix}'
+      - ' {level}'
+shop-items-messages:
+  inventory-name: '&8快速购买'
+  quick-buy-add-inventory-name: '&8添加到快速购买...'
+  separator-item-name: '&8⇧ 分类'
+  separator-item-lore:
+  - '&8⇩ 物品'
+  quick-buy-item-name: '&b快速购买'
+  quick-buy-item-lore: []
+  quick-buy-empty-item-name: '&c空槽位！'
+  quick-buy-empty-item-lore:
+  - '&7这是快速购买槽位！'
+  - '&bShift+点击 &7商店中的物品'
+  - '&7来加到这里。'
+  can-buy-color: '&a'
+  cant-buy-color: '&c'
+  blocks-category:
+    inventory-name: '&8方块'
+    category-item-name: '&a方块'
+    category-item-lore:
+    - '&e点击查看！'
+    content-item-wool-name: '{color}羊毛'
+    content-item-wool-lore:
+    - '&7花费：&f{cost} {currency}'
+    - ''
+    - '&7很好的搭路工具'
+    - '&7购买后将变为你队伍的颜色'
+    - ''
+    - '{quick_buy}'
+    - '{buy_status}'
+    content-item-clay-name: '{color}硬化粘土'
+    content-item-clay-lore:
+    - '&7花费：{cost} {currency}'
+    - ''
+    - '&7保护床的基本方块。'
+    - ''
+    - '{quick_buy}'
+    - '{buy_status}'
+    content-item-glass-name: '{color}防爆玻璃'
+    content-item-glass-lore:
+    - '&7花费：{cost} {currency}'
+    - ''
+    - '&7免疫爆炸。'
+    - ''
+    - '{quick_buy}'
+    - '{buy_status}'
+    content-item-stone-name: '{color}末地石'
+    content-item-stone-lore:
+    - '&7花费：{cost} {currency}'
+    - ''
+    - '&7保护床的坚实方块。'
+    - ''
+    - '{quick_buy}'
+    - '{buy_status}'
+    content-item-ladder-name: '{color}梯子'
+    content-item-ladder-lore:
+    - '&7花费：{cost} {currency}'
+    - ''
+    - '&7爬树时很有用。'
+    - ''
+    - '{quick_buy}'
+    - '{buy_status}'
+    content-item-obsidian-name: '{color}黑曜石'
+    content-item-obsidian-lore:
+    - '&7花费：{cost} {currency}'
+    - ''
+    - '&7对床的终极保护。'
+    - ''
+    - '{quick_buy}'
+    - '{buy_status}'
+    content-item-wood-name: '{color}原木'
+    content-item-wood-lore:
+    - '&7花费：{cost} {currency}'
+    - ''
+    - '&7保护床的坚实方块。'
+    - ''
+    - '{quick_buy}'
+    - '{buy_status}'
+  melee-category:
+    inventory-name: '&8战斗'
+    category-item-name: '&a战斗'
+    category-item-lore:
+    - '&e点击查看！'
+    content-item-stone-sword-name: '{color}石剑'
+    content-item-stone-sword-lore:
+    - '&7花费：{cost} {currency}'
+    - ''
+    - '{quick_buy}'
+    - '{buy_status}'
+    content-item-iron-sword-name: '{color}铁剑'
+    content-item-iron-sword-lore:
+    - '&7花费：{cost} {currency}'
+    - ''
+    - '{quick_buy}'
+    - '{buy_status}'
+    content-item-diamond-sword-name: '{color}钻石剑'
+    content-item-diamond-sword-lore:
+    - '&7花费：{cost} {currency}'
+    - ''
+    - '{quick_buy}'
+    - '{buy_status}'
+    content-item-stick-name: '{color}木棍(击退 I)'
+    content-item-stick-lore:
+    - '&7花费：{cost} {currency}'
+    - ''
+    - '{quick_buy}'
+    - '{buy_status}'
+  armor-category:
+    inventory-name: '&8盔甲'
+    category-item-name: '&a盔甲'
+    category-item-lore:
+    - '&e点击查看！'
+    content-item-chainmail-name: '{color}锁链护甲'
+    content-item-chainmail-lore:
+    - '&7花费：{cost} {currency}'
+    - ''
+    - '&7锁链靴子和护腿'
+    - '&7死亡不掉落'
+    - ''
+    - '{quick_buy}'
+    - '{buy_status}'
+    content-item-iron-armor-name: '{color}铁护甲'
+    content-item-iron-armor-lore:
+    - '&7花费：{cost} {currency}'
+    - ''
+    - '&7铁靴子和护腿'
+    - '&7死亡不掉落'
+    - ''
+    - '{quick_buy}'
+    - '{buy_status}'
+    content-item-diamond-armor-name: '{color}钻石护甲'
+    content-item-diamond-armor-lore:
+    - '&7花费：{cost} {currency}'
+    - ''
+    - '&7钻石靴子和护腿'
+    - '&7死亡不掉落'
+    - ''
+    - '{quick_buy}'
+    - '{buy_status}'
+  tools-category:
+    inventory-name: '&8工具'
+    category-item-name: '&a工具'
+    category-item-lore:
+    - '&e点击查看！'
+    content-item-shears-name: '{color}剪刀'
+    content-item-shears-lore:
+    - '&7花费：{cost} {currency}'
+    - ''
+    - '&7拆羊毛的利器'
+    - '&7死亡不掉落。'
+    - ''
+    - '{quick_buy}'
+    - '{buy_status}'
+    content-item-pickaxe-name: '{color}镐{tier}'
+    content-item-pickaxe-lore:
+    - '&7花费：{cost} {currency}'
+    - '&7等级：&e{tier}'
+    - ''
+    - '&7该工具可升级。'
+    - '&7每次死亡都会降一级。'
+    - ''
+    - '&7降到最低级为止'
+    - ''
+    - '{quick_buy}'
+    - '{buy_status}'
+    content-item-axe-name: '{color}斧{tier}'
+    content-item-axe-lore:
+    - '&7花费：{cost} {currency}'
+    - '&7等级：&e{tier}'
+    - ''
+    - '&7该工具可升级。'
+    - '&7每次死亡都会降一级。'
+    - ''
+    - '&7降到最低级为止'
+    - ''
+    - '{quick_buy}'
+    - '{buy_status}'
+  ranged-category:
+    inventory-name: '&8远程武器'
+    category-item-name: '&a远程武器'
+    category-item-lore:
+    - '&e点击查看！'
+    content-item-arrow-name: '{color}箭'
+    content-item-arrow-lore:
+    - '&7花费：{cost} {currency}'
+    - ''
+    - '{quick_buy}'
+    - '{buy_status}'
+    content-item-bow1-name: '{color}弓'
+    content-item-bow1-lore:
+    - '&7花费：{cost} {currency}'
+    - ''
+    - '{quick_buy}'
+    - '{buy_status}'
+    content-item-bow2-name: '{color}弓（力量 I）'
+    content-item-bow2-lore:
+    - '&7花费：{cost} {currency}'
+    - ''
+    - '{quick_buy}'
+    - '{buy_status}'
+    content-item-bow3-name: '{color}弓（力量 I, 冲击 I）'
+    content-item-bow3-lore:
+    - '&7花费：{cost} {currency}'
+    - ''
+    - '{quick_buy}'
+    - '{buy_status}'
+  potions-category:
+    inventory-name: '&8药水'
+    category-item-name: '&a药水'
+    category-item-lore:
+    - '&e点击查看！'
+    content-item-speed-potion-name: '{color}速度 II 药水（45 秒）'
+    content-item-speed-potion-lore:
+    - '&7花费：{cost} {currency}'
+    - ''
+    - '{quick_buy}'
+    - '{buy_status}'
+    content-item-jump-potion-name: '{color}跳跃提升 V 药水（45 秒）'
+    content-item-jump-potion-lore:
+    - '&7花费：{cost} {currency}'
+    - ''
+    - '{quick_buy}'
+    - '{buy_status}'
+    content-item-invisibility-name: '{color}隐身药水（30 秒）'
+    content-item-invisibility-lore:
+    - '&7花费：{cost} {currency}'
+    - ''
+    - '{quick_buy}'
+    - '{buy_status}'
+  utility-category:
+    inventory-name: '&8实用工具'
+    category-item-name: '&a实用工具'
+    category-item-lore:
+    - '&e点击查看！'
+    content-item-golden-apple-name: '{color}金苹果'
+    content-item-golden-apple-lore:
+    - '&7花费：{cost} {currency}'
+    - ''
+    - '&7均衡治疗'
+    - ''
+    - '{quick_buy}'
+    - '{buy_status}'
+    content-item-bedbug-name: '{color}蠹虫'
+    content-item-bedbug-lore:
+    - '&7花费：{cost} {currency}'
+    - ''
+    - '&7在雪球落下的地方召唤蠹虫'
+    - '&7来干扰敌人'
+    - '&7持续15秒。'
+    - ''
+    - '{quick_buy}'
+    - '{buy_status}'
+    content-item-dream-defender-name: '{color}梦境守卫者'
+    content-item-dream-defender-lore:
+    - '&7花费：{cost} {currency}'
+    - ''
+    - '&7召唤铁傀儡来保护基地'
+    - '&7持续 4 分钟'
+    - ''
+    - '{quick_buy}'
+    - '{buy_status}'
+    content-item-fireball-name: '{color}火球'
+    content-item-fireball-lore:
+    - '&7花费：{cost} {currency}'
+    - ''
+    - '&7右键发射！'
+    - '&7把在窄桥上的敌人打下去！'
+    - ''
+    - '{quick_buy}'
+    - '{buy_status}'
+    content-item-tnt-name: '{color}TNT'
+    content-item-tnt-lore:
+    - '&7花费：{cost} {currency}'
+    - ''
+    - '&7立即点燃, 适合炸点东西'
+    - ''
+    - '{quick_buy}'
+    - '{buy_status}'
+    content-item-ender-pearl-name: '{color}末影珍珠'
+    content-item-ender-pearl-lore:
+    - '&7花费：{cost} {currency}'
+    - ''
+    - '&7偷家最快的方式'
+    - ''
+    - '{quick_buy}'
+    - '{buy_status}'
+    content-item-water-bucket-name: '{color}水桶'
+    content-item-water-bucket-lore:
+    - '&7花费：{cost} {currency}'
+    - ''
+    - '&7减缓敌人的速度'
+    - '&7也可以防止 TNT 破坏方块'
+    - ''
+    - '{quick_buy}'
+    - '{buy_status}'
+    content-item-bridge-egg-name: '{color}搭桥蛋'
+    content-item-bridge-egg-lore:
+    - '&7花费：{cost} {currency}'
+    - ''
+    - '&7丢出后在其轨迹形成一座桥'
+    - ''
+    - '{quick_buy}'
+    - '{buy_status}'
+    content-item-magic-milk-name: '{color}魔法牛奶'
+    content-item-magic-milk-lore:
+    - '&7花费：{cost} {currency}'
+    - ''
+    - '&7喝下后 60 秒内不会触发陷阱'
+    - ''
+    - '{quick_buy}'
+    - '{buy_status}'
+    content-item-sponge-name: '{color}海绵'
+    content-item-sponge-lore:
+    - '&7花费：{cost} {currency}'
+    - ''
+    - '&7用来吸水不错'
+    - ''
+    - '{quick_buy}'
+    - '{buy_status}'
+    content-item-Compact Pop-up Tower-name: '{color}袖珍弹出塔'
+    content-item-Compact Pop-up Tower-lore:
+    - '&花费: {cost} {currency}'
+    - ''
+    - '&7放置一个袖珍弹出塔'
+    - '&7塔防！'
+    - ''
+    - '{quick_buy}'
+    - '{buy_status}'
+    content-item-tower-name: '&cName not set'
+    content-item-tower-lore: '&cLore not set'
+shop-insuff-money: '{prefix}&c你没有足够的{currency}！ 还需要 {amount} 个{currency}！'
+shop-new-purchase: '{prefix}&a购买&6{item}'
+shop-already-bought: '{prefix}&c你已经购买过了！'
+shop-utility-silverfish: '{TeamColor}&l{TeamName} &r{TeamColor}蠹虫'
+shop-utility-iron-golem: '{TeamColor}{despawn}秒 &8[ {TeamColor}{health}&8]'
+shop-lore-status-can-buy: '&e点击购买！'
+shop-lore-status-cant-afford: '&c你没有足够的{currency}！'
+shop-lore-status-tier-maxed: '&a满级！'
+shop-lore-status-armor: '&a已装备！'
+shop-lore-quick-add: '&bShift+点击 来添加快速购买'
+shop-lore-quick-remove: '&bShift+点击 来从快速购买中移除！'
+meaning-no-trap: 无陷阱！
+format-spectator-target: '{targetTeamColor}{targetDisplayName}'
+format-upgrade-trap-cost: '&7花费：{currencyColor}{cost} {currency}'
+format-upgrade-color-can-afford: '&e'
+format-upgrade-color-cant-afford: '&c'
+format-upgrade-color-unlocked: '&a'
+format-tier-color-locked: '&7'
+format-tier-color-unlocked: '&a'
+upgrades-lore-click-buy: '{color}点击购买！'
+upgrades-lore-insuff-money: '{color}你没有足够的{currency}！'
+upgrades-lore-locked: '&c已锁定'
+upgrades-lore-unlocked: '{color}已解锁'
+upgrades-new-purchase: '&a{player}购买了&6{upgradeName}'
+upgrades-upgrade-name-forge-tier-1: '{color}铁锭熔炉'
+upgrades-upgrade-lore-forge:
+- '&7增加岛上资源的生成速度'
+- ''
+- '{tier_1_color}等级 1：+50% 生成速率, &b{tier_1_cost} {tier_1_currency}'
+- '{tier_2_color}等级 2：+100% 生成速率，&b{tier_2_cost} {tier_2_currency}'
+- '{tier_3_color}等级 3：生成绿宝石，&b{tier_3_cost} {tier_3_currency}'
+- '{tier_4_color}等级 4：+200% 生成速率，&b{tier_4_cost} {tier_4_currency}'
+- ''
+upgrades-upgrade-name-forge-tier-2: '{color}金锭熔炉'
+upgrades-upgrade-name-forge-tier-3: '{color}绿宝石熔炉'
+upgrades-upgrade-name-forge-tier-4: '{color}无尽熔炉'
+upgrades-category-item-name-traps: '&e购买陷阱'
+upgrades-category-item-lore-traps:
+- '&7已购买的陷阱将从右边进入队列'
+- ''
+- '&e点击查看！'
+upgrades-upgrade-name-swords-tier-1: '{color}锋利附魔'
+upgrades-upgrade-lore-swords:
+- '&7队伍的所有剑和斧获得锋利 I！'
+- ''
+- '{tier_1_color}花费：&b{tier_1_cost} {tier_1_currency}'
+- ''
+upgrades-upgrade-name-armor-tier-1: '{color}护甲强化 I'
+upgrades-upgrade-lore-armor:
+- '&7队伍的所有护甲获得保护附魔！'
+- ''
+- '{tier_1_color}等级 1：保护 I， &b{tier_1_cost} {tier_1_currency}'
+- '{tier_2_color}等级 2：保护 II，&b{tier_2_cost} {tier_2_currency}'
+- '{tier_3_color}等级 3：保护 III，&b{tier_3_cost} {tier_3_currency}'
+- '{tier_4_color}等级 4：保护 IV，&b{tier_4_cost} {tier_4_currency}'
+- ''
+upgrades-upgrade-name-armor-tier-2: '{color}护甲强化 II'
+upgrades-upgrade-name-armor-tier-3: '{color}护甲强化 III'
+upgrades-upgrade-name-armor-tier-4: '{color}护甲强化 IV'
+upgrades-upgrade-name-miner-tier-1: '{color}疯狂矿工 I'
+upgrades-upgrade-lore-miner:
+- '&7队伍获得急迫效果。'
+- ''
+- '{tier_1_color}等级 1：急迫 I, &b{tier_1_cost} {tier_1_currency}'
+- '{tier_2_color}等级 2：急迫 II, &b{tier_2_cost} {tier_2_currency}'
+- ''
+upgrades-upgrade-name-miner-tier-2: '{color}疯狂矿工 II'
+upgrades-upgrade-name-heal-pool-tier-1: '{color}治愈池'
+upgrades-upgrade-lore-heal-pool:
+- '&7在基地附近生成治愈池！'
+- ''
+- '{tier_1_color}花费：&b{tier_1_cost} {tier_1_currency}'
+- ''
+upgrades-upgrade-name-dragon-tier-1: '{color}末影龙升级'
+upgrades-upgrade-lore-dragon:
+- '&7在死斗时你的队伍会有 2 条而不是 1 条龙！'
+- ''
+- '{tier_1_color}花费：&b{tier_1_cost} {tier_1_currency}'
+- ''
+upgrades-separator-item-name-glass: '&8⬆&7可购买'
+upgrades-separator-item-lore-glass:
+- '&8⬇&7陷阱队列'
+upgrades-trap-slot-item-name-first: '{color}陷阱 #1：{name}'
+upgrades-trap-slot-item-lore1-first:
+- '&7第一个进入你基地的敌人将触发该陷阱！'
+upgrades-trap-slot-item-lore2-first:
+- ''
+- '&7下个购买的陷阱将在此进入队列'
+- '&7陷阱的花费将会随着队列长度增加'
+- ''
+- '&7下个陷阱花费：&b{cost} {currency}'
+upgrades-trap-slot-item-name-second: '{color}陷阱 #2：{name}'
+upgrades-trap-slot-item-lore1-second:
+- '&7第二个进入你基地的敌人将触发该陷阱！'
+upgrades-trap-slot-item-lore2-second:
+- ''
+- '&7下个购买的陷阱将在此进入队列'
+- '&7陷阱的花费将会随着队列长度增加'
+- ''
+- '&7下个陷阱花费：&b{cost} {currency}'
+upgrades-trap-slot-item-name-third: '{color}陷阱 #3：{name}'
+upgrades-trap-slot-item-lore1-third:
+- '&7第三个进入你基地的敌人将触发该陷阱！'
+upgrades-trap-slot-item-lore2-third:
+- ''
+- '&7下个购买的陷阱将在此进入队列'
+- '&7陷阱的花费将会随着队列长度增加'
+- ''
+- '&7下个陷阱花费：&b{cost} {currency}'
+upgrades-base-trap-name-1: '{color}这是个陷阱！'
+upgrades-base-trap-lore-1:
+- '&7造成5秒失明和缓慢'
+- ''
+upgrades-base-trap-name-2: '{color}反击陷阱'
+upgrades-base-trap-lore-2:
+- '&7给予基地附近的队友 15 秒速度 I。'
+- ''
+upgrades-base-trap-name-3: '{color}报警陷阱'
+upgrades-base-trap-lore-3:
+- '&7显示隐身的敌人及其名字和队伍。'
+- ''
+upgrades-base-trap-name-4: '{color}挖掘疲劳陷阱'
+upgrades-base-trap-lore-4:
+- '&7造成 10 秒挖掘疲劳。'
+- ''
+upgrades-separator-item-name-back: '&a返回'
+upgrades-separator-item-lore-back:
+- '&7回到升级和陷阱菜单'
+upgrades-category-gui-name-traps: '&8将陷阱加入队列'
+upgrades-trap-queue-full: '&c陷阱队列已满！'
+upgrades-trap-default-msg: '&c&l{trap}被触发了！'
+upgrades-trap-default-title: '&c陷阱触发！'
+upgrades-trap-default-subtitle: '&f你队伍的{trap}被触发了！'
+upgrades-base-trap-msg-3: '&c&l报警陷阱被{color}&l{team}的&7&l{player}&c&l触发了！'
+upgrades-base-trap-title-3: '&c&l警报！！！'
+upgrades-base-trap-subtitle-3: '{color}{team}&f触发了陷阱！'
+upgrades-menu-gui-name-default: '&8Upgrades & Traps'
