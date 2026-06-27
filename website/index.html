@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Onyx RBW — Competitive Ranked Bedwars</title>
+  <meta name="description" content="Onyx RBW is a competitive Ranked Bedwars server with ELO matchmaking, Discord queue, and cross-version support.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="icon" type="image/png" href="assets/favicon.png">
+</head>
+<body>
+  <nav class="navbar">
+    <div class="container">
+      <a href="#" class="logo">ONYXRBW</a>
+      <ul class="nav-links">
+        <li><a href="#about">About</a></li>
+        <li><a href="#divisions">Divisions</a></li>
+        <li><a href="#features">Features</a></li>
+        <li><a href="#join" class="nav-cta">Join</a></li>
+      </ul>
+      <button class="mobile-toggle" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <section class="hero">
+    <div class="hero-bg"></div>
+    <div class="container">
+      <div class="hero-content">
+        <span class="badge">Closed Beta Now</span>
+        <h1>Ranked Bedwars.<br><span class="gold">Ascend to Onyx.</span></h1>
+        <p class="hero-sub">Compete in ELO-based matchmaking with Discord queue integration. Cross-version support for 1.7–1.21.</p>
+        <div class="hero-actions">
+          <div class="ip-box">
+            <code id="server-ip">play.onyxrbw.com</code>
+            <button id="copy-ip" class="ip-btn" data-copied="Copied!">Copy IP</button>
+          </div>
+          <a href="https://discord.gg/onyxrbw" class="btn btn-discord" target="_blank" rel="noopener">Discord</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="about" class="section">
+    <div class="container">
+      <h2 class="section-title">What is <span class="gold">Onyx RBW</span>?</h2>
+      <p class="section-desc">A competitive Ranked Bedwars server built for players who want a fair, ELO-based competitive experience. Queue through Discord, get matched by skill, and climb through 8 divisions — from Ash to Onyx.</p>
+      <div class="stats-grid">
+        <div class="stat-card">
+          <span class="stat-number" data-target="8">0</span>
+          <span class="stat-label">Divisions</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-number" data-target="20">0</span>
+          <span class="stat-label">Ranked Maps</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-number" data-target="100">0</span>
+          <span class="stat-label">Max Players</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-number" data-target="1.7">0</span>
+          <span class="stat-label">– 1.21 Support</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="divisions" class="section dark">
+    <div class="container">
+      <h2 class="section-title">ELO <span class="gold">Divisions</span></h2>
+      <p class="section-desc">Every player starts at 400 ELO. Climb through 8 tiers to reach the top.</p>
+      <div class="divisions-grid">
+        <div class="division-card" style="--div-color: #6B6B6B">
+          <div class="div-icon ash"></div>
+          <h3>Ash</h3>
+          <span class="div-elo">0 – 299</span>
+        </div>
+        <div class="division-card" style="--div-color: #8A8A8A">
+          <div class="div-icon stone"></div>
+          <h3>Stone</h3>
+          <span class="div-elo">300 – 599</span>
+        </div>
+        <div class="division-card" style="--div-color: #B87333">
+          <div class="div-icon copper"></div>
+          <h3>Copper</h3>
+          <span class="div-elo">600 – 899</span>
+        </div>
+        <div class="division-card" style="--div-color: #C0C0C0">
+          <div class="div-icon silver"></div>
+          <h3>Silver</h3>
+          <span class="div-elo">900 – 1199</span>
+        </div>
+        <div class="division-card" style="--div-color: #FFD700">
+          <div class="div-icon gold"></div>
+          <h3>Gold</h3>
+          <span class="div-elo">1200 – 1499</span>
+        </div>
+        <div class="division-card" style="--div-color: #E0115F">
+          <div class="div-icon ruby"></div>
+          <h3>Ruby</h3>
+          <span class="div-elo">1500 – 1799</span>
+        </div>
+        <div class="division-card" style="--div-color: #0F52BA">
+          <div class="div-icon sapphire"></div>
+          <h3>Sapphire</h3>
+          <span class="div-elo">1800 – 2199</span>
+        </div>
+        <div class="division-card featured" style="--div-color: #1A1A1A">
+          <div class="div-icon onyx"></div>
+          <h3>Onyx</h3>
+          <span class="div-elo">2200+</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="features" class="section">
+    <div class="container">
+      <h2 class="section-title">Server <span class="gold">Features</span></h2>
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon">⚔</div>
+          <h3>Skill-Based Matchmaking</h3>
+          <p>ELO-based teams with captain picking, map voting, and fair balancing.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🔗</div>
+          <h3>Discord Queue</h3>
+          <p>Join voice channels in Discord, get matched, and play — all without leaving Discord.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🏆</div>
+          <h3>8 ELO Tiers</h3>
+          <p>Climb from Ash to Onyx with a competitive ELO system. Every win matters.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🖥</div>
+          <h3>Cross-Version</h3>
+          <p>Play from any version — 1.7.10 through 1.21.x supported.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">📊</div>
+          <h3>Live Stats</h3>
+          <p>Track your K/D, W/L, winstreaks, beds broken, and more through Discord.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🛡</div>
+          <h3>Anti-Cheat</h3>
+          <p>Competitive integrity with anti-cheat measures and staff moderation.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="join" class="section dark">
+    <div class="container">
+      <h2 class="section-title">Ready to <span class="gold">Compete</span>?</h2>
+      <p class="section-desc">Join our Discord, register your Minecraft account, and queue up.</p>
+      <div class="join-actions">
+        <div class="ip-box large">
+          <code id="server-ip-2">play.onyxrbw.com</code>
+          <button id="copy-ip-2" class="ip-btn" data-copied="Copied!">Copy IP</button>
+        </div>
+        <a href="https://discord.gg/onyxrbw" class="btn btn-discord large" target="_blank" rel="noopener">Join Discord</a>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="container">
+      <span class="footer-brand">Onyx RBW</span>
+      <span class="footer-copy">&copy; 2026 Onyx RBW. Not affiliated with Mojang AB or Hypixel Inc.</span>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+</body>
+</html>

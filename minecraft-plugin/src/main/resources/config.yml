@@ -1,0 +1,18 @@
+# Onyx RBW Plugin Configuration
+
+# Discord bot socket server connection
+socket:
+  host: "localhost"
+  port: 8080
+
+# Shared secret for authentication (must match SOCKET_KEY on the Discord bot)
+socket-key: "your-socket-key-here"
+
+# Bot name for identification on the socket server
+bot-name: "onyx-bot-1"
+
+# Reconnect settings
+reconnect:
+  max-attempts: -1
+  base-delay-seconds: 5
+  max-delay-seconds: 60

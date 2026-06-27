@@ -1,0 +1,93 @@
+# Onyx RBW - Steampunk
+# World configuration
+# After placing the map folder in paper/, run:
+#   /bw add Steampunk
+#   /bw setarena Steampunk
+# Then use /bw setup Steampunk to configure spawns and generators in-game.
+
+world: "Steampunk"
+config-version: "22.01"
+
+# Build height limits
+min-build-y: 95
+max-build-y: 120
+build-limit: 120
+
+# Game settings
+game-time: 900
+waiting-time: 15
+ending-time: 10
+respawn-time: 5
+players-per-team: 4
+min-teams: 2
+
+# Arena group for matchmaking
+group: "ranked"
+
+# Enable/disable
+enabled: true
+
+# Database storage
+database: false
+
+# Target blocks (beds)
+target-blocks:
+- BED_BLOCK
+- BED
+
+# Spectator settings
+spectator-spawn:
+  world: "Steampunk"
+  x: 0
+  y: 130
+  z: 0
+  yaw: 0
+  pitch: 90
+
+# --- TEAMS ---
+# Configure using /bw setup Steampunk in-game
+# Template for team spawns:
+# teams:
+#   red:
+#     spawn:
+#       world: "Steampunk"
+#       x: 0
+#       y: 96
+#       z: 0
+#       yaw: 0
+#       pitch: 0
+#     bed:
+#       world: "Steampunk"
+#       x: 0
+#       y: 96
+#       z: 0
+#     shop:
+#       world: "Steampunk"
+#       x: 0
+#       y: 96
+#       z: 0
+#     team-upgrade:
+#       world: "Steampunk"
+#       x: 0
+#       y: 96
+#       z: 0
+#   blue: ...
+#   green: ...
+#   yellow: ...
+
+# --- GENERATORS ---
+# Configure using /bw setup Steampunk in-game
+# Template:
+# generators:
+#   diamond:
+#   - location:
+#       world: "Steampunk"
+#       x: 0
+#       y: 96
+#       z: 0
+#   emerald:
+#   - location:
+#       world: "Steampunk"
+#       x: 0
+#       y: 96
+#       z: 0

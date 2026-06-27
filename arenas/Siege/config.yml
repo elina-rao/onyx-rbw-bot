@@ -1,0 +1,93 @@
+# Onyx RBW - Siege
+# World configuration
+# After placing the map folder in paper/, run:
+#   /bw add Siege
+#   /bw setarena Siege
+# Then use /bw setup Siege to configure spawns and generators in-game.
+
+world: "Siege"
+config-version: "22.01"
+
+# Build height limits
+min-build-y: 90
+max-build-y: 110
+build-limit: 110
+
+# Game settings
+game-time: 900
+waiting-time: 15
+ending-time: 10
+respawn-time: 5
+players-per-team: 4
+min-teams: 2
+
+# Arena group for matchmaking
+group: "ranked"
+
+# Enable/disable
+enabled: true
+
+# Database storage
+database: false
+
+# Target blocks (beds)
+target-blocks:
+- BED_BLOCK
+- BED
+
+# Spectator settings
+spectator-spawn:
+  world: "Siege"
+  x: 0
+  y: 120
+  z: 0
+  yaw: 0
+  pitch: 90
+
+# --- TEAMS ---
+# Configure using /bw setup Siege in-game
+# Template for team spawns:
+# teams:
+#   red:
+#     spawn:
+#       world: "Siege"
+#       x: 0
+#       y: 91
+#       z: 0
+#       yaw: 0
+#       pitch: 0
+#     bed:
+#       world: "Siege"
+#       x: 0
+#       y: 91
+#       z: 0
+#     shop:
+#       world: "Siege"
+#       x: 0
+#       y: 91
+#       z: 0
+#     team-upgrade:
+#       world: "Siege"
+#       x: 0
+#       y: 91
+#       z: 0
+#   blue: ...
+#   green: ...
+#   yellow: ...
+
+# --- GENERATORS ---
+# Configure using /bw setup Siege in-game
+# Template:
+# generators:
+#   diamond:
+#   - location:
+#       world: "Siege"
+#       x: 0
+#       y: 91
+#       z: 0
+#   emerald:
+#   - location:
+#       world: "Siege"
+#       x: 0
+#       y: 91
+#       z: 0

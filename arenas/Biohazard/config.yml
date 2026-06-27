@@ -1,0 +1,93 @@
+# Onyx RBW - Biohazard
+# World configuration
+# After placing the map folder in paper/, run:
+#   /bw add Biohazard
+#   /bw setarena Biohazard
+# Then use /bw setup Biohazard to configure spawns and generators in-game.
+
+world: "Biohazard"
+config-version: "22.01"
+
+# Build height limits
+min-build-y: 90
+max-build-y: 115
+build-limit: 115
+
+# Game settings
+game-time: 900
+waiting-time: 15
+ending-time: 10
+respawn-time: 5
+players-per-team: 4
+min-teams: 2
+
+# Arena group for matchmaking
+group: "ranked"
+
+# Enable/disable
+enabled: true
+
+# Database storage
+database: false
+
+# Target blocks (beds)
+target-blocks:
+- BED_BLOCK
+- BED
+
+# Spectator settings
+spectator-spawn:
+  world: "Biohazard"
+  x: 0
+  y: 125
+  z: 0
+  yaw: 0
+  pitch: 90
+
+# --- TEAMS ---
+# Configure using /bw setup Biohazard in-game
+# Template for team spawns:
+# teams:
+#   red:
+#     spawn:
+#       world: "Biohazard"
+#       x: 0
+#       y: 91
+#       z: 0
+#       yaw: 0
+#       pitch: 0
+#     bed:
+#       world: "Biohazard"
+#       x: 0
+#       y: 91
+#       z: 0
+#     shop:
+#       world: "Biohazard"
+#       x: 0
+#       y: 91
+#       z: 0
+#     team-upgrade:
+#       world: "Biohazard"
+#       x: 0
+#       y: 91
+#       z: 0
+#   blue: ...
+#   green: ...
+#   yellow: ...
+
+# --- GENERATORS ---
+# Configure using /bw setup Biohazard in-game
+# Template:
+# generators:
+#   diamond:
+#   - location:
+#       world: "Biohazard"
+#       x: 0
+#       y: 91
+#       z: 0
+#   emerald:
+#   - location:
+#       world: "Biohazard"
+#       x: 0
+#       y: 91
+#       z: 0
