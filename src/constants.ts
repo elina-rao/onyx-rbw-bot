@@ -31,7 +31,18 @@ export namespace Constants {
     '1518624667672514611',
   ];
 
-  export const ELO_EMOJIS: string[] = [];
+  export const ELO_EMOJIS: string[] = [
+    '', // Ash    (0-300)
+    '', // Stone  (300-600)
+    '', // Copper (600-900)
+    '', // Silver (900-1200)
+    '', // Gold   (1200-1500)
+    '', // Ruby   (1500-1800)
+    '', // Sapphire (1800-2200)
+    '', // Onyx   (2200+)
+  ];
+  // TODO: Upload dist/images/emoji/*.png as Discord custom emojis and put IDs above.
+  // Example: '<:onyx:123456789012345678>'
 
   export const RANKBANNED = '1519303023732592811';
 

@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node dist/index.js",
-    "build": "rm -rf dist && tsc && cp -r src/fonts dist/fonts && cp -r src/images dist/images",
+    "prestart": "npm run build",
+    "build": "rm -rf dist && tsc && cp -r src/fonts dist/fonts && cp -r src/images dist/images && node scripts/generate-assets.js",
     "watch": "tsc -w"
   },
   "engines": {

@@ -15,16 +15,26 @@ interface _Map {
 }
 
 const maps_object: { [key: string]: _Map } = {
-  "Extinction": {img:"https://media.discordapp.net/attachments/796082875475689506/810012638955175986/extiction-png.png", limit:"+95"},
-  "Enchanted": {img:"https://media.discordapp.net/attachments/796082875475689506/810015425155825687/enchanted-png.png", limit:"+100"},
-  "Aquarium": {img:"https://cdn.discordapp.com/attachments/799897234128764958/800008639342575667/aquariumold-png.png", limit:"+110"},
-  "Katsu": {img:"https://cdn.discordapp.com/attachments/799897234128764958/800010460429942794/NEW-Katsu-bw-3v3v3v3-4v4v4v4.png", limit:"+96"},
-  "Invasion": {img:"https://cdn.discordapp.com/attachments/799897234128764958/800014465294008370/image0.jpg", limit:"+115"},
-  "Rise": {img:"https://cdn.discordapp.com/attachments/800022796301369344/800024134217629706/rise-png.png", limit:"+96"},
-  "Temple": {img:"https://cdn.discordapp.com/attachments/800022796301369344/800023969918746624/templebedwars-png.png", limit:"+106"},
-  "Lectus": {img:"https://cdn.discordapp.com/attachments/799897234128764958/800014149232492594/image0.jpg", limit:"+90"},
-  "Catalyst": {img:"https://media.discordapp.net/attachments/796082875475689506/811700045085671514/catalyst-png.png", limit:"+101"},
-  "Treenan": {img:"https://media.discordapp.net/attachments/796082875475689506/811700135339622430/treenan-png.png", limit:"+121"},
+  "Airshow":    {img:"https://media.discordapp.net/attachments/796082875475689506/810012638955175986/extiction-png.png", limit:"+115"},
+  "Speedway":   {img:"https://media.discordapp.net/attachments/796082875475689506/810015425155825687/enchanted-png.png", limit:"+115"},
+  "Lighthouse": {img:"https://cdn.discordapp.com/attachments/799897234128764958/800008639342575667/aquariumold-png.png", limit:"+115"},
+  "Pernicious": {img:"https://cdn.discordapp.com/attachments/799897234128764958/800010460429942794/NEW-Katsu-bw-3v3v3v3-4v4v4v4.png", limit:"+110"},
+  "Orchestra":  {img:"https://cdn.discordapp.com/attachments/799897234128764958/800014465294008370/image0.jpg", limit:"+115"},
+  "Steampunk":  {img:"https://cdn.discordapp.com/attachments/800022796301369344/800024134217629706/rise-png.png", limit:"+120"},
+  "Zarzul":     {img:"https://cdn.discordapp.com/attachments/800022796301369344/800023969918746624/templebedwars-png.png", limit:"+110"},
+  "Solace":     {img:"https://cdn.discordapp.com/attachments/799897234128764958/800014149232492594/image0.jpg", limit:"+115"},
+  "Crypt":      {img:"https://media.discordapp.net/attachments/796082875475689506/811700045085671514/catalyst-png.png", limit:"+115"},
+  "Siege":      {img:"https://media.discordapp.net/attachments/796082875475689506/811700135339622430/treenan-png.png", limit:"+110"},
+  "Amazon":     {img:"https://cdn.discordapp.com/attachments/799897234128764958/800008639342575667/aquariumold-png.png", limit:"+115"},
+  "Aquarium":   {img:"https://cdn.discordapp.com/attachments/799897234128764958/800010460429942794/NEW-Katsu-bw-3v3v3v3-4v4v4v4.png", limit:"+115"},
+  "Inca":       {img:"https://cdn.discordapp.com/attachments/799897234128764958/800014465294008370/image0.jpg", limit:"+115"},
+  "Cave":       {img:"https://cdn.discordapp.com/attachments/800022796301369344/800024134217629706/rise-png.png", limit:"+115"},
+  "Treenan":    {img:"https://media.discordapp.net/attachments/796082875475689506/811700135339622430/treenan-png.png", limit:"+115"},
+  "Hollow":     {img:"https://cdn.discordapp.com/attachments/799897234128764958/800008639342575667/aquariumold-png.png", limit:"+115"},
+  "Glacier":    {img:"https://media.discordapp.net/attachments/796082875475689506/810015425155825687/enchanted-png.png", limit:"+115"},
+  "Biohazard":  {img:"https://media.discordapp.net/attachments/796082875475689506/810012638955175986/extiction-png.png", limit:"+115"},
+  "Rooted":     {img:"https://cdn.discordapp.com/attachments/799897234128764958/800014149232492594/image0.jpg", limit:"+115"},
+  "Dragonlight":{img:"https://media.discordapp.net/attachments/796082875475689506/811700045085671514/catalyst-png.png", limit:"+120"},
 };
 
 export class Player {
