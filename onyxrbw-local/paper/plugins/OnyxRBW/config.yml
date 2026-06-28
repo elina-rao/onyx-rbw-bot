@@ -1,1 +1,9 @@
+socket:
+  host: "10.10.0.15"
+  port: 8080
 socket-key: 230da5c9c3a8507b4e0757723a931d927383d36dbf0d2a4a7e4094b09b6abbd9
+bot-name: "onyx-bot-1"
+reconnect:
+  max-attempts: -1
+  base-delay-seconds: 5
+  max-delay-seconds: 60

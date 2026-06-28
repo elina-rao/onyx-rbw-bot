@@ -1,7 +1,7 @@
 $psi = New-Object System.Diagnostics.ProcessStartInfo
 $psi.FileName = "C:\Program Files\Eclipse Adoptium\jdk-23.0.2.7-hotspot\bin\java.exe"
-$psi.Arguments = "-Xmx2G -jar C:\onyxrbw-local\paper.jar nogui"
-$psi.WorkingDirectory = "C:\onyxrbw-local\paper"
+$psi.Arguments = "-Xmx2G -jar C:\onyx-rbw-bot\onyxrbw-local\paper.jar nogui"
+$psi.WorkingDirectory = "C:\onyx-rbw-bot\onyxrbw-local\paper"
 $psi.UseShellExecute = $false
 $psi.RedirectStandardInput = $true
 $psi.RedirectStandardOutput = $false
