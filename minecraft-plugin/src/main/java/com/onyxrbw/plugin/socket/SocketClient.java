@@ -45,7 +45,7 @@ public class SocketClient {
             options.reconnection = false;
             options.timeout = 10000;
 
-            socket = IO.socket("http://" + host + ":" + port, options);
+            socket = IO.socket("https://" + host + ":" + port, options);
 
             socket.on(Socket.EVENT_CONNECT, args -> {
                 connected = true;

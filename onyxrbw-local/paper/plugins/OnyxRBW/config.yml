@@ -1,6 +1,6 @@
 socket:
   host: "onyx-rbw-bot-production.up.railway.app"
-  port: 80
+  port: 443
 socket-key: 230da5c9c3a8507b4e0757723a931d927383d36dbf0d2a4a7e4094b09b6abbd9
 bot-name: "onyx-bot-1"
 reconnect:
